@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubTrack — ติดตาม Subscription ของคุณ</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --surface2: #1a1a26;
+    --border: #2a2a3a; --accent: #7c6fff; --accent2: #ff6b9d;
+    --accent3: #00d4aa; --text: #f0f0f8; --muted: #6b6b8a; --danger: #ff4d6d;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'IBM Plex Sans Thai',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background: radial-gradient(ellipse 60% 40% at 20% 10%,rgba(124,111,255,.12) 0%,transparent 60%),
+                radial-gradient(ellipse 50% 50% at 80% 80%,rgba(255,107,157,.08) 0%,transparent 60%);
+  }
+  .container { max-width:900px; margin:0 auto; padding:40px 24px 120px; position:relative; z-index:1; }
+  header { text-align:center; margin-bottom:48px; }
+  .logo { font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; letter-spacing:-1px;
+    background:linear-gradient(135deg,#7c6fff,#ff6b9d,#00d4aa); -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent; background-clip:text; display:inline-block; }
+  .tagline { margin-top:8px; color:var(--muted); font-size:.9rem; }
+
+  /* ── Auth screens ── */
+  .auth-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:24px;
+    padding:40px; max-width:420px; margin:0 auto;
+    position:relative; overflow:hidden;
+  }
+  .auth-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+  .auth-tabs { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:28px; }
+  .auth-tab { background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+    padding:10px; text-align:center; cursor:pointer; font-family:'Syne',sans-serif;
+    font-weight:700; font-size:.85rem; color:var(--muted); transition:all .2s; }
+  .auth-tab.active { background:var(--accent); border-color:var(--accent); color:white; }
+  .form-group { margin-bottom:16px; }
+  .form-label { font-size:.75rem; font-weight:600; letter-spacing:.5px; color:var(--muted);
+    margin-bottom:7px; display:block; text-transform:uppercase; }
+  .form-input { width:100%; background:var(--surface2); border:1px solid var(--border);
+    border-radius:10px; padding:12px 14px; color:var(--text);
+    font-family:'IBM Plex Sans Thai',sans-serif; font-size:.92rem; outline:none;
+    transition:border-color .2s; }
+  .form-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,111,255,.12); }
+  .form-input::placeholder { color:var(--muted); }
+  .btn-full { width:100%; background:linear-gradient(135deg,var(--accent),#9b8aff);
+    border:none; border-radius:12px; padding:14px; color:#fff;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:.95rem; cursor:pointer;
+    margin-top:6px; box-shadow:0 4px 20px rgba(124,111,255,.35);
+    transition:transform .15s,box-shadow .15s; }
+  .btn-full:hover { transform:translateY(-1px); box-shadow:0 6px 28px rgba(124,111,255,.5); }
+  .btn-full:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .err-msg { background:rgba(255,77,109,.12); border:1px solid rgba(255,77,109,.3);
+    border-radius:8px; padding:10px 14px; font-size:.83rem; color:#ff8fa3; margin-bottom:14px; }
+
+  /* ── Dashboard ── */
+  .section-label { font-family:'Syne',sans-serif; font-size:.72rem; font-weight:700;
+    letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; }
+  .welcome { font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:800; }
+  .welcome span { color:var(--accent); }
+  .btn-logout { background:none; border:1px solid var(--border); border-radius:8px;
+    color:var(--muted); font-size:.8rem; padding:7px 14px; cursor:pointer;
+    font-family:'IBM Plex Sans Thai',sans-serif; transition:all .2s; }
+  .btn-logout:hover { border-color:var(--danger); color:var(--danger); }
+
+  .stats-bar { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; text-align:center; }
+  .stat-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; line-height:1; }
+  .stat-num.active { color:var(--accent3); } .stat-num.total { color:var(--accent); } .stat-num.cost { color:var(--accent2); }
+  .stat-label { font-size:.75rem; color:var(--muted); margin-top:6px; }
+
+  .platforms-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .platforms-title { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; }
+  .filter-tabs { display:flex; gap:8px; }
+  .filter-tab { background:none; border:1px solid var(--border); border-radius:20px; padding:6px 14px;
+    color:var(--muted); font-size:.78rem; cursor:pointer; font-family:'IBM Plex Sans Thai',sans-serif; transition:all .2s; }
+  .filter-tab.active { background:var(--accent); border-color:var(--accent); color:white; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+
+  .platform-card { background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:20px; cursor:pointer; transition:border-color .25s,transform .2s,box-shadow .25s;
+    position:relative; overflow:hidden; user-select:none; }
+  .platform-card:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.3); }
+  .platform-card.subscribed { border-color:transparent; }
+  .platform-card.subscribed::after { content:''; position:absolute; inset:0; border-radius:18px; padding:1px;
+    background:var(--card-color,var(--accent)); -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; opacity:.6; }
+  .platform-card.subscribed .card-bg { opacity:.06; }
+  .card-bg { position:absolute; inset:0; opacity:0; background:var(--card-color,var(--accent)); transition:opacity .3s; border-radius:18px; }
+  .card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; position:relative; }
+  .platform-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+  .sub-toggle { width:44px; height:24px; border-radius:12px; background:var(--border); border:none; cursor:pointer;
+    position:relative; transition:background .25s; }
+  .sub-toggle::after { content:''; position:absolute; width:18px; height:18px; border-radius:50%; background:white;
+    top:3px; left:3px; transition:transform .25s,box-shadow .25s; }
+  .platform-card.subscribed .sub-toggle { background:var(--card-color,var(--accent)); }
+  .platform-card.subscribed .sub-toggle::after { transform:translateX(20px); }
+  .platform-name { font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; margin-bottom:3px; position:relative; }
+  .platform-category { font-size:.73rem; color:var(--muted); margin-bottom:10px; position:relative; }
+  .platform-price { display:flex; align-items:center; justify-content:space-between; position:relative; }
+  .price-tag { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; color:var(--muted); transition:color .25s; }
+  .platform-card.subscribed .price-tag { color:var(--text); }
+  .sub-status { font-size:.7rem; padding:3px 9px; border-radius:20px; font-weight:600; letter-spacing:.5px;
+    text-transform:uppercase; background:rgba(255,255,255,.06); color:var(--muted); transition:all .25s; }
+  .platform-card.subscribed .sub-status { background:var(--card-color,var(--accent)); color:white; opacity:.9; }
+  .sub-date { font-size:.7rem; color:var(--muted); margin-top:8px; padding-top:8px;
+    border-top:1px solid var(--border); position:relative; }
+  .unsub-link { display:inline-block; margin-top:6px; font-size:.7rem; color:var(--danger);
+    text-decoration:none; opacity:.7; transition:opacity .2s; position:relative; }
+  .unsub-link:hover { opacity:1; }
+
+  /* ── Checkout bar ── */
+  .checkout-bar { position:fixed; bottom:0; left:0; right:0; background:rgba(10,10,15,.9);
+    backdrop-filter:blur(20px); border-top:1px solid var(--border); padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; z-index:90;
+    transform:translateY(100%); transition:transform .4s cubic-bezier(.34,1.2,.64,1); }
+  .checkout-bar.show { transform:translateY(0); }
+  .checkout-count { background:var(--accent); color:white; font-family:'Syne',sans-serif;
+    font-weight:800; font-size:.82rem; width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; }
+  .checkout-info .ci-label { font-size:.7rem; color:var(--muted); }
+  .checkout-info .ci-amount { font-family:'Syne',sans-serif; font-weight:800; font-size:1.05rem; color:var(--accent2); }
+  .btn-checkout { background:linear-gradient(135deg,var(--accent2),#ff8fb3); border:none; border-radius:12px;
+    padding:12px 24px; color:white; font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem;
+    cursor:pointer; white-space:nowrap; box-shadow:0 4px 20px rgba(255,107,157,.4); transition:transform .15s; }
+  .btn-checkout:hover { transform:translateY(-1px); }
+  .checkout-summary { display:flex; align-items:center; gap:12px; }
+
+  /* ── Modal ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
+    z-index:200; display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition:opacity .3s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:24px;
+    width:100%; max-width:480px; max-height:90vh; overflow-y:auto; position:relative;
+    transform:scale(.92) translateY(20px); transition:transform .35s cubic-bezier(.34,1.2,.64,1); }
+  .modal-overlay.open .modal { transform:scale(1) translateY(0); }
+  .modal::before { content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent2),transparent); border-radius:24px 24px 0 0; }
+  .modal-header { padding:26px 26px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
+  .modal-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.15rem; }
+  .modal-close { background:var(--surface2); border:1px solid var(--border); color:var(--muted);
+    width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:.9rem;
+    display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .modal-close:hover { color:var(--text); border-color:var(--text); }
+  .modal-body { padding:22px 26px; }
+
+  .order-list { background:var(--surface2); border-radius:12px; padding:14px; margin-bottom:18px; max-height:150px; overflow-y:auto; }
+  .order-item { display:flex; justify-content:space-between; align-items:center;
+    padding:7px 0; border-bottom:1px solid var(--border); font-size:.85rem; }
+  .order-item:last-child { border-bottom:none; }
+  .order-item-price { color:var(--accent3); font-weight:700; font-family:'Syne',sans-serif; }
+  .order-total { display:flex; justify-content:space-between; padding:12px 0 0; border-top:1px solid var(--border); }
+  .order-total-label { font-family:'Syne',sans-serif; font-weight:700; }
+  .order-total-price { font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:var(--accent2); }
+
+  .pay-method-tabs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+  .pay-tab { background:var(--surface2); border:2px solid var(--border); border-radius:12px; padding:14px;
+    cursor:pointer; text-align:center; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .pay-tab .pt-icon { font-size:1.6rem; }
+  .pay-tab .pt-label { font-size:.8rem; font-weight:700; font-family:'Syne',sans-serif; }
+  .pay-tab .pt-sub { font-size:.7rem; color:var(--muted); }
+  .pay-tab.active { border-color:var(--accent); background:rgba(124,111,255,.1); }
+  .pay-tab.active .pt-label { color:var(--accent); }
+  .pay-panel { display:none; }
+  .pay-panel.active { display:block; }
+
+  .card-preview { background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);
+    border-radius:14px; padding:20px 20px 16px; margin-bottom:16px; position:relative; overflow:hidden; }
+  .card-preview::before { content:''; position:absolute; top:-30px; right:-30px; width:100px; height:100px;
+    border-radius:50%; background:rgba(255,255,255,.06); }
+  .card-chip { font-size:1.4rem; margin-bottom:14px; }
+  .card-number-display { font-family:'Syne',sans-serif; font-size:1rem; letter-spacing:2.5px;
+    margin-bottom:14px; color:rgba(255,255,255,.9); }
+  .card-bottom { display:flex; justify-content:space-between; }
+  .card-holder-label { font-size:.6rem; color:rgba(255,255,255,.5); text-transform:uppercase; margin-bottom:2px; }
+  .card-holder-name { font-family:'Syne',sans-serif; font-size:.8rem; font-weight:700; text-transform:uppercase; }
+
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  .qr-wrapper { text-align:center; padding:16px 0; }
+  .qr-box { display:inline-block; background:white; border-radius:14px; padding:14px; margin-bottom:14px; position:relative; }
+  .qr-amount-badge { position:absolute; bottom:-10px; left:50%; transform:translateX(-50%);
+    background:var(--accent2); color:white; font-family:'Syne',sans-serif; font-weight:800;
+    font-size:.78rem; padding:4px 12px; border-radius:20px; white-space:nowrap; }
+  .qr-instruction { margin-top:18px; font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .qr-apps { display:flex; justify-content:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .qr-app-badge { background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+    padding:6px 12px; font-size:.74rem; color:var(--muted); }
+  .qr-timer { margin-top:12px; font-size:.74rem; color:var(--muted); }
+  .qr-timer span { color:var(--accent3); font-weight:700; }
+
+  .btn-pay { width:100%; margin-top:18px; background:linear-gradient(135deg,var(--accent2),#ff8fb3);
+    border:none; border-radius:12px; padding:15px; color:white;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:.95rem; cursor:pointer;
+    box-shadow:0 4px 20px rgba(255,107,157,.4); transition:transform .15s; }
+  .btn-pay:hover { transform:translateY(-1px); }
+  .btn-pay:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .security-note { display:flex; align-items:center; justify-content:center; gap:6px;
+    margin-top:12px; font-size:.7rem; color:var(--muted); }
+
+  .success-screen { display:none; text-align:center; padding:36px 20px; }
+  .success-screen.show { display:block; }
+  .success-icon { width:68px; height:68px; border-radius:50%;
+    background:linear-gradient(135deg,var(--accent3),#00b894); margin:0 auto 18px;
+    display:flex; align-items:center; justify-content:center; font-size:1.8rem;
+    animation:successPop .5s cubic-bezier(.34,1.8,.64,1) both; }
+  @keyframes successPop { 0%{transform:scale(0)} 100%{transform:scale(1)} }
+  .success-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; margin-bottom:8px; }
+  .success-sub { color:var(--muted); font-size:.88rem; line-height:1.6; margin-bottom:20px; }
+  .success-ref { background:var(--surface2); border-radius:10px; padding:10px 16px;
+    font-family:'Syne',sans-serif; font-size:.8rem; color:var(--muted); margin-bottom:20px; }
+  .success-ref strong { color:var(--accent); }
+  .btn-done { background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+    padding:10px 24px; color:var(--text); cursor:pointer; font-family:'Syne',sans-serif; font-weight:700; transition:border-color .2s; }
+  .btn-done:hover { border-color:var(--accent); }
+
+  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(100px);
+    background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+    padding:11px 20px; font-size:.85rem; z-index:999;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1); white-space:nowrap;
+    display:flex; align-items:center; gap:8px; box-shadow:0 6px 24px rgba(0,0,0,.4); }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast-dot { width:7px; height:7px; border-radius:50%; }
+
+  .loading-spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.3);
+    border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; margin-right:8px; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  @keyframes popIn { 0%{transform:scale(.9);opacity:0} 100%{transform:scale(1);opacity:1} }
+  .platform-card { animation:popIn .28s ease both; }
+
+  @media(max-width:600px) {
+    .logo{font-size:2rem} .grid{grid-template-columns:1fr 1fr}
+    .stats-bar{gap:10px} .stat-card{padding:12px} .stat-num{font-size:1.5rem}
+    .filter-tabs{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">SubTrack</div>
+    <p class="tagline">จัดการ Subscription ทุกแพลตฟอร์มในที่เดียว</p>
+  </header>
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="showAuthTab('login',this)">เข้าสู่ระบบ</div>
+        <div class="auth-tab" onclick="showAuthTab('register',this)">สมัครสมาชิก</div>
+      </div>
+      <div id="authError" class="err-msg" style="display:none"></div>
+
+      <!-- Login -->
+      <div id="loginForm">
+        <div class="form-group"><label class="form-label">อีเมล</label>
+          <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">รหัสผ่าน</label>
+          <input class="form-input" type="password" id="loginPassword" placeholder="••••••••"></div>
+        <button class="btn-full" onclick="handleLogin()" id="loginBtn">เข้าสู่ระบบ</button>
+      </div>
+
+      <!-- Register -->
+      <div id="registerForm" style="display:none">
+        <div class="form-group"><label class="form-label">ชื่อ</label>
+          <input class="form-input" type="text" id="regName" placeholder="ชื่อของคุณ"></div>
+        <div class="form-group"><label class="form-label">อีเมล</label>
+          <input class="form-input" type="email" id="regEmail" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">รหัสผ่าน</label>
+          <input class="form-input" type="password" id="regPassword" placeholder="อย่างน้อย 6 ตัวอักษร"></div>
+        <button class="btn-full" onclick="handleRegister()" id="registerBtn">สมัครสมาชิก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" style="display:none">
+    <div class="topbar">
+      <div class="welcome">สวัสดี, <span id="userNameDisplay">...</span> 👋</div>
+      <button class="btn-logout" onclick="handleLogout()">ออกจากระบบ</button>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-num active" id="statActive">0</div><div class="stat-label">กำลัง Subscribe</div></div>
+      <div class="stat-card"><div class="stat-num total" id="statTotal">0</div><div class="stat-label">แพลตฟอร์มทั้งหมด</div></div>
+      <div class="stat-card"><div class="stat-num cost" id="statCost">฿0</div><div class="stat-label">ต่อเดือน</div></div>
+    </div>
+
+    <div class="platforms-header">
+      <div class="platforms-title">แพลตฟอร์มทั้งหมด</div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterPlatforms('all',this)">ทั้งหมด</button>
+        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">Subscribe แล้ว</button>
+        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">ยังไม่ได้</button>
+      </div>
+    </div>
+    <div class="grid" id="platformGrid"></div>
+  </div>
+</div>
+
+<!-- Checkout Bar -->
+<div class="checkout-bar" id="checkoutBar">
+  <div class="checkout-summary">
+    <div class="checkout-count" id="checkoutCount">0</div>
+    <div class="checkout-info">
+      <div class="ci-label">รายการที่ Subscribe</div>
+      <div class="ci-amount" id="checkoutAmount">฿0/เดือน</div>
+    </div>
+  </div>
+  <button class="btn-checkout" onclick="openCheckout()">💳 ชำระเงิน</button>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div id="paymentContent">
+      <div class="modal-header">
+        <div class="modal-title">ชำระค่า Subscription</div>
+        <button class="modal-close" onclick="closeCheckout()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="section-label" style="margin-bottom:8px">สรุปรายการ</div>
+        <div class="order-list" id="orderList"></div>
+        <div class="order-total">
+          <span class="order-total-label">รวมทั้งหมด / เดือน</span>
+          <span class="order-total-price" id="orderTotalPrice">฿0</span>
+        </div>
+
+        <div class="section-label" style="margin:20px 0 10px">วิธีชำระเงิน</div>
+        <div class="pay-method-tabs">
+          <div class="pay-tab active" onclick="switchPayMethod('card',this)">
+            <span class="pt-icon">💳</span><span class="pt-label">บัตรเครดิต/เดบิต</span>
+            <span class="pt-sub">Visa, Mastercard</span>
+          </div>
+          <div class="pay-tab" onclick="switchPayMethod('qr',this)">
+            <span class="pt-icon">📲</span><span class="pt-label">QR Code</span>
+            <span class="pt-sub">PromptPay / พร้อมเพย์</span>
+          </div>
+        </div>
+
+        <!-- Card Panel -->
+        <div class="pay-panel active" id="cardPanel">
+          <div class="card-preview">
+            <div class="card-chip">💳</div>
+            <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+            <div class="card-bottom">
+              <div><div class="card-holder-label">ชื่อผู้ถือบัตร</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
+              <div><div class="card-holder-label">หมดอายุ</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label">หมายเลขบัตร</label>
+            <input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)" id="cardNumInput"></div>
+          <div class="form-group"><label class="form-label">ชื่อผู้ถือบัตร</label>
+            <input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME"
+              oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">วันหมดอายุ</label>
+              <input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
+            <div class="form-group"><label class="form-label">CVV</label>
+              <input class="form-input" type="text" maxlength="3" placeholder="•••"></div>
+          </div>
+          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">🔒 ชำระเงิน <span id="cardPayAmount"></span></button>
+        </div>
+
+        <!-- QR Panel -->
+        <div class="pay-panel" id="qrPanel">
+          <div class="qr-wrapper">
+            <div class="qr-box">
+              <svg width="170" height="170" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg" id="qrSvg"></svg>
+              <div class="qr-amount-badge" id="qrAmountBadge">฿0</div>
+            </div>
+            <div class="qr-instruction"><strong>สแกน QR Code ด้วยแอปธนาคาร</strong><br>ชำระผ่าน PromptPay / พร้อมเพย์</div>
+            <div class="qr-apps">
+              <div class="qr-app-badge">🏦 SCB Easy</div>
+              <div class="qr-app-badge">💚 KBank</div>
+              <div class="qr-app-badge">🔵 KTB</div>
+              <div class="qr-app-badge">🟠 BBL</div>
+            </div>
+            <div class="qr-timer">QR หมดอายุใน <span id="qrCountdown">05:00</span></div>
+          </div>
+          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">✅ ยืนยันการชำระเงิน</button>
+        </div>
+        <div class="security-note">🔒 เข้ารหัส SSL 256-bit · ปลอดภัย 100%</div>
+      </div>
+    </div>
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✓</div>
+      <div class="success-title">ชำระเงินสำเร็จ! 🎉</div>
+      <div class="success-sub" id="successSub">Subscribe แล้วเรียบร้อย</div>
+      <div class="success-ref">เลขที่อ้างอิง: <strong id="successRef">-</strong></div>
+      <button class="btn-done" onclick="closeDone()">เสร็จสิ้น ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-dot" id="toastDot"></div><span id="toastMsg"></span></div>
+
+<script>
+// ================================================================
+// CONFIG — เปลี่ยน URL ให้ตรงกับ backend ที่ deploy
+// ================================================================
+const API_URL = 'http://localhost:3001/api';
+
+// ── State ──
+let token = localStorage.getItem('subtrack_token') || null;
+let currentUser = null;
+let platforms = [];      // จาก API
+let userSubs = {};       // { platform_id: { subscribed_at, ... } }
+let currentFilter = 'all';
+
+// ================================================================
+// AUTH
+// ================================================================
+function showAuthTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('authError').style.display = 'none';
+}
+
+async function handleLogin() {
+  const btn = document.getElementById('loginBtn');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return showAuthError('กรุณาใส่อีเมลและรหัสผ่าน');
+  setLoading(btn, true);
+  try {
+    const res = await apiFetch('/auth/login', 'POST', { email, password }, false);
+    token = res.token; currentUser = res.user;
+    localStorage.setItem('subtrack_token', token);
+    await initDashboard();
+  } catch (err) {
+    showAuthError(err.message || 'เข้าสู่ระบบไม่สำเร็จ');
+  } finally { setLoading(btn, false); }
+}
+
+async function handleRegister() {
+  const btn = document.getElementById('registerBtn');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!name || !email || !password) return showAuthError('กรุณากรอกข้อมูลให้ครบ');
+  if (password.length < 6) return showAuthError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+  setLoading(btn, true);
+  try {
+    const res = await apiFetch('/auth/register', 'POST', { name, email, password }, false);
+    token = res.token; currentUser = res.user;
+    localStorage.setItem('subtrack_token', token);
+    await initDashboard();
+  } catch (err) {
+    showAuthError(err.message || 'สมัครสมาชิกไม่สำเร็จ');
+  } finally { setLoading(btn, false); }
+}
+
+function handleLogout() {
+  token = null; currentUser = null; userSubs = {};
+  localStorage.removeItem('subtrack_token');
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'block';
+  document.getElementById('checkoutBar').classList.remove('show');
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+// ================================================================
+// DASHBOARD
+// ================================================================
+async function initDashboard() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('authError').style.display = 'none';
+  document.getElementById('userNameDisplay').textContent = currentUser?.name || currentUser?.email;
+
+  // โหลด platforms + subscriptions พร้อมกัน
+  const [platsData, subsData] = await Promise.all([
+    apiFetch('/subscriptions/platforms/all', 'GET', null, false).catch(() => []),
+    apiFetch('/subscriptions').catch(() => [])
+  ]);
+
+  platforms = platsData;
+  userSubs = {};
+  subsData.forEach(s => { userSubs[s.platform_id] = s; });
+
+  updateStats();
+  renderGrid();
+  updateCheckoutBar();
+}
+
+async function toggleSub(id, event) {
+  event.stopPropagation();
+  const isSub = !!userSubs[id];
+  try {
+    if (isSub) {
+      const res = await apiFetch(`/subscriptions/${id}`, 'DELETE');
+      delete userSubs[id];
+      const name = platforms.find(p => p.id === id)?.name;
+      showToast(`ยกเลิก ${name} แล้ว`, '#ff4d6d');
+      // แสดง popup พร้อมลิงก์ unsubscribe จริง
+      if (res.unsubscribe_url) {
+        setTimeout(() => {
+          if (confirm(`ต้องการยกเลิก ${name} ในแอพด้วยไหม?\nกด OK เพื่อไปหน้า Unsubscribe`)) {
+            window.open(res.unsubscribe_url, '_blank');
+          }
+        }, 300);
+      }
+    } else {
+      await apiFetch(`/subscriptions/${id}`, 'POST', { reminder_days: 3 });
+      const sub = await apiFetch('/subscriptions').catch(() => []);
+      sub.forEach(s => { userSubs[s.platform_id] = s; });
+      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} แล้ว! ✓`, '#00d4aa');
+    }
+  } catch (err) {
+    showToast('เกิดข้อผิดพลาด: ' + err.message, '#ff4d6d');
+  }
+  updateStats(); renderGrid(); updateCheckoutBar();
+}
+
+function updateStats() {
+  const subs = Object.keys(userSubs);
+  const total = platforms.length;
+  const cost = subs.reduce((s, id) => s + (userSubs[id]?.price_thb || 0), 0);
+  document.getElementById('statActive').textContent = subs.length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statCost').textContent = '฿' + cost.toLocaleString();
+}
+
+function filterPlatforms(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('platformGrid');
+  let filtered = platforms;
+  if (currentFilter === 'subscribed') filtered = platforms.filter(p => userSubs[p.id]);
+  if (currentFilter === 'unsubscribed') filtered = platforms.filter(p => !userSubs[p.id]);
+  grid.innerHTML = filtered.map((p, i) => {
+    const isSub = !!userSubs[p.id];
+    const date = isSub ? new Date(userSubs[p.id].subscribed_at).toLocaleDateString('th-TH') : '';
+    return `<div class="platform-card ${isSub?'subscribed':''}"
+         style="--card-color:${p.color};animation-delay:${i*.04}s"
+         onclick="toggleSub('${p.id}',event)">
+      <div class="card-bg"></div>
+      <div class="card-top">
+        <div class="platform-icon" style="background:${p.color}22">${p.icon}</div>
+        <button class="sub-toggle" onclick="toggleSub('${p.id}',event)"></button>
+      </div>
+      <div class="platform-name">${p.name}</div>
+      <div class="platform-category">${p.category}</div>
+      <div class="platform-price">
+        <span class="price-tag">฿${p.price_thb}/เดือน</span>
+        <span class="sub-status">${isSub?'Active':'ยังไม่ได้'}</span>
+      </div>
+      ${isSub ? `
+        <div class="sub-date">📅 Subscribe เมื่อ ${date}
+          <br><a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">
+            🚫 ยกเลิกใน ${p.name} →</a>
+        </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ================================================================
+// CHECKOUT + PAYMENT
+// ================================================================
+function updateCheckoutBar() {
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s, id) => s + (userSubs[id]?.price_thb || 0), 0);
+  document.getElementById('checkoutCount').textContent = subs.length;
+  document.getElementById('checkoutAmount').textContent = '฿' + total.toLocaleString() + '/เดือน';
+  const bar = document.getElementById('checkoutBar');
+  if (subs.length > 0 && currentUser) bar.classList.add('show'); else bar.classList.remove('show');
+}
+
+function openCheckout() {
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s, id) => s + (userSubs[id]?.price_thb || 0), 0);
+  document.getElementById('orderList').innerHTML = subs.map(id => {
+    const p = userSubs[id];
+    return `<div class="order-item"><span>${p.icon} ${p.name}</span><span class="order-item-price">฿${p.price_thb}</span></div>`;
+  }).join('');
+  document.getElementById('orderTotalPrice').textContent = '฿' + total.toLocaleString();
+  document.getElementById('cardPayAmount').textContent = '฿' + total.toLocaleString();
+  drawQR(document.getElementById('qrSvg'), 'PROMPTPAY:' + total);
+  document.getElementById('qrAmountBadge').textContent = '฿' + total.toLocaleString();
+  document.getElementById('paymentContent').style.display = 'block';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('paymentModal').classList.add('open');
+  startQrTimer();
+}
+
+function closeCheckout() {
+  document.getElementById('paymentModal').classList.remove('open');
+  clearInterval(qrInterval);
+}
+
+function switchPayMethod(method, el) {
+  document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cardPanel').classList.toggle('active', method === 'card');
+  document.getElementById('qrPanel').classList.toggle('active', method === 'qr');
+}
+
+async function processPayment(method) {
+  const btn = document.getElementById(method === 'card' ? 'cardPayBtn' : 'qrPayBtn');
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s, id) => s + (userSubs[id]?.price_thb || 0), 0);
+  setLoading(btn, true, '⏳ กำลังประมวลผล...');
+  try {
+    const endpoint = method === 'card' ? '/payment/charge' : '/payment/promptpay';
+    const res = await apiFetch(endpoint, 'POST', {
+      amount: total * 100,
+      platform_ids: subs,
+      payment_method: method,
+      token: 'tok_test_mock'
+    });
+    clearInterval(qrInterval);
+    document.getElementById('successRef').textContent = res.transaction_id || res.charge_id;
+    document.getElementById('successSub').innerHTML =
+      `ชำระเงิน <strong>฿${total.toLocaleString()}</strong> สำเร็จ!<br>
+       ระบบส่งใบเสร็จไปที่ <strong>${currentUser.email}</strong> แล้ว`;
+    document.getElementById('paymentContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+  } catch (err) {
+    showToast('ชำระเงินไม่สำเร็จ: ' + err.message, '#ff4d6d');
+  } finally { setLoading(btn, false, method === 'card' ? '🔒 ชำระเงิน' : '✅ ยืนยัน'); }
+}
+
+function closeDone() {
+  closeCheckout();
+  showToast('✅ ชำระเงินสำเร็จ! ใบเสร็จส่งไปทางอีเมลแล้ว', '#00d4aa');
+}
+
+// ── QR Timer ──
+let qrInterval, qrSeconds = 300;
+function startQrTimer() {
+  clearInterval(qrInterval); qrSeconds = 300; updateQrTimer();
+  qrInterval = setInterval(() => { qrSeconds--; updateQrTimer(); if (qrSeconds <= 0) clearInterval(qrInterval); }, 1000);
+}
+function updateQrTimer() {
+  const el = document.getElementById('qrCountdown');
+  if (el) el.textContent = String(Math.floor(qrSeconds/60)).padStart(2,'0') + ':' + String(qrSeconds%60).padStart(2,'0');
+}
+
+// ── Card formatting ──
+function formatCardNum(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('cardNumDisplay').textContent = v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+  input.value = v;
+  document.getElementById('cardExpDisplay').textContent = v||'MM/YY';
+}
+
+// ── QR Generator ──
+function drawQR(svgEl, text) {
+  const size=21, cs=Math.floor(170/(size+2)), off=Math.floor((170-cs*size)/2);
+  let h=0; for(let i=0;i<text.length;i++) h=(h*31+text.charCodeAt(i))>>>0;
+  svgEl.innerHTML='';
+  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width',170); bg.setAttribute('height',170); bg.setAttribute('fill','white');
+  svgEl.appendChild(bg);
+  function finder(x,y){[[0,0,7,7],[1,1,5,5],[2,2,3,3]].forEach(([fx,fy,fw,fh],i)=>{
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',off+(x+fx)*cs); r.setAttribute('y',off+(y+fy)*cs);
+    r.setAttribute('width',fw*cs); r.setAttribute('height',fh*cs);
+    r.setAttribute('fill',i===1?'white':'#111'); svgEl.appendChild(r);});}
+  finder(0,0); finder(size-7,0); finder(0,size-7);
+  for(let r=0;r<size;r++) for(let c=0;c<size;c++){
+    if(!((r<8&&c<8)||(r<8&&c>=size-8)||(r>=size-8&&c<8))&&((h^(r*7+c*13)^(r*c*3))&0xff)<128){
+      const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',off+c*cs); rect.setAttribute('y',off+r*cs);
+      rect.setAttribute('width',cs-1); rect.setAttribute('height',cs-1);
+      rect.setAttribute('fill','#111'); svgEl.appendChild(rect);}}
+}
+
+// ================================================================
+// UTILITIES
+// ================================================================
+async function apiFetch(path, method='GET', body=null, withAuth=true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (withAuth && token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(API_URL + path, {
+    method, headers, body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'เกิดข้อผิดพลาด');
+  return data;
+}
+
+let toastTimer;
+function showToast(msg, color='#7c6fff') {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastDot').style.background = color;
+  t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function setLoading(btn, loading, text='') {
+  btn.disabled = loading;
+  if (loading) btn.innerHTML = `<span class="loading-spinner"></span>${text||'กำลังโหลด...'}`;
+  else if (text) btn.textContent = text;
+}
+
+// Close modal on overlay click
+document.getElementById('paymentModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCheckout();
+});
+
+// ── Auto-login if token exists ──
+(async () => {
+  if (token) {
+    try {
+      currentUser = await apiFetch('/auth/me');
+      await initDashboard();
+    } catch { handleLogout(); }
+  }
+})();
+</script>
+</body>
+</html>

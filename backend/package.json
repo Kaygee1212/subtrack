@@ -1,0 +1,27 @@
+{
+  "name": "subtrack-backend",
+  "version": "1.0.0",
+  "description": "SubTrack Backend API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "migrate": "node src/models/migrate.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.11.0",
+    "dotenv": "^16.0.3",
+    "@sendgrid/mail": "^7.7.0",
+    "node-cron": "^3.0.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
