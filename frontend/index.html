@@ -285,6 +285,22 @@
       <div class="welcome">สวัสดี, <span id="userNameDisplay">...</span> 👋</div>
       <button class="btn-logout" onclick="handleLogout()">ออกจากระบบ</button>
     </div>
+    <!-- Gmail Scanner -->
+<div id="gmailSection" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+  <div>
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;">สแกน Gmail อัตโนมัติ</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:3px;">ให้ระบบตรวจสอบจากอีเมลว่า Subscribe อะไรบ้าง</div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <button id="gmailConnectBtn" onclick="connectGmail()"
+      style="background:linear-gradient(135deg,#4285f4,#34a853);border:none;border-radius:10px;padding:10px 18px;color:white;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;">
+      เชื่อม Gmail
+    </button>
+    <button id="gmailScanBtn" onclick="scanGmail()" style="display:none;background:linear-gradient(135deg,var(--accent3),#00b894);border:none;border-radius:10px;padding:10px 18px;color:white;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;">
+      สแกนเลย
+    </button>
+  </div>
+</div>
 
     <div class="stats-bar">
       <div class="stat-card"><div class="stat-num active" id="statActive">0</div><div class="stat-label">กำลัง Subscribe</div></div>
@@ -495,6 +511,7 @@ async function initDashboard() {
   updateStats();
   renderGrid();
   updateCheckoutBar();
+  checkGmailStatus();
 }
 
 async function toggleSub(id, event) {
@@ -638,7 +655,36 @@ async function processPayment(method) {
     showToast('ชำระเงินไม่สำเร็จ: ' + err.message, '#ff4d6d');
   } finally { setLoading(btn, false, method === 'card' ? '🔒 ชำระเงิน' : '✅ ยืนยัน'); }
 }
+async function connectGmail() {
+  try {
+    const res = await apiFetch('/auth/gmail');
+    window.location.href = res.url;
+  } catch(e) { showToast('เกิดข้อผิดพลาด: ' + e.message, '#ff4d6d'); }
+}
 
+async function scanGmail() {
+  const btn = document.getElementById('gmailScanBtn');
+  setLoading(btn, true, '⏳ กำลังสแกน...');
+  try {
+    const res = await apiFetch('/auth/gmail/scan');
+    showToast(`พบ ${res.found.length} subscriptions! ✓`, '#00d4aa');
+    await initDashboard();
+  } catch(e) {
+    showToast('เกิดข้อผิดพลาด: ' + e.message, '#ff4d6d');
+  } finally {
+    setLoading(btn, false, 'สแกนเลย');
+  }
+}
+
+function checkGmailStatus() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('gmail') === 'connected') {
+    document.getElementById('gmailConnectBtn').style.display = 'none';
+    document.getElementById('gmailScanBtn').style.display = 'block';
+    showToast('เชื่อม Gmail สำเร็จ! กดสแกนได้เลย', '#00d4aa');
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
 function closeDone() {
   closeCheckout();
   showToast('✅ ชำระเงินสำเร็จ! ใบเสร็จส่งไปทางอีเมลแล้ว', '#00d4aa');

@@ -24,6 +24,7 @@ app.use('/api/auth', authLimiter);
 
 // ── Routes ──
 app.use('/api/auth',          require('./routes/auth'));
+app.use('/api/auth',          require('./routes/gmail'));
 app.use('/api/subscriptions', require('./routes/subscriptions'));
 app.use('/api/payment',       require('./routes/payment'));
 
