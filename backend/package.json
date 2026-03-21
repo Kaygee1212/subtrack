@@ -9,17 +9,18 @@
     "migrate": "node src/models/migrate.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0",
-    "pg": "^8.11.0",
-    "dotenv": "^16.0.3",
     "@sendgrid/mail": "^7.7.0",
-    "node-cron": "^3.0.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
     "express-validator": "^7.0.1",
     "helmet": "^7.0.0",
-    "express-rate-limit": "^6.7.0"
+    "jsonwebtoken": "^9.0.0",
+    "node-cron": "^3.0.2",
+    "pg": "^8.11.0",
+    "resend": "^6.9.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
