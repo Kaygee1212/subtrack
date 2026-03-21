@@ -14,11 +14,11 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json());app.set('trust proxy', 1);
 
 // Rate limiting
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100, trustProxy: true });
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, trustProxy: true });
 app.use('/api', limiter);
 app.use('/api/auth', authLimiter);
 
