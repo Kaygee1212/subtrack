@@ -25,30 +25,866 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
 /* AUTH */
-#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;\background:radial-gradient(ellipse at 50% 0%,1(a1630 0%,var(--bg) 70%);padding:20px}
-.auth-box{width:100%;max-width:420px;}
-.auth-logo { text-align:center;margin-bottom:32px; }
-.auth-logo-mark {
-  width: 52px;
-  height: 52px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  margin: 0 auto 14px;
-  box-shadow: 0 8px 24px rgba(124, 111, 255, .35);
+#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%,#1a1630 0%,var(--bg) 70%);padding:20px}
+.auth-box{width:100%;max-width:420px}
+.auth-logo{text-align:center;margin-bottom:32px}
+.auth-logo-mark{width:52px;height:52px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px;box-shadow:0 8px 24px rgba(124,111,255,.35)}
+.auth-logo h1{font-family:'Syne',sans-serif;font-size:1.9rem;background:linear-gradient(135deg,#fff,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.auth-logo p{color:var(--muted);font-size:.88rem;margin-top:4px}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.auth-tabs{display:flex;gap:6px;margin-bottom:24px;background:var(--surface2);border-radius:10px;padding:4px}
+.auth-tab{flex:1;padding:9px;text-align:center;border:none;background:none;color:var(--muted);cursor:pointer;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:.9rem;font-weight:500;transition:.2s}
+.auth-tab.active{background:var(--accent);color:#fff;font-weight:600}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;font-weight:500;letter-spacing:.3px}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Sarabun',sans-serif;font-size:.95rem;transition:.2s;outline:none}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,111,255,.15)}
+.form-input::placeholder{color:#444460}
+.btn-auth{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;color:#fff;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-auth:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,111,255,.4)}
+.btn-auth:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.auth-error{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:#ff7a92;border-radius:10px;padding:10px 14px;font-size:.88rem;margin-bottom:14px;display:none}
+.captcha-wrap{display:flex;justify-content:center;margin:12px 0;min-height:78px;align-items:center}
+.auth-tos{text-align:center;font-size:.75rem;color:var(--muted);margin-top:12px}
+.auth-tos a{color:var(--accent);text-decoration:none}
+
+/* DASHBOARD */
+#dashboard{display:none;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.topbar-logo span{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.82rem}
+.user-avatar{width:24px;height:24px;background:linear-gradient(135deg,var(--accent),var(--green));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff}
+.btn-logout{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.82rem;font-family:'Sarabun',sans-serif;transition:.2s}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+.main{max-width:1100px;margin:0 auto;padding:24px 20px}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;background:var(--accent);opacity:.06;transform:translate(20px,-20px)}
+.stat-label{font-size:.78rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.stat-value{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;line-height:1}
+.stat-sub{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+/* Gmail Card */
+.gmail-card{background:linear-gradient(135deg,rgba(124,111,255,.08),rgba(0,212,170,.06));border:1px solid rgba(124,111,255,.25);border-radius:var(--radius);padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.gmail-icon-box{width:44px;height:44px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.gmail-icon-box img{width:28px;height:28px;object-fit:contain}
+.gmail-info{flex:1;min-width:200px}
+.gmail-info h3{font-family:'Syne',sans-serif;font-size:1rem;margin-bottom:4px}
+.gmail-info p{font-size:.82rem;color:var(--muted)}
+.gmail-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge-connected{background:rgba(0,212,170,.15);color:var(--green);border:1px solid rgba(0,212,170,.3);border-radius:20px;padding:3px 10px;font-size:.75rem;font-weight:600;display:none;align-items:center;gap:4px}
+.btn-gmail{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:7px;transition:.2s}
+.btn-gmail-connect{background:#fff;color:#333}
+.btn-gmail-connect:hover{box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.btn-gmail-scan{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:none}
+.btn-gmail-scan:hover{box-shadow:0 4px 12px rgba(124,111,255,.35)}
+
+/* Platform Grid */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.section-title{font-family:'Syne',sans-serif;font-size:1.1rem}
+.filter-tabs{display:flex;gap:6px}
+.filter-tab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;font-size:.82rem;transition:.2s}
+.filter-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.platform-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:.25s;position:relative;overflow:hidden;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.platform-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-color,var(--accent));opacity:0;transition:.25s}
+.platform-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.platform-card:hover::before,.platform-card.subscribed::before{opacity:1}
+.platform-card.subscribed{border-color:rgba(124,111,255,.4);background:rgba(124,111,255,.05)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.platform-logo-wrap{width:44px;height:44px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--surface2)}
+.platform-logo-wrap img{width:100%;height:100%;object-fit:cover}
+.logo-fallback{font-size:1.5rem}
+.sub-toggle{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted)}
+.subscribed .sub-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
+.sub-toggle::after{content:'+'}.subscribed .sub-toggle::after{content:'✓'}
+.platform-name{font-weight:600;font-size:.95rem;margin-bottom:2px}
+.platform-category{font-size:.75rem;color:var(--muted);margin-bottom:10px}
+.platform-price{display:flex;align-items:center;justify-content:space-between}
+.price-tag{font-size:.85rem;font-weight:600;color:var(--accent)}
+.sub-status{font-size:.72rem;color:var(--muted)}
+.subscribed .sub-status{color:var(--green)}
+.sub-date{font-size:.73rem;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.unsub-link{color:var(--red);font-size:.72rem;text-decoration:none}
+.unsub-link:hover{text-decoration:underline}
+
+/* Checkout Bar */
+.checkout-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;transform:translateY(100%);transition:.3s;z-index:40;gap:12px;flex-wrap:wrap}
+.checkout-bar.show{transform:translateY(0)}
+.checkout-info{display:flex;align-items:center;gap:12px}
+.checkout-count{background:var(--accent);color:#fff;border-radius:20px;padding:3px 10px;font-size:.82rem;font-weight:700}
+.checkout-amount{font-size:.9rem;color:var(--muted)}
+.btn-checkout{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:11px 24px;border-radius:12px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;transition:.2s}
+.btn-checkout:hover{box-shadow:0 4px 16px rgba(124,111,255,.4)}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:.25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;transform:scale(.95);transition:.25s}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:1}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.05rem}
+.modal-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;line-height:1;padding:2px 6px;border-radius:6px}
+.modal-close:hover{background:var(--surface2);color:var(--text)}
+.modal-body{padding:20px 24px 24px}
+
+/* Gmail Permission Modal */
+.gmail-perm-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:16px;background:var(--surface2);border-radius:12px}
+.gmail-perm-logo{width:44px;height:44px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gmail-perm-logo img{width:30px;height:30px}
+.gmail-perm-title{font-weight:600;font-size:.95rem}
+.gmail-perm-sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+.perm-section-title{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.consent-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.consent-item{display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border-radius:10px;padding:12px}
+.consent-icon{width:32px;height:32px;border-radius:8px;background:rgba(124,111,255,.15);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;margin-top:1px}
+.consent-text strong{display:block;font-size:.88rem;margin-bottom:2px}
+.consent-text span{font-size:.78rem;color:var(--muted);line-height:1.5}
+.consent-warning{background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.2);border-radius:10px;padding:12px;font-size:.8rem;color:#ffd060;margin-bottom:18px;line-height:1.6}
+.consent-btns{display:flex;gap:10px}
+.btn-consent-cancel{flex:1;padding:12px;background:none;border:1px solid var(--border);border-radius:12px;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;font-size:.9rem;transition:.2s}
+.btn-consent-cancel:hover{border-color:var(--red);color:var(--red)}
+.btn-consent-ok{flex:2;padding:12px;background:linear-gradient(135deg,#4285f4,#34a853);border:none;border-radius:12px;color:white;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn-consent-ok:hover{box-shadow:0 4px 16px rgba(66,133,244,.4)}
+.btn-consent-ok:disabled{opacity:.6;cursor:not-allowed}
+
+/* Scan Results */
+.scan-result-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:.2s;margin-bottom:8px;user-select:none}
+.scan-result-item:hover{border-color:var(--accent)}
+.scan-result-item.selected{border-color:var(--accent);background:rgba(124,111,255,.08)}
+.scan-check{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:.2s;flex-shrink:0}
+.selected .scan-check{background:var(--accent);border-color:var(--accent);color:#fff}
+.scan-logo{width:38px;height:38px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--surface2);flex-shrink:0}
+.scan-info{flex:1}
+.scan-name{font-weight:600;font-size:.9rem}
+.scan-price{font-size:.78rem;color:var(--muted);margin-top:2px}
+.scan-empty{text-align:center;padding:32px;color:var(--muted);font-size:.9rem}
+.scan-empty-icon{font-size:2.5rem;margin-bottom:12px}
+
+/* Payment */
+.section-label{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.order-list{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.order-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);font-size:.88rem}
+.order-item:last-child{border-bottom:none}
+.order-item-price{font-weight:600;color:var(--accent)}
+.order-total{display:flex;justify-content:space-between;padding:12px 14px;background:var(--surface2);border-radius:10px;margin-bottom:20px}
+.order-total-label{font-size:.85rem;color:var(--muted)}
+.order-total-price{font-family:'Syne',sans-serif;font-size:1.1rem;color:var(--accent);font-weight:700}
+.pay-method-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.pay-tab{padding:12px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;text-align:left}
+.pay-tab.active{border-color:var(--accent);background:rgba(124,111,255,.08)}
+.pt-icon{font-size:1.3rem;display:block;margin-bottom:4px}
+.pt-label{font-size:.88rem;font-weight:600;display:block}
+.pt-sub{font-size:.72rem;color:var(--muted)}
+.pay-panel{display:none}.pay-panel.active{display:block}
+.card-preview{background:linear-gradient(135deg,#1a1a2e,#2d1b69);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.card-preview::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(124,111,255,.15)}
+.card-chip{font-size:1.5rem;margin-bottom:12px}
+.card-number-display{font-family:monospace;letter-spacing:3px;font-size:1.1rem;margin-bottom:14px;color:rgba(255,255,255,.9)}
+.card-bottom{display:flex;justify-content:space-between}
+.card-holder-label{font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:2px}
+.card-holder-name{font-size:.85rem;font-weight:600;letter-spacing:.5px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-pay{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;margin-top:6px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-pay:hover{box-shadow:0 6px 20px rgba(124,111,255,.4)}
+.qr-wrapper{text-align:center;padding:8px 0}
+.qr-box{display:inline-block;background:white;padding:16px;border-radius:12px;margin-bottom:14px;position:relative}
+.qr-amount-badge{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:3px 14px;border-radius:20px;font-size:.8rem;font-weight:700;white-space:nowrap}
+.qr-instruction{color:var(--muted);font-size:.85rem;margin-bottom:12px;line-height:1.5}
+.qr-apps{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.qr-app-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem}
+.qr-timer{font-size:.82rem;color:var(--muted)}
+.security-note{text-align:center;font-size:.75rem;color:var(--muted);margin-top:14px}
+.success-screen{display:none;text-align:center;padding:20px 0}
+.success-screen.show{display:block}
+.success-icon{font-size:3rem;margin-bottom:12px}
+.success-title{font-family:'Syne',sans-serif;font-size:1.3rem;margin-bottom:8px}
+.success-sub{color:var(--muted);font-size:.88rem;margin-bottom:16px;line-height:1.6}
+.success-ref{font-size:.78rem;color:var(--muted);margin-bottom:20px}
+.btn-done{background:linear-gradient(135deg,var(--green),#00b894);border:none;padding:12px 28px;border-radius:12px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;font-size:.95rem}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-size:.85rem;opacity:0;transition:.3s;z-index:200;pointer-events:none;white-space:nowrap;max-width:90vw;text-overflow:ellipsis;overflow:hidden}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.loading-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:600px){.stats-row{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.pay-method-tabs{grid-template-columns:1fr}.platform-grid{grid-template-columns:1fr 1fr}.auth-card{padding:20px}}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">💳</div>
+      <h1>SubTrack</h1>
+      <p>จัดการ Subscription ทุกอย่างในที่เดียว</p>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showAuthTab('login',this)">เข้าสู่ระบบ</button>
+        <button class="auth-tab" onclick="showAuthTab('register',this)">สมัครสมาชิก</button>
+      </div>
+      <div id="authError" class="auth-error"></div>
+
+      <!-- Login -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label">อีเมล</label>
+          <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')handleLogin()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">รหัสผ่าน</label>
+          <input class="form-input" id="loginPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleLogin()">
+        </div>
+        <div class="captcha-wrap" id="loginCaptchaWrap">
+          <div id="loginCaptchaDiv"></div>
+        </div>
+        <button class="btn-auth" id="loginBtn" onclick="handleLogin()">🔑 เข้าสู่ระบบ</button>
+      </div>
+
+      <!-- Register -->
+      <div id="registerForm" style="display:none">
+        <div class="form-group">
+          <label class="form-label">ชื่อ-นามสกุล</label>
+          <input class="form-input" id="regName" type="text" placeholder="ชื่อของคุณ">
+        </div>
+        <div class="form-group">
+          <label class="form-label">อีเมล</label>
+          <input class="form-input" id="regEmail" type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
+          <input class="form-input" id="regPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleRegister()">
+        </div>
+        <div class="captcha-wrap">
+          <div id="registerCaptchaDiv"></div>
+        </div>
+        <button class="btn-auth" id="registerBtn" onclick="handleRegister()">✨ สมัครสมาชิก</button>
+        <p class="auth-tos">การสมัครสมาชิก แสดงว่าคุณยอมรับ <a href="#">Terms of Service</a> และ <a href="#">Privacy Policy</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-logo-mark">💳</div>
+      <span>SubTrack</span>
+    </div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="user-avatar" id="userAvatarInitial">U</div>
+        <span id="userNameDisplay"></span>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">ใช้งานอยู่</div>
+        <div class="stat-value" id="statActive">0</div>
+        <div class="stat-sub">Subscriptions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">แพลตฟอร์มทั้งหมด</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">บริการ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">ค่าใช้จ่าย / เดือน</div>
+        <div class="stat-value" id="statCost" style="font-size:1.5rem">฿0</div>
+        <div class="stat-sub">บาท</div>
+      </div>
+    </div>
+
+    <!-- Gmail Scanner -->
+    <div class="gmail-card">
+      <div class="gmail-icon-box">
+        <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
+      </div>
+      <div class="gmail-info">
+        <h3>📧 สแกน Gmail อัตโนมัติ</h3>
+        <p>ค้นหา Subscription ที่คุณสมัครไว้ใน Gmail โดยอัตโนมัติ · ปลอดภัยตาม PDPA</p>
+      </div>
+      <div class="gmail-actions">
+        <div class="badge-connected" id="gmailBadge">✓ เชื่อมต่อแล้ว</div>
+        <button class="btn-gmail btn-gmail-connect" id="gmailConnectBtn" onclick="openConsentModal()">
+          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;object-fit:contain" alt="G"> เชื่อมต่อ Gmail
+        </button>
+        <button class="btn-gmail btn-gmail-scan" id="gmailScanBtn" onclick="scanGmail()">
+          📮 สแกน Subscription
+        </button>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">แพลตฟอร์มทั้งหมด</div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterPlatforms('all',this)">ทั้งหมด</button>
+        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">สมัครแล้ว</button>
+        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">ยังไม่สมัคร</button>
+      </div>
+    </div>
+    <div class="platform-grid" id="platformGrid"></div>
+  </div>
+</div>
+
+<div class="checkout-bar" id="checkoutBar">
+  <div class="checkout-info">
+    <span class="checkout-count" id="checkoutCount">0</span>
+    <span style="font-size:.88rem;font-weight:600">Subscription ที่เลือก</span>
+    <span class="checkout-amount" id="checkoutAmount">฿0/เดือน</span>
+  </div>
+  <button class="btn-checkout" onclick="openCheckout()">💳 ชำระเงิน →</button>
+</div>
+
+<!-- GMAIL PERMISSION MODAL -->
+<div class="modal-overlay" id="consentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔐 ขอสิทธิ์เข้าถึง Gmail</div>
+      <button class="modal-close" onclick="closeConsentModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="gmail-perm-header">
+        <div class="gmail-perm-logo">
+          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
+        </div>
+        <div>
+          <div class="gmail-perm-title">SubTrack ขอเข้าถึง Gmail ของคุณ</div>
+          <div class="gmail-perm-sub">เพื่อค้นหา Subscription อัตโนมัติ — อ่านอย่างเดียว</div>
+        </div>
+      </div>
+
+      <div class="perm-section-title">สิทธิ์ที่ SubTrack ต้องการ</div>
+      <div class="consent-list">
+        <div class="consent-item">
+          <div class="consent-icon">📖</div>
+          <div class="consent-text">
+            <strong>อ่านอีเมล (Read-only)</strong>
+            <span>SubTrack อ่านอีเมลเพื่อค้นหาชื่อบริการ Subscription เท่านั้น ไม่มีการแก้ไข ลบ หรือส่งอีเมลใดทั้งสิ้น</span>
+          </div>
+        </div>
+        <div class="consent-item">
+          <div class="consent-icon">🔍</div>
+          <div class="consent-text">
+            <strong>ค้นหาอีเมลที่เกี่ยวข้อง</strong>
+            <span>ค้นด้วย keyword เช่น "subscription", "invoice", "receipt", "renewal", "billing" เพื่อระบุบริการที่คุณสมัครไว้</span>
+          </div>
+        </div>
+        <div class="consent-item">
+          <div class="consent-icon">🛡️</div>
+          <div class="consent-text">
+            <strong>ความเป็นส่วนตัว (PDPA)</strong>
+            <span>SubTrack เก็บเฉพาะ Access Token รูปแบบเข้ารหัส และปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</span>
+          </div>
+        </div>
+        <div class="consent-item">
+          <div class="consent-icon">🚫</div>
+          <div class="consent-text">
+            <strong>สิ่งที่ SubTrack ไม่ทำ</strong>
+            <span>ไม่ส่ง/ลบ/แก้ไขอีเมล · ไม่แชร์ข้อมูลกับบุคคลที่สาม · ไม่เข้าถึงเนื้อหาอีเมลที่ไม่เกี่ยวกับ Subscription</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="consent-warning">
+        ⚠️ หากต้องการยกเลิกสิทธิ์ในภายหลัง ไปที่ <strong>myaccount.google.com/permissions</strong> แล้วลบ SubTrack ออก — ข้อมูลจะถูกลบจากระบบของเราทันที
+      </div>
+
+      <div class="consent-btns">
+        <button class="btn-consent-cancel" onclick="closeConsentModal()">ยกเลิก</button>
+        <button class="btn-consent-ok" id="connectGmailBtn" onclick="connectGmail()">
+          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;filter:brightness(0) invert(1)" alt="G">
+          ยืนยันและเชื่อมต่อ Gmail
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN RESULTS MODAL -->
+<div class="modal-overlay" id="scanModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📮 Subscription ที่พบใน Gmail</div>
+      <button class="modal-close" onclick="closeScanModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:.83rem;color:var(--muted);margin-bottom:16px">เลือก Subscription ที่ต้องการเพิ่มเข้า SubTrack (คลิกเพื่อเลือก/ยกเลิก)</div>
+      <div id="scanResultList"></div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button onclick="closeScanModal()" style="flex:1;background:none;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--muted);font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">ยกเลิก</button>
+        <button onclick="confirmScanSubscribe()" id="confirmScanBtn" style="flex:2;background:linear-gradient(135deg,var(--accent),#9b8aff);border:none;border-radius:10px;padding:12px;color:white;font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">✓ เพิ่ม Subscription ที่เลือก</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div id="paymentContent">
+      <div class="modal-header">
+        <div class="modal-title">ชำระเงิน Subscription</div>
+        <button class="modal-close" onclick="closeCheckout()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="section-label" style="margin-bottom:8px">รายการ Subscription</div>
+        <div class="order-list" id="orderList"></div>
+        <div class="order-total">
+          <span class="order-total-label">รวมทั้งสิ้น / เดือน</span>
+          <span class="order-total-price" id="orderTotalPrice">฿0</span>
+        </div>
+        <div class="section-label" style="margin:20px 0 10px">วิธีชำระเงิน</div>
+        <div class="pay-method-tabs">
+          <div class="pay-tab active" onclick="switchPayMethod('card',this)">
+            <span class="pt-icon">💳</span><span class="pt-label">บัตรเครดิต/เดบิต</span><span class="pt-sub">Visa, Mastercard</span>
+          </div>
+          <div class="pay-tab" onclick="switchPayMethod('qr',this)">
+            <span class="pt-icon">📲</span><span class="pt-label">QR Code</span><span class="pt-sub">PromptPay / โมบายแบงก์กิ้ง</span>
+          </div>
+        </div>
+        <div class="pay-panel active" id="cardPanel">
+          <div class="card-preview">
+            <div class="card-chip">💳</div>
+            <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+            <div class="card-bottom">
+              <div><div class="card-holder-label">ชื่อเจ้าของบัตร</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
+              <div><div class="card-holder-label">หมดอายุ</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label">หมายเลขบัตรเครดิต</label><input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)"></div>
+          <div class="form-group"><label class="form-label">ชื่อบนบัตร</label><input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME" oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">วันหมดอายุ</label><input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
+            <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="text" maxlength="3" placeholder="•••"></div>
+          </div>
+          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">💳 ชำระ <span id="cardPayAmount"></span></button>
+        </div>
+        <div class="pay-panel" id="qrPanel">
+          <div class="qr-wrapper">
+            <div class="qr-box">
+              <svg width="170" height="170" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg" id="qrSvg"></svg>
+              <div class="qr-amount-badge" id="qrAmountBadge">฿0</div>
+            </div>
+            <div class="qr-instruction"><strong>สแกน QR Code ด้วยแอปธนาคาร</strong><br>PromptPay / โมบายแบงก์กิ้ง</div>
+            <div class="qr-apps">
+              <div class="qr-app-badge">🏦 SCB Easy</div><div class="qr-app-badge">💚 KBank</div>
+              <div class="qr-app-badge">🏧 KTB</div><div class="qr-app-badge">🟦 BBL</div>
+            </div>
+            <div class="qr-timer">QR หมดอายุใน <span id="qrCountdown">05:00</span></div>
+          </div>
+          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">✅ ยืนยันการชำระเงิน</button>
+        </div>
+        <div class="security-note">🔒 ปลอดภัย SSL 256-bit · ข้อมูลบัตรไม่ถูกบันทึก</div>
+      </div>
+    </div>
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">ชำระเงินสำเร็จ! 🎉</div>
+      <div class="success-sub" id="successSub">Subscribe เรียบร้อยแล้ว</div>
+      <div class="success-ref">รหัสอ้างอิง: <strong id="successRef">-</strong></div>
+      <button class="btn-done" onclick="closeDone()">กลับหน้าหลัก ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-dot" id="toastDot"></div><span id="toastMsg"></span></div>
+
+<script>
+const API_URL = 'https://subtrack-production-3167.up.railway.app/api';
+
+const PLATFORM_LOGOS = {
+  youtube:     'https://cdn.simpleicons.org/youtube/FF0000',
+  netflix:     'https://cdn.simpleicons.org/netflix/E50914',
+  spotify:     'https://cdn.simpleicons.org/spotify/1DB954',
+  disney:      'https://cdn.simpleicons.org/disneyplus/113CCF',
+  appletv:     'https://cdn.simpleicons.org/appletvplus/F5F5F7',
+  hbo:         'https://cdn.simpleicons.org/hbo/00ACCA',
+  applemusic:  'https://cdn.simpleicons.org/applemusic/FC3C44',
+  chatgpt:     'https://cdn.simpleicons.org/openai/F5F5F7',
+  canva:       'https://cdn.simpleicons.org/canva/00C4CC',
+  notion:      'https://cdn.simpleicons.org/notion/F5F5F7',
+  xbox:        'https://cdn.simpleicons.org/xbox/107C10',
+  playstation: 'https://cdn.simpleicons.org/playstation/003087',
+  dropbox:     'https://cdn.simpleicons.org/dropbox/0061FF',
+  googledrive: 'https://cdn.simpleicons.org/googledrive/4285F4',
+  amazonprime: 'https://cdn.simpleicons.org/amazonprime/FF9900',
+  claude:      'https://cdn.simpleicons.org/anthropic/C96442',
+};
+
+let token = sessionStorage.getItem('subtrack_token') || null;
+let currentUser = null, platforms = [], userSubs = {};
+let currentFilter = 'all', scanFoundList = [], scanSelected = new Set();
+let _loginCapId, _regCapId;
+
+// reCAPTCHA
+function onRecaptchaLoad() {
+  try {
+    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
+    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
+  } catch(e) { console.warn('reCAPTCHA:', e); }
 }
-.auth-logo h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.9rem;
-  background: linear-gradient(135deg, #fff, var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+window.onRecaptchaLoad = onRecaptchaLoad;
+
+function getCapToken(id) { try { return grecaptcha.getResponse(id) || ''; } catch(e){ return ''; } }
+function resetCap(id)    { try { grecaptcha.reset(id); } catch(e){} }
+
+// AUTH
+function showAuthTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('loginForm').style.display    = tab==='login'    ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = tab==='register' ? 'block' : 'none';
+  document.getElementById('authError').style.display    = 'none';
 }
-.auth-logo p {
-  color: var(--muted);
-  font-size: .88rem;
-  margin-top: 4px;
+
+async function handleLogin() {
+  const btn = document.getElementById('loginBtn');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return showAuthError('กรุณากรอก Email และรหัสผ่าน');
+  const captchaToken = getCapToken(_loginCapId);
+  if (!captchaToken) return showAuthError('กรุณายืนยัน CAPTCHA ก่อนเข้าสู่ระบบ');
+  setLoading(btn, true);
+  try {
+    const res = await apiFetch('/auth/login','POST',{ email, password, captchaToken },false);
+    token = res.token; currentUser = res.user;
+    sessionStorage.setItem('subtrack_token', token);
+    await initDashboard();
+  } catch (err) { showAuthError(err.message || 'ไม่สามารถเข้าสู่ระบบได้'); resetCap(_loginCapId);
+  } finally { setLoading(btn, false, '🔑 เข้าสู่ระบบ'); }
 }
+
+async function handleRegister() {
+  const btn = document.getElementById('registerBtn');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!name || !email || !password) return showAuthError('กรุณากรอกข้อมูลให้ครบถ้วน');
+  if (password.length < 6) return showAuthError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+  const captchaToken = getCapToken(_regCapId);
+  if (!captchaToken) return showAuthError('กรุณายืนยัน CAPTCHA ก่อนสมัครสมาชิก');
+  setLoading(btn, true);
+  try {
+    const res = await apiFetch('/auth/register','POST',{ name, email, password, captchaToken },false);
+    token = res.token; currentUser = res.user;
+    sessionStorage.setItem('subtrack_token', token);
+    await initDashboard();
+  } catch (err) { showAuthError(err.message || 'ไม่สามารถสมัครสมาชิกได้'); resetCap(_regCapId);
+  } finally { setLoading(btn, false, '✨ สมัครสมาชิก'); }
+}
+
+function handleLogout() {
+  token = null; currentUser = null; userSubs = {};
+  sessionStorage.removeItem('subtrack_token');
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('checkoutBar').classList.remove('show');
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+// DASHBOARD
+async function initDashboard() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('authError').style.display = 'none';
+  const name = currentUser?.name || currentUser?.email || 'User';
+  document.getElementById('userNameDisplay').textContent = name;
+  document.getElementById('userAvatarInitial').textContent = name.charAt(0).toUpperCase();
+
+  const [platsData, subsData] = await Promise.all([
+    apiFetch('/subscriptions/platforms/all','GET',null,false).catch(()=>[]),
+    apiFetch('/subscriptions').catch(()=>[])
+  ]);
+  platforms = platsData; userSubs = {};
+  subsData.forEach(s => { userSubs[s.platform_id] = s; });
+  updateStats(); renderGrid(); updateCheckoutBar(); checkGmailStatus();
+}
+
+async function toggleSub(id, event) {
+  event.stopPropagation();
+  const isSub = !!userSubs[id];
+  try {
+    if (isSub) {
+      const res = await apiFetch(`/subscriptions/${id}`,'DELETE');
+      delete userSubs[id];
+      const name = platforms.find(p=>p.id===id)?.name;
+      showToast(`ยกเลิก ${name} เรียบร้อย`, '#ff4d6d');
+      if (res.unsubscribe_url) {
+        setTimeout(()=>{ if(confirm(`ต้องการยกเลิก ${name} โดยตรง?\nกด OK เพื่อเปิดหน้า Unsubscribe`)) window.open(res.unsubscribe_url,'_blank'); },300);
+      }
+    } else {
+      await apiFetch(`/subscriptions/${id}`,'POST',{ reminder_days:3 });
+      const sub = await apiFetch('/subscriptions').catch(()=>[]);
+      sub.forEach(s=>{ userSubs[s.platform_id]=s; });
+      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} แล้ว ✓`,'#00d4aa');
+    }
+  } catch(err){ showToast('เกิดข้อผิดพลาด: '+err.message,'#ff4d6d'); }
+  updateStats(); renderGrid(); updateCheckoutBar();
+}
+
+function updateStats() {
+  const subs = Object.keys(userSubs);
+  const cost = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
+  document.getElementById('statActive').textContent = subs.length;
+  document.getElementById('statTotal').textContent  = platforms.length;
+  document.getElementById('statCost').textContent   = '฿'+cost.toLocaleString();
+}
+
+function filterPlatforms(type,btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active'); renderGrid();
+}
+
+function getPlatformLogo(p) {
+  const u = PLATFORM_LOGOS[p.id];
+  if (u) return `<img src="${u}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="logo-fallback" style="display:none">${p.icon}</span>`;
+  return `<span class="logo-fallback">${p.icon}</span>`;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('platformGrid');
+  let filtered = platforms;
+  if (currentFilter==='subscribed')   filtered = platforms.filter(p=>userSubs[p.id]);
+  if (currentFilter==='unsubscribed') filtered = platforms.filter(p=>!userSubs[p.id]);
+  grid.innerHTML = filtered.map((p,i)=>{
+    const isSub = !!userSubs[p.id];
+    const date = isSub ? new Date(userSubs[p.id].subscribed_at).toLocaleDateString('th-TH') : '';
+    return `<div class="platform-card ${isSub?'subscribed':''}" style="--card-color:${p.color};animation-delay:${i*.04}s" onclick="toggleSub('${p.id}',event)">
+      <div class="card-top">
+        <div class="platform-logo-wrap">${getPlatformLogo(p)}</div>
+        <button class="sub-toggle" onclick="toggleSub('${p.id}',event)"></button>
+      </div>
+      <div class="platform-name">${p.name}</div>
+      <div class="platform-category">${p.category}</div>
+      <div class="platform-price">
+        <span class="price-tag">฿${p.price_thb}/เดือน</span>
+        <span class="sub-status">${isSub?'Active':'ยังไม่ได้สมัคร'}</span>
+      </div>
+      ${isSub?`<div class="sub-date">📅 Subscribe เมื่อ ${date}<br><a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">🔗 ยกเลิก ${p.name} →</a></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// GMAIL SCANNER
+function openConsentModal()  { document.getElementById('consentModal').classList.add('open'); }
+function closeConsentModal() { document.getElementById('consentModal').classList.remove('open'); }
+
+async function connectGmail() {
+  const btn = document.getElementById('connectGmailBtn');
+  setLoading(btn, true, 'กำลังเชื่อมต่อ...');
+  try {
+    const res = await apiFetch('/auth/gmail');
+    window.location.href = res.url;
+  } catch(e) {
+    showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
+    setLoading(btn, false, 'ยืนยันและเชื่อมต่อ Gmail');
+  }
+}
+
+async function scanGmail() {
+  const btn = document.getElementById('gmailScanBtn');
+  setLoading(btn, true, '⏳ กำลังสแกน Gmail...');
+  try {
+    const res = await apiFetch('/auth/gmail/scan');
+    scanFoundList = res.found || [];
+    showScanResults(scanFoundList);
+  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, '📮 สแกน Subscription'); }
+}
+
+function showScanResults(found) {
+  scanSelected = new Set(found.map(f=>f.platform_id||f));
+  const list = document.getElementById('scanResultList');
+  if (!found.length) {
+    list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">📭</div>ไม่พบ Subscription ใน Gmail<br><small style="color:var(--muted)">อาจยังไม่มีอีเมลที่เกี่ยวข้องในกล่องจดหมาย</small></div>`;
+  } else {
+    list.innerHTML = found.map(item=>{
+      const pId = item.platform_id||item;
+      const p = platforms.find(pl=>pl.id===pId);
+      const u = PLATFORM_LOGOS[pId];
+      const logo = u ? `<img src="${u}" style="width:38px;height:38px;object-fit:cover;border-radius:8px">` : `<span style="font-size:1.4rem">${p?.icon||'📦'}</span>`;
+      return `<div class="scan-result-item selected" id="scan-${pId}" onclick="toggleScanSelect('${pId}')">
+        <div class="scan-check">✓</div>
+        <div class="scan-logo">${logo}</div>
+        <div class="scan-info"><div class="scan-name">${p?.name||pId}</div><div class="scan-price">฿${p?.price_thb||'?'}/เดือน</div></div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('scanModal').classList.add('open');
+}
+
+function toggleScanSelect(pId) {
+  const el = document.getElementById(`scan-${pId}`);
+  if (scanSelected.has(pId)) { scanSelected.delete(pId); el.classList.remove('selected'); el.querySelector('.scan-check').textContent=''; }
+  else { scanSelected.add(pId); el.classList.add('selected'); el.querySelector('.scan-check').textContent='✓'; }
+}
+
+async function confirmScanSubscribe() {
+  if (!scanSelected.size) { showToast('กรุณาเลือกอย่างน้อย 1 รายการ','#ff4d6d'); return; }
+  const btn = document.getElementById('confirmScanBtn');
+  setLoading(btn, true, '⏳ กำลังเพิ่ม...');
+  try {
+    await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: Array.from(scanSelected) });
+    closeScanModal(); await initDashboard();
+    showToast(`เพิ่ม ${scanSelected.size} Subscription สำเร็จ! ✓`,'#00d4aa');
+  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, '✓ เพิ่ม Subscription ที่เลือก'); }
+}
+
+function closeScanModal() { document.getElementById('scanModal').classList.remove('open'); }
+
+function checkGmailStatus() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('gmail')==='connected') {
+    document.getElementById('gmailConnectBtn').style.display = 'none';
+    document.getElementById('gmailScanBtn').style.display    = 'flex';
+    document.getElementById('gmailBadge').style.display      = 'inline-flex';
+    showToast('เชื่อมต่อ Gmail สำเร็จ! กด "สแกน Subscription" เพื่อเริ่มต้น 🎉','#00d4aa');
+    window.history.replaceState({},'',window.location.pathname);
+  } else if (params.get('gmail')==='error') {
+    showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่','#ff4d6d');
+    window.history.replaceState({},'',window.location.pathname);
+  }
+}
+
+// CHECKOUT
+function updateCheckoutBar() {
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
+  document.getElementById('checkoutCount').textContent  = subs.length;
+  document.getElementById('checkoutAmount').textContent = '฿'+total.toLocaleString()+'/เดือน';
+  const bar = document.getElementById('checkoutBar');
+  if (subs.length>0 && currentUser) bar.classList.add('show'); else bar.classList.remove('show');
+}
+
+function openCheckout() {
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
+  document.getElementById('orderList').innerHTML = subs.map(id=>{
+    const p=userSubs[id]; const u=PLATFORM_LOGOS[id];
+    const logo = u?`<img src="${u}" style="width:20px;height:20px;object-fit:cover;border-radius:4px;margin-right:6px">`:`${p?.icon||''} `;
+    return `<div class="order-item"><span style="display:flex;align-items:center">${logo}${p?.name||id}</span><span class="order-item-price">฿${p?.price_thb}</span></div>`;
+  }).join('');
+  document.getElementById('orderTotalPrice').textContent = '฿'+total.toLocaleString();
+  document.getElementById('cardPayAmount').textContent   = '฿'+total.toLocaleString();
+  drawQR(document.getElementById('qrSvg'),'PROMPTPAY:'+total);
+  document.getElementById('qrAmountBadge').textContent   = '฿'+total.toLocaleString();
+  document.getElementById('paymentContent').style.display='block';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('paymentModal').classList.add('open');
+  startQrTimer();
+}
+
+function closeCheckout(){ document.getElementById('paymentModal').classList.remove('open'); clearInterval(qrInterval); }
+function switchPayMethod(method,el){
+  document.querySelectorAll('.pay-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cardPanel').classList.toggle('active',method==='card');
+  document.getElementById('qrPanel').classList.toggle('active',method==='qr');
+}
+
+async function processPayment(method) {
+  const btn = document.getElementById(method==='card'?'cardPayBtn':'qrPayBtn');
+  const subs = Object.keys(userSubs);
+  const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
+  setLoading(btn,true,'⏳ กำลังดำเนินการ...');
+  try {
+    const endpoint = method==='card'?'/payment/charge':'/payment/promptpay';
+    const res = await apiFetch(endpoint,'POST',{ amount:total*100, platform_ids:subs, payment_method:method, token:'tok_test_mock' });
+    clearInterval(qrInterval);
+    document.getElementById('successRef').textContent = res.transaction_id||res.charge_id;
+    document.getElementById('successSub').innerHTML = `ชำระเงิน <strong>฿${total.toLocaleString()}</strong> สำเร็จ!<br>ใบเสร็จจะส่งไปที่ <strong>${currentUser.email}</strong>`;
+    document.getElementById('paymentContent').style.display='none';
+    document.getElementById('successScreen').classList.add('show');
+  } catch(err){ showToast('ชำระเงินไม่สำเร็จ: '+err.message,'#ff4d6d');
+  } finally { setLoading(btn,false,method==='card'?'💳 ชำระเงิน':'✅ ยืนยันการชำระเงิน'); }
+}
+
+let qrInterval, qrSeconds=300;
+function startQrTimer(){ clearInterval(qrInterval); qrSeconds=300; updateQrTimer(); qrInterval=setInterval(()=>{ qrSeconds--; updateQrTimer(); if(qrSeconds<=0)clearInterval(qrInterval); },1000); }
+function updateQrTimer(){ const el=document.getElementById('qrCountdown'); if(el) el.textContent=String(Math.floor(qrSeconds/60)).padStart(2,'0')+':'+String(qrSeconds%60).padStart(2,'0'); }
+function closeDone(){ closeCheckout(); showToast('✅ ขอบคุณที่ใช้บริการ SubTrack!','#00d4aa'); }
+
+function formatCardNum(input){
+  let v=input.value.replace(/\D/g,'').slice(0,16);
+  input.value=v.replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('cardNumDisplay').textContent=v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(input){
+  let v=input.value.replace(/\D/g,'').slice(0,4);
+  if(v.length>=3) v=v.slice(0,2)+'/'+v.slice(2);
+  input.value=v; document.getElementById('cardExpDisplay').textContent=v||'MM/YY';
+}
+
+function drawQR(svgEl,text){
+  const size=21,cs=Math.floor(170/(size+2)),off=Math.floor((170-cs*size)/2);
+  let h=0; for(let i=0;i<text.length;i++) h=(h*31+text.charCodeAt(i))>>>0;
+  svgEl.innerHTML='';
+  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width',170);bg.setAttribute('height',170);bg.setAttribute('fill','white');svgEl.appendChild(bg);
+  function finder(x,y){ [[0,0,7,7],[1,1,5,5],[2,2,3,3]].forEach(([fx,fy,fw,fh],i)=>{ const r=document.createElementNS('http://www.w3.org/2000/svg','rect'); r.setAttribute('x',off+(x+fx)*cs);r.setAttribute('y',off+(y+fy)*cs);r.setAttribute('width',fw*cs);r.setAttribute('height',fh*cs);r.setAttribute('fill',i===1?'white':'#111');svgEl.appendChild(r); }); }
+  finder(0,0);finder(size-7,0);finder(0,size-7);
+  for(let r=0;r<size;r++) for(let c=0;c<size;c++){
+    if(!((r<8&&c<8)||(r<8&&c>=size-8)||(r>=size-8&&c<8))&&((h^(r*7+c*13)^(r*c*3))&0xff)<128){
+      const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',off+c*cs);rect.setAttribute('y',off+r*cs);rect.setAttribute('width',cs-1);rect.setAttribute('height',cs-1);rect.setAttribute('fill','#111');svgEl.appendChild(rect);
+    }
+  }
+}
+
+async function apiFetch(path,method='GET',body=null,withAuth=true){
+  const headers={'Content-Type':'application/json'};
+  if(withAuth && token) headers['Authorization']='Bearer '+token;
+  const res=await fetch(API_URL+path,{method,headers,body:body?JSON.stringify(body):undefined});
+  const data=await res.json();
+  if(!res.ok) throw new Error(data.error||'เกิดข้อผิดพลาด');
+  return data;
+}
+
+let toastTimer;
+function showToast(msg,color='#7c6fff'){
+  clearTimeout(toastTimer);
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toastDot').style.background=color;
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+function setLoading(btn,loading,text=''){
+  btn.disabled=loading;
+  if(loading) btn.innerHTML=`<span class="loading-spinner"></span>${text||'กำลังโหลด...'}`;
+  else if(text) btn.textContent=text;
+}
+
+document.getElementById('paymentModal').addEventListener('click',function(e){ if(e.target===this)closeCheckout(); });
+document.getElementById('consentModal').addEventListener('click',function(e){ if(e.target===this)closeConsentModal(); });
+document.getElementById('scanModal').addEventListener('click',function(e){ if(e.target===this)closeScanModal(); });
+
+(async()=>{ if(token){ try{ currentUser=await apiFetch('/auth/me'); await initDashboard(); }catch{ handleLogout(); } } })();
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+</body>
+</html>
