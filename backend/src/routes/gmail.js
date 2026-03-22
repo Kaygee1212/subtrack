@@ -1,4 +1,4 @@
-// src/routes/gmail.js — Gmail OAuth Scanner (improved)
+// src/routes/gmail.js — Gmail OAuth Scanner (with real date extraction)
 const router = require('express').Router();
 const { google } = require('googleapis');
 const auth = require('../middleware/auth');
@@ -10,7 +10,7 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.RAILWAY_URL + '/api/auth/gmail/callback'
 );
 
-// ── ขยาย keyword list ให้ครอบคลุมมากขึ้น ──
+// ── keyword list ──
 const SUBSCRIPTION_KEYWORDS = [
   { keyword: 'netflix.com',           platform: 'netflix' },
   { keyword: 'spotify.com',           platform: 'spotify' },
@@ -64,7 +64,6 @@ router.get('/gmail/callback', async (req, res) => {
   }
   try {
     const { tokens } = await oauth2Client.getToken(code);
-    // เข้ารหัส token ก่อนเก็บ (base64 + env key)
     const encryptedToken = Buffer.from(JSON.stringify(tokens)).toString('base64');
     await db.query(
       `UPDATE users SET gmail_token=$1 WHERE id=$2`,
@@ -77,7 +76,37 @@ router.get('/gmail/callback', async (req, res) => {
   }
 });
 
-// ── GET /api/auth/gmail/scan — สแกนอีเมล (ไม่ auto-subscribe แล้ว) ──
+// ── helper: ดึงวันที่จริงของ email ล่าสุดสำหรับ platform ──
+async function getLatestEmailDate(gmail, keyword) {
+  try {
+    const messages = await gmail.users.messages.list({
+      userId: 'me',
+      q: `from:${keyword} OR subject:"${keyword}"`,
+      maxResults: 5
+    });
+    if (!messages.data.messages || messages.data.messages.length === 0) return null;
+
+    // ดึง metadata ของ email ล่าสุด (รวม Date header)
+    const msgId = messages.data.messages[0].id;
+    const detail = await gmail.users.messages.get({
+      userId: 'me',
+      id: msgId,
+      format: 'metadata',
+      metadataHeaders: ['Date', 'Subject']
+    });
+
+    // ใช้ internalDate (ms since epoch) ซึ่งแม่นยำกว่า Date header
+    const internalDate = detail.data.internalDate
+      ? parseInt(detail.data.internalDate)
+      : Date.now();
+
+    return new Date(internalDate).toISOString();
+  } catch {
+    return null;
+  }
+}
+
+// ── GET /api/auth/gmail/scan — สแกนอีเมลและดึงวันที่จริง ──
 router.get('/gmail/scan', auth, async (req, res) => {
   try {
     const result = await db.query('SELECT gmail_token FROM users WHERE id=$1', [req.user.userId]);
@@ -85,11 +114,9 @@ router.get('/gmail/scan', auth, async (req, res) => {
       return res.status(400).json({ error: 'ยังไม่ได้เชื่อม Gmail' });
     }
 
-    // decode token
     const tokens = JSON.parse(Buffer.from(result.rows[0].gmail_token, 'base64').toString('utf8'));
     oauth2Client.setCredentials(tokens);
 
-    // Refresh token ถ้าหมดอายุ
     if (tokens.expiry_date && tokens.expiry_date < Date.now()) {
       try {
         const { credentials } = await oauth2Client.refreshAccessToken();
@@ -103,23 +130,28 @@ router.get('/gmail/scan', auth, async (req, res) => {
     }
 
     const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
-    const foundMap = {}; // platform_id → true (dedup)
+    const foundMap = {}; // platform_id → { platform_id, subscribed_at }
 
     for (const item of SUBSCRIPTION_KEYWORDS) {
+      if (foundMap[item.platform]) continue; // dedup — ถ้าพบแล้วข้ามไป
       try {
         const messages = await gmail.users.messages.list({
           userId: 'me',
           q: `from:${item.keyword} OR subject:"${item.keyword}"`,
           maxResults: 1
         });
-        if (messages.data.messages?.length > 0) {
-          foundMap[item.platform] = true;
+        if (messages.data.messages && messages.data.messages.length > 0) {
+          // ดึงวันที่จริงของ email
+          const emailDate = await getLatestEmailDate(gmail, item.keyword);
+          foundMap[item.platform] = {
+            platform_id: item.platform,
+            subscribed_at: emailDate || new Date().toISOString()
+          };
         }
       } catch {} // ข้ามถ้า error ทีละ keyword
     }
 
-    const found = Object.keys(foundMap);
-    // *** ไม่ auto-subscribe — ส่งรายการกลับให้ user ตัดสินใจ ***
+    const found = Object.values(foundMap);
     res.json({ found, message: `พบ ${found.length} subscriptions จากอีเมล` });
 
   } catch (err) {
@@ -128,7 +160,7 @@ router.get('/gmail/scan', auth, async (req, res) => {
   }
 });
 
-// ── POST /api/auth/gmail/confirm — user ยืนยันแล้ว ค่อย subscribe ──
+// ── POST /api/auth/gmail/confirm — ยืนยันและบันทึกพร้อมวันที่จริง ──
 router.post('/gmail/confirm', auth, async (req, res) => {
   const { platform_ids } = req.body;
   if (!Array.isArray(platform_ids) || platform_ids.length === 0) {
@@ -136,14 +168,23 @@ router.post('/gmail/confirm', auth, async (req, res) => {
   }
   try {
     let added = 0;
-    for (const pid of platform_ids) {
+    for (const item of platform_ids) {
+      // รองรับทั้ง string เดิมและ object ใหม่ { platform_id, subscribed_at }
+      const pid = typeof item === 'string' ? item : (item.platform_id || item.id || item);
+      const subDate = (typeof item === 'object' && item.subscribed_at)
+        ? new Date(item.subscribed_at)
+        : new Date();
+
       await db.query(
-        `INSERT INTO subscriptions (user_id, platform_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
-        [req.user.userId, pid]
+        `INSERT INTO subscriptions (user_id, platform_id, subscribed_at)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (user_id, platform_id)
+         DO UPDATE SET subscribed_at = EXCLUDED.subscribed_at`,
+        [req.user.userId, pid, subDate]
       );
       added++;
     }
-    res.json({ added, message: `เพิ่ม ${added} subscriptions สำเร็จ` });
+    res.json({ added, message: `เพิ่ม/อัปเดต ${added} subscriptions สำเร็จ` });
   } catch (err) {
     console.error('Confirm subscribe error:', err.message);
     res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
