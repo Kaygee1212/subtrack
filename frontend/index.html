@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SubTrack — จัดการ Subscription ของคุณ</title>
+<title>SubTrack â à¸à¸±à¸à¸à¸²à¸£ Subscription à¸à¸­à¸à¸à¸¸à¸</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -103,7 +103,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 .logo-fallback{font-size:1.5rem}
 .sub-toggle{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted)}
 .subscribed .sub-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
-.sub-toggle::after{content:'+'}.subscribed .sub-toggle::after{content:'✓'}
+.sub-toggle::after{content:'+'}.subscribed .sub-toggle::after{content:'â'}
 .platform-name{font-weight:600;font-size:.95rem;margin-bottom:2px}
 .platform-category{font-size:.75rem;color:var(--muted);margin-bottom:10px}
 .platform-price{display:flex;align-items:center;justify-content:space-between}
@@ -225,52 +225,52 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div id="authScreen">
   <div class="auth-box">
     <div class="auth-logo">
-      <div class="auth-logo-mark">💳</div>
+      <div class="auth-logo-mark">ð³</div>
       <h1>SubTrack</h1>
-      <p>จัดการ Subscription ทุกอย่างในที่เดียว</p>
+      <p>à¸à¸±à¸à¸à¸²à¸£ Subscription à¸à¸¸à¸à¸­à¸¢à¹à¸²à¸à¹à¸à¸à¸µà¹à¹à¸à¸µà¸¢à¸§</p>
     </div>
     <div class="auth-card">
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="showAuthTab('login',this)">เข้าสู่ระบบ</button>
-        <button class="auth-tab" onclick="showAuthTab('register',this)">สมัครสมาชิก</button>
+        <button class="auth-tab active" onclick="showAuthTab('login',this)">à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸</button>
+        <button class="auth-tab" onclick="showAuthTab('register',this)">à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸</button>
       </div>
       <div id="authError" class="auth-error"></div>
 
       <!-- Login -->
       <div id="loginForm">
         <div class="form-group">
-          <label class="form-label">อีเมล</label>
+          <label class="form-label">à¸­à¸µà¹à¸¡à¸¥</label>
           <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')handleLogin()">
         </div>
         <div class="form-group">
-          <label class="form-label">รหัสผ่าน</label>
-          <input class="form-input" id="loginPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleLogin()">
+          <label class="form-label">à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸</label>
+          <input class="form-input" id="loginPassword" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" onkeydown="if(event.key==='Enter')handleLogin()">
         </div>
         <div class="captcha-wrap" id="loginCaptchaWrap">
           <div id="loginCaptchaDiv"></div>
         </div>
-        <button class="btn-auth" id="loginBtn" onclick="handleLogin()">🔑 เข้าสู่ระบบ</button>
+        <button class="btn-auth" id="loginBtn" onclick="handleLogin()">ð à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸</button>
       </div>
 
       <!-- Register -->
       <div id="registerForm" style="display:none">
         <div class="form-group">
-          <label class="form-label">ชื่อ-นามสกุล</label>
-          <input class="form-input" id="regName" type="text" placeholder="ชื่อของคุณ">
+          <label class="form-label">à¸à¸·à¹à¸­-à¸à¸²à¸¡à¸ªà¸à¸¸à¸¥</label>
+          <input class="form-input" id="regName" type="text" placeholder="à¸à¸·à¹à¸­à¸à¸­à¸à¸à¸¸à¸">
         </div>
         <div class="form-group">
-          <label class="form-label">อีเมล</label>
+          <label class="form-label">à¸­à¸µà¹à¸¡à¸¥</label>
           <input class="form-input" id="regEmail" type="email" placeholder="your@email.com">
         </div>
         <div class="form-group">
-          <label class="form-label">รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
-          <input class="form-input" id="regPassword" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')handleRegister()">
+          <label class="form-label">à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸ (à¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 6 à¸à¸±à¸§)</label>
+          <input class="form-input" id="regPassword" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" onkeydown="if(event.key==='Enter')handleRegister()">
         </div>
         <div class="captcha-wrap">
           <div id="registerCaptchaDiv"></div>
         </div>
-        <button class="btn-auth" id="registerBtn" onclick="handleRegister()">✨ สมัครสมาชิก</button>
-        <p class="auth-tos">การสมัครสมาชิก แสดงว่าคุณยอมรับ <a href="#">Terms of Service</a> และ <a href="#">Privacy Policy</a></p>
+        <button class="btn-auth" id="registerBtn" onclick="handleRegister()">â¨ à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸</button>
+        <p class="auth-tos">à¸à¸²à¸£à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸ à¹à¸ªà¸à¸à¸§à¹à¸²à¸à¸¸à¸à¸¢à¸­à¸¡à¸£à¸±à¸ <a href="#">Terms of Service</a> à¹à¸¥à¸° <a href="#">Privacy Policy</a></p>
       </div>
     </div>
   </div>
@@ -280,7 +280,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-logo">
-      <div class="topbar-logo-mark">💳</div>
+      <div class="topbar-logo-mark">ð³</div>
       <span>SubTrack</span>
     </div>
     <div class="topbar-right">
@@ -288,26 +288,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
         <div class="user-avatar" id="userAvatarInitial">U</div>
         <span id="userNameDisplay"></span>
       </div>
-      <button class="btn-logout" onclick="handleLogout()">ออกจากระบบ</button>
+      <button class="btn-logout" onclick="handleLogout()">à¸­à¸­à¸à¸à¸²à¸à¸£à¸°à¸à¸</button>
     </div>
   </div>
 
   <div class="main">
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-label">ใช้งานอยู่</div>
+        <div class="stat-label">à¹à¸à¹à¸à¸²à¸à¸­à¸¢à¸¹à¹</div>
         <div class="stat-value" id="statActive">0</div>
         <div class="stat-sub">Subscriptions</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">แพลตฟอร์มทั้งหมด</div>
+        <div class="stat-label">à¹à¸à¸¥à¸à¸à¸­à¸£à¹à¸¡à¸à¸±à¹à¸à¸«à¸¡à¸</div>
         <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-sub">บริการ</div>
+        <div class="stat-sub">à¸à¸£à¸´à¸à¸²à¸£</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">ค่าใช้จ่าย / เดือน</div>
-        <div class="stat-value" id="statCost" style="font-size:1.5rem">฿0</div>
-        <div class="stat-sub">บาท</div>
+        <div class="stat-label">à¸à¹à¸²à¹à¸à¹à¸à¹à¸²à¸¢ / à¹à¸à¸·à¸­à¸</div>
+        <div class="stat-value" id="statCost" style="font-size:1.5rem">à¸¿0</div>
+        <div class="stat-sub">à¸à¸²à¸</div>
       </div>
     </div>
 
@@ -317,26 +317,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
         <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
       </div>
       <div class="gmail-info">
-        <h3>📧 สแกน Gmail อัตโนมัติ</h3>
-        <p>ค้นหา Subscription ที่คุณสมัครไว้ใน Gmail โดยอัตโนมัติ · ปลอดภัยตาม PDPA</p>
+        <h3>ð§ à¸ªà¹à¸à¸ Gmail à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´</h3>
+        <p>à¸à¹à¸à¸«à¸² Subscription à¸à¸µà¹à¸à¸¸à¸à¸ªà¸¡à¸±à¸à¸£à¹à¸§à¹à¹à¸ Gmail à¹à¸à¸¢à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´ Â· à¸à¸¥à¸­à¸à¸ à¸±à¸¢à¸à¸²à¸¡ PDPA</p>
       </div>
       <div class="gmail-actions">
-        <div class="badge-connected" id="gmailBadge">✓ เชื่อมต่อแล้ว</div>
+        <div class="badge-connected" id="gmailBadge">â à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­à¹à¸¥à¹à¸§</div>
         <button class="btn-gmail btn-gmail-connect" id="gmailConnectBtn" onclick="openConsentModal()">
-          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;object-fit:contain" alt="G"> เชื่อมต่อ Gmail
+          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;object-fit:contain" alt="G"> à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail
         </button>
         <button class="btn-gmail btn-gmail-scan" id="gmailScanBtn" onclick="scanGmail()">
-          📮 สแกน Subscription
+          ð® à¸ªà¹à¸à¸ Subscription
         </button>
       </div>
     </div>
 
     <div class="section-header">
-      <div class="section-title">แพลตฟอร์มทั้งหมด</div>
+      <div class="section-title">à¹à¸à¸¥à¸à¸à¸­à¸£à¹à¸¡à¸à¸±à¹à¸à¸«à¸¡à¸</div>
       <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterPlatforms('all',this)">ทั้งหมด</button>
-        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">สมัครแล้ว</button>
-        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">ยังไม่สมัคร</button>
+        <button class="filter-tab active" onclick="filterPlatforms('all',this)">à¸à¸±à¹à¸à¸«à¸¡à¸</button>
+        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">à¸ªà¸¡à¸±à¸à¸£à¹à¸¥à¹à¸§</button>
+        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">à¸¢à¸±à¸à¹à¸¡à¹à¸ªà¸¡à¸±à¸à¸£</button>
       </div>
     </div>
     <div class="platform-grid" id="platformGrid"></div>
@@ -346,18 +346,18 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div class="checkout-bar" id="checkoutBar">
   <div class="checkout-info">
     <span class="checkout-count" id="checkoutCount">0</span>
-    <span style="font-size:.88rem;font-weight:600">Subscription ที่เลือก</span>
-    <span class="checkout-amount" id="checkoutAmount">฿0/เดือน</span>
+    <span style="font-size:.88rem;font-weight:600">Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸</span>
+    <span class="checkout-amount" id="checkoutAmount">à¸¿0/à¹à¸à¸·à¸­à¸</span>
   </div>
-  <button class="btn-checkout" onclick="openCheckout()">💳 ชำระเงิน →</button>
+  <button class="btn-checkout" onclick="openCheckout()">ð³ à¸à¸³à¸£à¸°à¹à¸à¸´à¸ â</button>
 </div>
 
 <!-- GMAIL PERMISSION MODAL -->
 <div class="modal-overlay" id="consentModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🔐 ขอสิทธิ์เข้าถึง Gmail</div>
-      <button class="modal-close" onclick="closeConsentModal()">✕</button>
+      <div class="modal-title">ð à¸à¸­à¸ªà¸´à¸à¸à¸´à¹à¹à¸à¹à¸²à¸à¸¶à¸ Gmail</div>
+      <button class="modal-close" onclick="closeConsentModal()">â</button>
     </div>
     <div class="modal-body">
       <div class="gmail-perm-header">
@@ -365,52 +365,52 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
           <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
         </div>
         <div>
-          <div class="gmail-perm-title">SubTrack ขอเข้าถึง Gmail ของคุณ</div>
-          <div class="gmail-perm-sub">เพื่อค้นหา Subscription อัตโนมัติ — อ่านอย่างเดียว</div>
+          <div class="gmail-perm-title">SubTrack à¸à¸­à¹à¸à¹à¸²à¸à¸¶à¸ Gmail à¸à¸­à¸à¸à¸¸à¸</div>
+          <div class="gmail-perm-sub">à¹à¸à¸·à¹à¸­à¸à¹à¸à¸«à¸² Subscription à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´ â à¸­à¹à¸²à¸à¸­à¸¢à¹à¸²à¸à¹à¸à¸µà¸¢à¸§</div>
         </div>
       </div>
 
-      <div class="perm-section-title">สิทธิ์ที่ SubTrack ต้องการ</div>
+      <div class="perm-section-title">à¸ªà¸´à¸à¸à¸´à¹à¸à¸µà¹ SubTrack à¸à¹à¸­à¸à¸à¸²à¸£</div>
       <div class="consent-list">
         <div class="consent-item">
-          <div class="consent-icon">📖</div>
+          <div class="consent-icon">ð</div>
           <div class="consent-text">
-            <strong>อ่านอีเมล (Read-only)</strong>
-            <span>SubTrack อ่านอีเมลเพื่อค้นหาชื่อบริการ Subscription เท่านั้น ไม่มีการแก้ไข ลบ หรือส่งอีเมลใดทั้งสิ้น</span>
+            <strong>à¸­à¹à¸²à¸à¸­à¸µà¹à¸¡à¸¥ (Read-only)</strong>
+            <span>SubTrack à¸­à¹à¸²à¸à¸­à¸µà¹à¸¡à¸¥à¹à¸à¸·à¹à¸­à¸à¹à¸à¸«à¸²à¸à¸·à¹à¸­à¸à¸£à¸´à¸à¸²à¸£ Subscription à¹à¸à¹à¸²à¸à¸±à¹à¸ à¹à¸¡à¹à¸¡à¸µà¸à¸²à¸£à¹à¸à¹à¹à¸ à¸¥à¸ à¸«à¸£à¸·à¸­à¸ªà¹à¸à¸­à¸µà¹à¸¡à¸¥à¹à¸à¸à¸±à¹à¸à¸ªà¸´à¹à¸</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">🔍</div>
+          <div class="consent-icon">ð</div>
           <div class="consent-text">
-            <strong>ค้นหาอีเมลที่เกี่ยวข้อง</strong>
-            <span>ค้นด้วย keyword เช่น "subscription", "invoice", "receipt", "renewal", "billing" เพื่อระบุบริการที่คุณสมัครไว้</span>
+            <strong>à¸à¹à¸à¸«à¸²à¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸à¸µà¹à¸¢à¸§à¸à¹à¸­à¸</strong>
+            <span>à¸à¹à¸à¸à¹à¸§à¸¢ keyword à¹à¸à¹à¸ "subscription", "invoice", "receipt", "renewal", "billing" à¹à¸à¸·à¹à¸­à¸£à¸°à¸à¸¸à¸à¸£à¸´à¸à¸²à¸£à¸à¸µà¹à¸à¸¸à¸à¸ªà¸¡à¸±à¸à¸£à¹à¸§à¹</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">🛡️</div>
+          <div class="consent-icon">ð¡ï¸</div>
           <div class="consent-text">
-            <strong>ความเป็นส่วนตัว (PDPA)</strong>
-            <span>SubTrack เก็บเฉพาะ Access Token รูปแบบเข้ารหัส และปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</span>
+            <strong>à¸à¸§à¸²à¸¡à¹à¸à¹à¸à¸ªà¹à¸§à¸à¸à¸±à¸§ (PDPA)</strong>
+            <span>SubTrack à¹à¸à¹à¸à¹à¸à¸à¸²à¸° Access Token à¸£à¸¹à¸à¹à¸à¸à¹à¸à¹à¸²à¸£à¸«à¸±à¸ª à¹à¸¥à¸°à¸à¸à¸´à¸à¸±à¸à¸´à¸à¸²à¸¡ à¸.à¸£.à¸. à¸à¸¸à¹à¸¡à¸à¸£à¸­à¸à¸à¹à¸­à¸¡à¸¹à¸¥à¸ªà¹à¸§à¸à¸à¸¸à¸à¸à¸¥ à¸.à¸¨. 2562</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">🚫</div>
+          <div class="consent-icon">ð«</div>
           <div class="consent-text">
-            <strong>สิ่งที่ SubTrack ไม่ทำ</strong>
-            <span>ไม่ส่ง/ลบ/แก้ไขอีเมล · ไม่แชร์ข้อมูลกับบุคคลที่สาม · ไม่เข้าถึงเนื้อหาอีเมลที่ไม่เกี่ยวกับ Subscription</span>
+            <strong>à¸ªà¸´à¹à¸à¸à¸µà¹ SubTrack à¹à¸¡à¹à¸à¸³</strong>
+            <span>à¹à¸¡à¹à¸ªà¹à¸/à¸¥à¸/à¹à¸à¹à¹à¸à¸­à¸µà¹à¸¡à¸¥ Â· à¹à¸¡à¹à¹à¸à¸£à¹à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸±à¸à¸à¸¸à¸à¸à¸¥à¸à¸µà¹à¸ªà¸²à¸¡ Â· à¹à¸¡à¹à¹à¸à¹à¸²à¸à¸¶à¸à¹à¸à¸·à¹à¸­à¸«à¸²à¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸¡à¹à¹à¸à¸µà¹à¸¢à¸§à¸à¸±à¸ Subscription</span>
           </div>
         </div>
       </div>
 
       <div class="consent-warning">
-        ⚠️ หากต้องการยกเลิกสิทธิ์ในภายหลัง ไปที่ <strong>myaccount.google.com/permissions</strong> แล้วลบ SubTrack ออก — ข้อมูลจะถูกลบจากระบบของเราทันที
+        â ï¸ à¸«à¸²à¸à¸à¹à¸­à¸à¸à¸²à¸£à¸¢à¸à¹à¸¥à¸´à¸à¸ªà¸´à¸à¸à¸´à¹à¹à¸à¸ à¸²à¸¢à¸«à¸¥à¸±à¸ à¹à¸à¸à¸µà¹ <strong>myaccount.google.com/permissions</strong> à¹à¸¥à¹à¸§à¸¥à¸ SubTrack à¸­à¸­à¸ â à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸°à¸à¸¹à¸à¸¥à¸à¸à¸²à¸à¸£à¸°à¸à¸à¸à¸­à¸à¹à¸£à¸²à¸à¸±à¸à¸à¸µ
       </div>
 
       <div class="consent-btns">
-        <button class="btn-consent-cancel" onclick="closeConsentModal()">ยกเลิก</button>
+        <button class="btn-consent-cancel" onclick="closeConsentModal()">à¸¢à¸à¹à¸¥à¸´à¸</button>
         <button class="btn-consent-ok" id="connectGmailBtn" onclick="connectGmail()">
           <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;filter:brightness(0) invert(1)" alt="G">
-          ยืนยันและเชื่อมต่อ Gmail
+          à¸¢à¸·à¸à¸¢à¸±à¸à¹à¸¥à¸°à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail
         </button>
       </div>
     </div>
@@ -421,15 +421,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div class="modal-overlay" id="scanModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">📮 Subscription ที่พบใน Gmail</div>
-      <button class="modal-close" onclick="closeScanModal()">✕</button>
+      <div class="modal-title">ð® Subscription à¸à¸µà¹à¸à¸à¹à¸ Gmail</div>
+      <button class="modal-close" onclick="closeScanModal()">â</button>
     </div>
     <div class="modal-body">
-      <div style="font-size:.83rem;color:var(--muted);margin-bottom:16px">เลือก Subscription ที่ต้องการเพิ่มเข้า SubTrack (คลิกเพื่อเลือก/ยกเลิก)</div>
+      <div style="font-size:.83rem;color:var(--muted);margin-bottom:16px">à¹à¸¥à¸·à¸­à¸ Subscription à¸à¸µà¹à¸à¹à¸­à¸à¸à¸²à¸£à¹à¸à¸´à¹à¸¡à¹à¸à¹à¸² SubTrack (à¸à¸¥à¸´à¸à¹à¸à¸·à¹à¸­à¹à¸¥à¸·à¸­à¸/à¸¢à¸à¹à¸¥à¸´à¸)</div>
       <div id="scanResultList"></div>
       <div style="display:flex;gap:10px;margin-top:18px">
-        <button onclick="closeScanModal()" style="flex:1;background:none;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--muted);font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">ยกเลิก</button>
-        <button onclick="confirmScanSubscribe()" id="confirmScanBtn" style="flex:2;background:linear-gradient(135deg,var(--accent),#9b8aff);border:none;border-radius:10px;padding:12px;color:white;font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">✓ เพิ่ม Subscription ที่เลือก</button>
+        <button onclick="closeScanModal()" style="flex:1;background:none;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--muted);font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">à¸¢à¸à¹à¸¥à¸´à¸</button>
+        <button onclick="confirmScanSubscribe()" id="confirmScanBtn" style="flex:2;background:linear-gradient(135deg,var(--accent),#9b8aff);border:none;border-radius:10px;padding:12px;color:white;font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">â à¹à¸à¸´à¹à¸¡ Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸</button>
       </div>
     </div>
   </div>
@@ -440,66 +440,66 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
   <div class="modal">
     <div id="paymentContent">
       <div class="modal-header">
-        <div class="modal-title">ชำระเงิน Subscription</div>
-        <button class="modal-close" onclick="closeCheckout()">✕</button>
+        <div class="modal-title">à¸à¸³à¸£à¸°à¹à¸à¸´à¸ Subscription</div>
+        <button class="modal-close" onclick="closeCheckout()">â</button>
       </div>
       <div class="modal-body">
-        <div class="section-label" style="margin-bottom:8px">รายการ Subscription</div>
+        <div class="section-label" style="margin-bottom:8px">à¸£à¸²à¸¢à¸à¸²à¸£ Subscription</div>
         <div class="order-list" id="orderList"></div>
         <div class="order-total">
-          <span class="order-total-label">รวมทั้งสิ้น / เดือน</span>
-          <span class="order-total-price" id="orderTotalPrice">฿0</span>
+          <span class="order-total-label">à¸£à¸§à¸¡à¸à¸±à¹à¸à¸ªà¸´à¹à¸ / à¹à¸à¸·à¸­à¸</span>
+          <span class="order-total-price" id="orderTotalPrice">à¸¿0</span>
         </div>
-        <div class="section-label" style="margin:20px 0 10px">วิธีชำระเงิน</div>
+        <div class="section-label" style="margin:20px 0 10px">à¸§à¸´à¸à¸µà¸à¸³à¸£à¸°à¹à¸à¸´à¸</div>
         <div class="pay-method-tabs">
           <div class="pay-tab active" onclick="switchPayMethod('card',this)">
-            <span class="pt-icon">💳</span><span class="pt-label">บัตรเครดิต/เดบิต</span><span class="pt-sub">Visa, Mastercard</span>
+            <span class="pt-icon">ð³</span><span class="pt-label">à¸à¸±à¸à¸£à¹à¸à¸£à¸à¸´à¸/à¹à¸à¸à¸´à¸</span><span class="pt-sub">Visa, Mastercard</span>
           </div>
           <div class="pay-tab" onclick="switchPayMethod('qr',this)">
-            <span class="pt-icon">📲</span><span class="pt-label">QR Code</span><span class="pt-sub">PromptPay / โมบายแบงก์กิ้ง</span>
+            <span class="pt-icon">ð²</span><span class="pt-label">QR Code</span><span class="pt-sub">PromptPay / à¹à¸¡à¸à¸²à¸¢à¹à¸à¸à¸à¹à¸à¸´à¹à¸</span>
           </div>
         </div>
         <div class="pay-panel active" id="cardPanel">
           <div class="card-preview">
-            <div class="card-chip">💳</div>
-            <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+            <div class="card-chip">ð³</div>
+            <div class="card-number-display" id="cardNumDisplay">â¢â¢â¢â¢ â¢â¢â¢â¢ â¢â¢â¢â¢ â¢â¢â¢â¢</div>
             <div class="card-bottom">
-              <div><div class="card-holder-label">ชื่อเจ้าของบัตร</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
-              <div><div class="card-holder-label">หมดอายุ</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
+              <div><div class="card-holder-label">à¸à¸·à¹à¸­à¹à¸à¹à¸²à¸à¸­à¸à¸à¸±à¸à¸£</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
+              <div><div class="card-holder-label">à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
             </div>
           </div>
-          <div class="form-group"><label class="form-label">หมายเลขบัตรเครดิต</label><input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)"></div>
-          <div class="form-group"><label class="form-label">ชื่อบนบัตร</label><input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME" oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
+          <div class="form-group"><label class="form-label">à¸«à¸¡à¸²à¸¢à¹à¸¥à¸à¸à¸±à¸à¸£à¹à¸à¸£à¸à¸´à¸</label><input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)"></div>
+          <div class="form-group"><label class="form-label">à¸à¸·à¹à¸­à¸à¸à¸à¸±à¸à¸£</label><input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME" oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
           <div class="form-row">
-            <div class="form-group"><label class="form-label">วันหมดอายุ</label><input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
-            <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="text" maxlength="3" placeholder="•••"></div>
+            <div class="form-group"><label class="form-label">à¸§à¸±à¸à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸</label><input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
+            <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="text" maxlength="3" placeholder="â¢â¢â¢"></div>
           </div>
-          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">💳 ชำระ <span id="cardPayAmount"></span></button>
+          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">ð³ à¸à¸³à¸£à¸° <span id="cardPayAmount"></span></button>
         </div>
         <div class="pay-panel" id="qrPanel">
           <div class="qr-wrapper">
             <div class="qr-box">
               <svg width="170" height="170" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg" id="qrSvg"></svg>
-              <div class="qr-amount-badge" id="qrAmountBadge">฿0</div>
+              <div class="qr-amount-badge" id="qrAmountBadge">à¸¿0</div>
             </div>
-            <div class="qr-instruction"><strong>สแกน QR Code ด้วยแอปธนาคาร</strong><br>PromptPay / โมบายแบงก์กิ้ง</div>
+            <div class="qr-instruction"><strong>à¸ªà¹à¸à¸ QR Code à¸à¹à¸§à¸¢à¹à¸­à¸à¸à¸à¸²à¸à¸²à¸£</strong><br>PromptPay / à¹à¸¡à¸à¸²à¸¢à¹à¸à¸à¸à¹à¸à¸´à¹à¸</div>
             <div class="qr-apps">
-              <div class="qr-app-badge">🏦 SCB Easy</div><div class="qr-app-badge">💚 KBank</div>
-              <div class="qr-app-badge">🏧 KTB</div><div class="qr-app-badge">🟦 BBL</div>
+              <div class="qr-app-badge">ð¦ SCB Easy</div><div class="qr-app-badge">ð KBank</div>
+              <div class="qr-app-badge">ð§ KTB</div><div class="qr-app-badge">ð¦ BBL</div>
             </div>
-            <div class="qr-timer">QR หมดอายุใน <span id="qrCountdown">05:00</span></div>
+            <div class="qr-timer">QR à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸à¹à¸ <span id="qrCountdown">05:00</span></div>
           </div>
-          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">✅ ยืนยันการชำระเงิน</button>
+          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">â à¸¢à¸·à¸à¸¢à¸±à¸à¸à¸²à¸£à¸à¸³à¸£à¸°à¹à¸à¸´à¸</button>
         </div>
-        <div class="security-note">🔒 ปลอดภัย SSL 256-bit · ข้อมูลบัตรไม่ถูกบันทึก</div>
+        <div class="security-note">ð à¸à¸¥à¸­à¸à¸ à¸±à¸¢ SSL 256-bit Â· à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸±à¸à¸£à¹à¸¡à¹à¸à¸¹à¸à¸à¸±à¸à¸à¸¶à¸</div>
       </div>
     </div>
     <div class="success-screen" id="successScreen">
-      <div class="success-icon">✅</div>
-      <div class="success-title">ชำระเงินสำเร็จ! 🎉</div>
-      <div class="success-sub" id="successSub">Subscribe เรียบร้อยแล้ว</div>
-      <div class="success-ref">รหัสอ้างอิง: <strong id="successRef">-</strong></div>
-      <button class="btn-done" onclick="closeDone()">กลับหน้าหลัก ✓</button>
+      <div class="success-icon">â</div>
+      <div class="success-title">à¸à¸³à¸£à¸°à¹à¸à¸´à¸à¸ªà¸³à¹à¸£à¹à¸! ð</div>
+      <div class="success-sub" id="successSub">Subscribe à¹à¸£à¸µà¸¢à¸à¸£à¹à¸­à¸¢à¹à¸¥à¹à¸§</div>
+      <div class="success-ref">à¸£à¸«à¸±à¸ªà¸­à¹à¸²à¸à¸­à¸´à¸: <strong id="successRef">-</strong></div>
+      <button class="btn-done" onclick="closeDone()">à¸à¸¥à¸±à¸à¸«à¸à¹à¸²à¸«à¸¥à¸±à¸ â</button>
     </div>
   </div>
 </div>
@@ -572,17 +572,17 @@ async function handleLogin() {
   const btn = document.getElementById('loginBtn');
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
-  if (!email || !password) return showAuthError('กรุณากรอก Email และรหัสผ่าน');
+  if (!email || !password) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸à¸£à¸­à¸ Email à¹à¸¥à¸°à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸');
   const captchaToken = getCapToken(_loginCapId);
-  if (!captchaToken) return showAuthError('กรุณายืนยัน CAPTCHA ก่อนเข้าสู่ระบบ');
+  if (!captchaToken) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸¢à¸·à¸à¸¢à¸±à¸ CAPTCHA à¸à¹à¸­à¸à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸');
   setLoading(btn, true);
   try {
     const res = await apiFetch('/auth/login','POST',{ email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
     localStorage.setItem('subtrack_token', token);
     await initDashboard();
-  } catch (err) { showAuthError(err.message || 'ไม่สามารถเข้าสู่ระบบได้'); resetCap(_loginCapId);
-  } finally { setLoading(btn, false, '🔑 เข้าสู่ระบบ'); }
+  } catch (err) { showAuthError(err.message || 'à¹à¸¡à¹à¸ªà¸²à¸¡à¸²à¸£à¸à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸à¹à¸à¹'); resetCap(_loginCapId);
+  } finally { setLoading(btn, false, 'ð à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸'); }
 }
 
 async function handleRegister() {
@@ -590,18 +590,18 @@ async function handleRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
-  if (!name || !email || !password) return showAuthError('กรุณากรอกข้อมูลให้ครบถ้วน');
-  if (password.length < 6) return showAuthError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+  if (!name || !email || !password) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸à¸£à¸­à¸à¸à¹à¸­à¸¡à¸¹à¸¥à¹à¸«à¹à¸à¸£à¸à¸à¹à¸§à¸');
+  if (password.length < 6) return showAuthError('à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸à¸à¹à¸­à¸à¸¡à¸µà¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 6 à¸à¸±à¸§à¸­à¸±à¸à¸©à¸£');
   const captchaToken = getCapToken(_regCapId);
-  if (!captchaToken) return showAuthError('กรุณายืนยัน CAPTCHA ก่อนสมัครสมาชิก');
+  if (!captchaToken) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸¢à¸·à¸à¸¢à¸±à¸ CAPTCHA à¸à¹à¸­à¸à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸');
   setLoading(btn, true);
   try {
     const res = await apiFetch('/auth/register','POST',{ name, email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
     localStorage.setItem('subtrack_token', token);
     await initDashboard();
-  } catch (err) { showAuthError(err.message || 'ไม่สามารถสมัครสมาชิกได้'); resetCap(_regCapId);
-  } finally { setLoading(btn, false, '✨ สมัครสมาชิก'); }
+  } catch (err) { showAuthError(err.message || 'à¹à¸¡à¹à¸ªà¸²à¸¡à¸²à¸£à¸à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸à¹à¸à¹'); resetCap(_regCapId);
+  } finally { setLoading(btn, false, 'â¨ à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸'); }
 }
 
 function handleLogout() {
@@ -643,17 +643,17 @@ async function toggleSub(id, event) {
       const res = await apiFetch(`/subscriptions/${id}`,'DELETE');
       delete userSubs[id];
       const name = platforms.find(p=>p.id===id)?.name;
-      showToast(`ยกเลิก ${name} เรียบร้อย`, '#ff4d6d');
+      showToast(`à¸¢à¸à¹à¸¥à¸´à¸ ${name} à¹à¸£à¸µà¸¢à¸à¸£à¹à¸­à¸¢`, '#ff4d6d');
       if (res.unsubscribe_url) {
-        setTimeout(()=>{ if(confirm(`ต้องการยกเลิก ${name} โดยตรง?\nกด OK เพื่อเปิดหน้า Unsubscribe`)) window.open(res.unsubscribe_url,'_blank'); },300);
+        setTimeout(()=>{ if(confirm(`à¸à¹à¸­à¸à¸à¸²à¸£à¸¢à¸à¹à¸¥à¸´à¸ ${name} à¹à¸à¸¢à¸à¸£à¸?\nà¸à¸ OK à¹à¸à¸·à¹à¸­à¹à¸à¸´à¸à¸«à¸à¹à¸² Unsubscribe`)) window.open(res.unsubscribe_url,'_blank'); },300);
       }
     } else {
       await apiFetch(`/subscriptions/${id}`,'POST',{ reminder_days:3 });
       const sub = await apiFetch('/subscriptions').catch(()=>[]);
       sub.forEach(s=>{ userSubs[s.platform_id]=s; });
-      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} แล้ว ✓`,'#00d4aa');
+      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} à¹à¸¥à¹à¸§ â`,'#00d4aa');
     }
-  } catch(err){ showToast('เกิดข้อผิดพลาด: '+err.message,'#ff4d6d'); }
+  } catch(err){ showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+err.message,'#ff4d6d'); }
   updateStats(); renderGrid(); updateCheckoutBar();
 }
 
@@ -662,7 +662,7 @@ function updateStats() {
   const cost = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
   document.getElementById('statActive').textContent = subs.length;
   document.getElementById('statTotal').textContent  = platforms.length;
-  document.getElementById('statCost').textContent   = '฿'+cost.toLocaleString();
+  document.getElementById('statCost').textContent   = 'à¸¿'+cost.toLocaleString();
 }
 
 function filterPlatforms(type,btn) {
@@ -706,13 +706,13 @@ function renderGrid() {
       <div class="platform-name">${p.name}</div>
       <div class="platform-category">${p.category}</div>
       <div class="platform-price">
-        <span class="price-tag">฿${p.price_thb}/เดือน</span>
-        <span class="sub-status">${isSub?'Active':'ยังไม่ได้สมัคร'}</span>
+        <span class="price-tag">à¸¿${p.price_thb}/à¹à¸à¸·à¸­à¸</span>
+        <span class="sub-status">${isSub?'Active':'à¸¢à¸±à¸à¹à¸¡à¹à¹à¸à¹à¸ªà¸¡à¸±à¸à¸£'}</span>
       </div>
       ${isSub?`<div class="sub-date">
-        📅 Subscribe เมื่อ ${subDate}<br>
-        <span style="color:${billing.urgency};font-weight:600">⏰ Due ${billing.dateStr} (อีก ${billing.days} วัน)</span><br>
-        <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">🔗 ยกเลิก ${p.name} →</a>
+        ð Subscribe à¹à¸¡à¸·à¹à¸­ ${subDate}<br>
+        <span style="color:${billing.urgency};font-weight:600">â° Due ${billing.dateStr} (à¸­à¸µà¸ ${billing.days} à¸§à¸±à¸)</span><br>
+        <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">ð à¸¢à¸à¹à¸¥à¸´à¸ ${p.name} â</a>
       </div>`:''}
     </div>`;
   }).join('');
@@ -724,42 +724,42 @@ function closeConsentModal() { document.getElementById('consentModal').classList
 
 async function connectGmail() {
   const btn = document.getElementById('connectGmailBtn');
-  setLoading(btn, true, 'กำลังเชื่อมต่อ...');
+  setLoading(btn, true, 'à¸à¸³à¸¥à¸±à¸à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­...');
   try {
     const res = await apiFetch('/auth/gmail');
     window.location.href = res.url;
   } catch(e) {
-    showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
-    setLoading(btn, false, 'ยืนยันและเชื่อมต่อ Gmail');
+    showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
+    setLoading(btn, false, 'à¸¢à¸·à¸à¸¢à¸±à¸à¹à¸¥à¸°à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail');
   }
 }
 
 async function scanGmail() {
   const btn = document.getElementById('gmailScanBtn');
-  setLoading(btn, true, '⏳ กำลังสแกน Gmail...');
+  setLoading(btn, true, 'â³ à¸à¸³à¸¥à¸±à¸à¸ªà¹à¸à¸ Gmail...');
   try {
     const res = await apiFetch('/auth/gmail/scan');
     scanFoundList = res.found || [];
     showScanResults(scanFoundList);
-  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
-  } finally { setLoading(btn, false, '📮 สแกน Subscription'); }
+  } catch(e) { showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, 'ð® à¸ªà¹à¸à¸ Subscription'); }
 }
 
 function showScanResults(found) {
   scanSelected = new Set(found.map(f=>f.platform_id||f));
   const list = document.getElementById('scanResultList');
   if (!found.length) {
-    list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">📭</div>ไม่พบ Subscription ใน Gmail<br><small style="color:var(--muted)">อาจยังไม่มีอีเมลที่เกี่ยวข้องในกล่องจดหมาย</small></div>`;
+    list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">ð­</div>à¹à¸¡à¹à¸à¸ Subscription à¹à¸ Gmail<br><small style="color:var(--muted)">à¸­à¸²à¸à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸à¸µà¹à¸¢à¸§à¸à¹à¸­à¸à¹à¸à¸à¸¥à¹à¸­à¸à¸à¸à¸«à¸¡à¸²à¸¢</small></div>`;
   } else {
     list.innerHTML = found.map(item=>{
       const pId = item.platform_id||item;
       const p = platforms.find(pl=>pl.id===pId);
       const u = PLATFORM_LOGOS[pId];
-      const logo = u ? `<img src="${u}" style="width:38px;height:38px;object-fit:cover;border-radius:8px">` : `<span style="font-size:1.4rem">${p?.icon||'📦'}</span>`;
+      const logo = u ? `<img src="${u}" style="width:38px;height:38px;object-fit:cover;border-radius:8px">` : `<span style="font-size:1.4rem">${p?.icon||'ð¦'}</span>`;
       return `<div class="scan-result-item selected" id="scan-${pId}" onclick="toggleScanSelect('${pId}')">
-        <div class="scan-check">✓</div>
+        <div class="scan-check">â</div>
         <div class="scan-logo">${logo}</div>
-        <div class="scan-info"><div class="scan-name">${p?.name||pId}</div><div class="scan-price">฿${p?.price_thb||'?'}/เดือน</div></div>
+        <div class="scan-info"><div class="scan-name">${p?.name||pId}</div><div class="scan-price">à¸¿${p?.price_thb||'?'}/à¹à¸à¸·à¸­à¸</div></div>
       </div>`;
     }).join('');
   }
@@ -769,31 +769,31 @@ function showScanResults(found) {
 function toggleScanSelect(pId) {
   const el = document.getElementById(`scan-${pId}`);
   if (scanSelected.has(pId)) { scanSelected.delete(pId); el.classList.remove('selected'); el.querySelector('.scan-check').textContent=''; }
-  else { scanSelected.add(pId); el.classList.add('selected'); el.querySelector('.scan-check').textContent='✓'; }
+  else { scanSelected.add(pId); el.classList.add('selected'); el.querySelector('.scan-check').textContent='â'; }
 }
 
 async function confirmScanSubscribe() {
-  if (!scanSelected.size) { showToast('กรุณาเลือกอย่างน้อย 1 รายการ','#ff4d6d'); return; }
+  if (!scanSelected.size) { showToast('à¸à¸£à¸¸à¸à¸²à¹à¸¥à¸·à¸­à¸à¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 1 à¸£à¸²à¸¢à¸à¸²à¸£','#ff4d6d'); return; }
   const btn = document.getElementById('confirmScanBtn');
-  setLoading(btn, true, '⏳ กำลังเพิ่ม...');
+  setLoading(btn, true, 'â³ à¸à¸³à¸¥à¸±à¸à¹à¸à¸´à¹à¸¡...');
   try {
     await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: Array.from(scanSelected) });
     closeScanModal(); await initDashboard();
-    showToast(`เพิ่ม ${scanSelected.size} Subscription สำเร็จ! ✓`,'#00d4aa');
-  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
-  } finally { setLoading(btn, false, '✓ เพิ่ม Subscription ที่เลือก'); }
+    showToast(`à¹à¸à¸´à¹à¸¡ ${scanSelected.size} Subscription à¸ªà¸³à¹à¸£à¹à¸! â`,'#00d4aa');
+  } catch(e) { showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, 'â à¹à¸à¸´à¹à¸¡ Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸'); }
 }
 
 function closeScanModal() { document.getElementById('scanModal').classList.remove('open'); }
 
-async async function checkGmailStatus() {
+async function checkGmailStatus() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('gmail')==='connected') {
     document.getElementById('gmailConnectBtn').style.display = 'none';
     document.getElementById('gmailScanBtn').style.display    = 'flex';
     document.getElementById('gmailBadge').style.display      = 'inline-flex';
     window.history.replaceState({},'',window.location.pathname);
-    showToast('เชื่อมต่อ Gmail สำเร็จ! กำลังสแกน Subscription อัตโนมัติ... 🔍','#00d4aa');
+    showToast('à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail à¸ªà¸³à¹à¸£à¹à¸! à¸à¸³à¸¥à¸±à¸à¸ªà¹à¸à¸ Subscription à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´... ð','#00d4aa');
     try {
       const res = await apiFetch('/auth/gmail/scan');
       const found = res.found || [];
@@ -801,15 +801,15 @@ async async function checkGmailStatus() {
         const ids = found.map(f => f.platform_id || f);
         await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: ids });
         await initDashboard();
-        showToast('พบและเพิ่ม ' + found.length + ' Subscription จาก Gmail สำเร็จ! ✓','#00d4aa');
+        showToast('à¸à¸à¹à¸¥à¸°à¹à¸à¸´à¹à¸¡ ' + found.length + ' Subscription à¸à¸²à¸ Gmail à¸ªà¸³à¹à¸£à¹à¸! â','#00d4aa');
       } else {
-        showToast('สแกน Gmail แล้ว — ไม่พบ Subscription ใหม่','#7c6fff');
+        showToast('à¸ªà¹à¸à¸ Gmail à¹à¸¥à¹à¸§ â à¹à¸¡à¹à¸à¸ Subscription à¹à¸«à¸¡à¹','#7c6fff');
       }
     } catch(e) {
-      showToast('สแกน Gmail ไม่สำเร็จ กรุณาลองกด สแกน Subscription เอง','#ff4d6d');
+      showToast('à¸ªà¹à¸à¸ Gmail à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸ à¸à¸£à¸¸à¸à¸²à¸¥à¸­à¸à¸à¸ à¸ªà¹à¸à¸ Subscription à¹à¸­à¸','#ff4d6d');
     }
   } else if (params.get('gmail')==='error') {
-    showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่','#ff4d6d');
+    showToast('à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸ à¸à¸£à¸¸à¸à¸²à¸¥à¸­à¸à¹à¸«à¸¡à¹','#ff4d6d');
     window.history.replaceState({},'',window.location.pathname);
   }
 }
@@ -819,7 +819,7 @@ function updateCheckoutBar() {
   const subs = Object.keys(userSubs);
   const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
   document.getElementById('checkoutCount').textContent  = subs.length;
-  document.getElementById('checkoutAmount').textContent = '฿'+total.toLocaleString()+'/เดือน';
+  document.getElementById('checkoutAmount').textContent = 'à¸¿'+total.toLocaleString()+'/à¹à¸à¸·à¸­à¸';
   const bar = document.getElementById('checkoutBar');
   if (subs.length>0 && currentUser) bar.classList.add('show'); else bar.classList.remove('show');
 }
@@ -830,12 +830,12 @@ function openCheckout() {
   document.getElementById('orderList').innerHTML = subs.map(id=>{
     const p=userSubs[id]; const u=PLATFORM_LOGOS[id];
     const logo = u?`<img src="${u}" style="width:20px;height:20px;object-fit:cover;border-radius:4px;margin-right:6px">`:`${p?.icon||''} `;
-    return `<div class="order-item"><span style="display:flex;align-items:center">${logo}${p?.name||id}</span><span class="order-item-price">฿${p?.price_thb}</span></div>`;
+    return `<div class="order-item"><span style="display:flex;align-items:center">${logo}${p?.name||id}</span><span class="order-item-price">à¸¿${p?.price_thb}</span></div>`;
   }).join('');
-  document.getElementById('orderTotalPrice').textContent = '฿'+total.toLocaleString();
-  document.getElementById('cardPayAmount').textContent   = '฿'+total.toLocaleString();
+  document.getElementById('orderTotalPrice').textContent = 'à¸¿'+total.toLocaleString();
+  document.getElementById('cardPayAmount').textContent   = 'à¸¿'+total.toLocaleString();
   drawQR(document.getElementById('qrSvg'),'PROMPTPAY:'+total);
-  document.getElementById('qrAmountBadge').textContent   = '฿'+total.toLocaleString();
+  document.getElementById('qrAmountBadge').textContent   = 'à¸¿'+total.toLocaleString();
   document.getElementById('paymentContent').style.display='block';
   document.getElementById('successScreen').classList.remove('show');
   document.getElementById('paymentModal').classList.add('open');
@@ -854,28 +854,28 @@ async function processPayment(method) {
   const btn = document.getElementById(method==='card'?'cardPayBtn':'qrPayBtn');
   const subs = Object.keys(userSubs);
   const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
-  setLoading(btn,true,'⏳ กำลังดำเนินการ...');
+  setLoading(btn,true,'â³ à¸à¸³à¸¥à¸±à¸à¸à¸³à¹à¸à¸´à¸à¸à¸²à¸£...');
   try {
     const endpoint = method==='card'?'/payment/charge':'/payment/promptpay';
     const res = await apiFetch(endpoint,'POST',{ amount:total*100, platform_ids:subs, payment_method:method, token:'tok_test_mock' });
     clearInterval(qrInterval);
     document.getElementById('successRef').textContent = res.transaction_id||res.charge_id;
-    document.getElementById('successSub').innerHTML = `ชำระเงิน <strong>฿${total.toLocaleString()}</strong> สำเร็จ!<br>ใบเสร็จจะส่งไปที่ <strong>${currentUser.email}</strong>`;
+    document.getElementById('successSub').innerHTML = `à¸à¸³à¸£à¸°à¹à¸à¸´à¸ <strong>à¸¿${total.toLocaleString()}</strong> à¸ªà¸³à¹à¸£à¹à¸!<br>à¹à¸à¹à¸ªà¸£à¹à¸à¸à¸°à¸ªà¹à¸à¹à¸à¸à¸µà¹ <strong>${currentUser.email}</strong>`;
     document.getElementById('paymentContent').style.display='none';
     document.getElementById('successScreen').classList.add('show');
-  } catch(err){ showToast('ชำระเงินไม่สำเร็จ: '+err.message,'#ff4d6d');
-  } finally { setLoading(btn,false,method==='card'?'💳 ชำระเงิน':'✅ ยืนยันการชำระเงิน'); }
+  } catch(err){ showToast('à¸à¸³à¸£à¸°à¹à¸à¸´à¸à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸: '+err.message,'#ff4d6d');
+  } finally { setLoading(btn,false,method==='card'?'ð³ à¸à¸³à¸£à¸°à¹à¸à¸´à¸':'â à¸¢à¸·à¸à¸¢à¸±à¸à¸à¸²à¸£à¸à¸³à¸£à¸°à¹à¸à¸´à¸'); }
 }
 
 let qrInterval, qrSeconds=300;
 function startQrTimer(){ clearInterval(qrInterval); qrSeconds=300; updateQrTimer(); qrInterval=setInterval(()=>{ qrSeconds--; updateQrTimer(); if(qrSeconds<=0)clearInterval(qrInterval); },1000); }
 function updateQrTimer(){ const el=document.getElementById('qrCountdown'); if(el) el.textContent=String(Math.floor(qrSeconds/60)).padStart(2,'0')+':'+String(qrSeconds%60).padStart(2,'0'); }
-function closeDone(){ closeCheckout(); showToast('✅ ขอบคุณที่ใช้บริการ SubTrack!','#00d4aa'); }
+function closeDone(){ closeCheckout(); showToast('â à¸à¸­à¸à¸à¸¸à¸à¸à¸µà¹à¹à¸à¹à¸à¸£à¸´à¸à¸²à¸£ SubTrack!','#00d4aa'); }
 
 function formatCardNum(input){
   let v=input.value.replace(/\D/g,'').slice(0,16);
   input.value=v.replace(/(.{4})/g,'$1 ').trim();
-  document.getElementById('cardNumDisplay').textContent=v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('cardNumDisplay').textContent=v.padEnd(16,'â¢').replace(/(.{4})/g,'$1 ').trim();
 }
 function formatExpiry(input){
   let v=input.value.replace(/\D/g,'').slice(0,4);
@@ -904,7 +904,7 @@ async function apiFetch(path,method='GET',body=null,withAuth=true){
   if(withAuth && token) headers['Authorization']='Bearer '+token;
   const res=await fetch(API_URL+path,{method,headers,body:body?JSON.stringify(body):undefined});
   const data=await res.json();
-  if(!res.ok) throw new Error(data.error||'เกิดข้อผิดพลาด');
+  if(!res.ok) throw new Error(data.error||'à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸');
   return data;
 }
 
@@ -920,7 +920,7 @@ function showToast(msg,color='#7c6fff'){
 
 function setLoading(btn,loading,text=''){
   btn.disabled=loading;
-  if(loading) btn.innerHTML=`<span class="loading-spinner"></span>${text||'กำลังโหลด...'}`;
+  if(loading) btn.innerHTML=`<span class="loading-spinner"></span>${text||'à¸à¸³à¸¥à¸±à¸à¹à¸«à¸¥à¸...'}`;
   else if(text) btn.textContent=text;
 }
 
@@ -933,7 +933,7 @@ document.getElementById('scanModal').addEventListener('click',function(e){ if(e.
   if(token){ try{ currentUser=await apiFetch('/auth/me'); await initDashboard(); }catch{ handleLogout(); } }
   else if(params.get('gmail')==='connected'||params.get('gmail')==='error'){
     window.history.replaceState({},'',window.location.pathname);
-    showAuthError('กรุณาเข้าสู่ระบบก่อนเชื่อมต่อ Gmail');
+    showAuthError('à¸à¸£à¸¸à¸à¸²à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸à¸à¹à¸­à¸à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail');
   }
 })();
 </script>
