@@ -536,8 +536,8 @@ let _loginCapId, _regCapId;
 // reCAPTCHA
 function onRecaptchaLoad() {
   try {
-    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
-    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
+    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LfbdZMsAAAAAFMkAUolV9v77icujBmSZgwGg4Jq', theme:'dark' });
+    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LfbdZMsAAAAAFMkAUolV9v77icujBmSZgwGg4Jq', theme:'dark' });
   } catch(e) { console.warn('reCAPTCHA:', e); }
 }
 window.onRecaptchaLoad = onRecaptchaLoad;
