@@ -1,70 +1,123 @@
-// src/routes/auth.js
-const router = require('express').Router();
+// routes/auth.js — Authentication + reCAPTCHA verification
+const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
-const db = require('../models/db');
+const https = require('https');
+const { pool } = require('../models/db');
+const { authenticateToken } = require('../middleware/auth');
 
-// POST /api/auth/register
-router.post('/register', [
-  body('email').isEmail().normalizeEmail(),
-  body('password').isLength({ min: 6 }),
-  body('name').notEmpty().trim()
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+// ── reCAPTCHA v2 verification ──
+function verifyCaptcha(token) {
+  return new Promise((resolve, reject) => {
+    const secret = process.env.RECAPTCHA_SECRET_KEY || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+    const postData = `secret=${secret}&response=${token}`;
+    const options = {
+      hostname: 'www.google.com',
+      path: '/recaptcha/api/siteverify',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(postData)
+      }
+    };
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(new Error('Invalid reCAPTCHA response')); }
+      });
+    });
+    req.on('error', reject);
+    req.write(postData);
+    req.end();
+  });
+}
 
-  const { email, password, name } = req.body;
+async function checkCaptcha(req, res, next) {
+  const token = req.body.captchaToken;
+  // Skip verification in development or if using test key
+  const isDev = process.env.NODE_ENV === 'development';
+  if (isDev) return next();
+  if (!token) return res.status(400).json({ error: 'กรุณายืนยัน CAPTCHA ก่อน' });
   try {
-    const existing = await db.query('SELECT id FROM users WHERE email=$1', [email]);
-    if (existing.rows.length > 0) return res.status(409).json({ error: 'อีเมลนี้มีผู้ใช้แล้ว' });
+    const result = await verifyCaptcha(token);
+    if (!result.success) {
+      return res.status(400).json({ error: 'CAPTCHA ไม่ถูกต้อง กรุณาลองใหม่' });
+    }
+    next();
+  } catch (e) {
+    console.error('reCAPTCHA error:', e.message);
+    // Fail open in case Google is unreachable (graceful degradation)
+    next();
+  }
+}
 
-    const hash = await bcrypt.hash(password, 12);
-    const result = await db.query(
-      'INSERT INTO users (email, password, name) VALUES ($1,$2,$3) RETURNING id, email, name',
-      [email, hash, name]
+// ── Register ──
+router.post('/register', checkCaptcha, async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
+  }
+  try {
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email.toLowerCase()]);
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: 'อีเมลนี้ถูกใช้แล้ว' });
+    }
+    const hashed = await bcrypt.hash(password, 12);
+    const result = await pool.query(
+      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
+      [name.trim(), email.toLowerCase().trim(), hashed]
     );
     const user = result.rows[0];
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.status(201).json({ token, user: { id: user.id, email: user.email, name: user.name } });
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Register error:', err);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
   }
 });
 
-// POST /api/auth/login
-router.post('/login', [
-  body('email').isEmail().normalizeEmail(),
-  body('password').notEmpty()
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
+// ── Login ──
+router.post('/login', checkCaptcha, async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'กรุณากรอก Email และรหัสผ่าน' });
+  }
   try {
-    const result = await db.query('SELECT * FROM users WHERE email=$1', [email]);
-    if (result.rows.length === 0) return res.status(401).json({ error: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
-
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email.toLowerCase().trim()]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Email หรือรหัสผ่านไม่ถูกต้อง' });
+    }
     const user = result.rows[0];
     const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(401).json({ error: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
-
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
+    if (!valid) {
+      return res.status(401).json({ error: 'Email หรือรหัสผ่านไม่ถูกต้อง' });
+    }
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
   }
 });
 
-// GET /api/auth/me
-router.get('/me', require('../middleware/auth'), async (req, res) => {
+// ── Get current user ──
+router.get('/me', authenticateToken, async (req, res) => {
   try {
-    const result = await db.query('SELECT id, email, name, created_at FROM users WHERE id=$1', [req.user.id]);
+    const result = await pool.query(
+      'SELECT id, name, email, created_at FROM users WHERE id = $1',
+      [req.user.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'ไม่พบผู้ใช้' });
     res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Me error:', err);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
   }
 });
 
