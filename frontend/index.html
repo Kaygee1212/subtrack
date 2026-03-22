@@ -534,13 +534,27 @@ let currentFilter = 'all', scanFoundList = [], scanSelected = new Set();
 let _loginCapId, _regCapId;
 
 // reCAPTCHA
-function onRecaptchaLoad() {
+const RECAPTCHA_SITE_KEY = '6LfbdZMsAAAAAFMkAUolV9v77icujBmSZgwGg4Jq';
+function renderCaptchas() {
   try {
-    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LfbdZMsAAAAAFMkAUolV9v77icujBmSZgwGg4Jq', theme:'dark' });
-    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LfbdZMsAAAAAFMkAUolV9v77icujBmSZgwGg4Jq', theme:'dark' });
-  } catch(e) { console.warn('reCAPTCHA:', e); }
+    if (typeof _loginCapId === 'undefined' || _loginCapId === null) {
+      _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey: RECAPTCHA_SITE_KEY, theme: 'dark' });
+    }
+    if (typeof _regCapId === 'undefined' || _regCapId === null) {
+      _regCapId = grecaptcha.render('registerCaptchaDiv', { sitekey: RECAPTCHA_SITE_KEY, theme: 'dark' });
+    }
+  } catch(e) { console.warn('reCAPTCHA render:', e); }
+}
+function onRecaptchaLoad() {
+  if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
+    grecaptcha.ready(renderCaptchas);
+  } else {
+    renderCaptchas();
+  }
 }
 window.onRecaptchaLoad = onRecaptchaLoad;
+setTimeout(function() { if (typeof _loginCapId === 'undefined' && typeof grecaptcha !== 'undefined') { try { renderCaptchas(); } catch(e){} } }, 1000);
+setTimeout(function() { if (typeof _loginCapId === 'undefined' && typeof grecaptcha !== 'undefined') { try { renderCaptchas(); } catch(e){} } }, 3000);
 
 function getCapToken(id) { try { return grecaptcha.getResponse(id) || ''; } catch(e){ return ''; } }
 function resetCap(id)    { try { grecaptcha.reset(id); } catch(e){} }
