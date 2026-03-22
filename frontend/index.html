@@ -528,8 +528,8 @@ let _loginCapId, _regCapId;
 // reCAPTCHA
 function onRecaptchaLoad() {
   try {
-    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LeIxAcTAAAAAKcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
-    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LeIxAcTAAAAAKcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
+    _loginCapId = grecaptcha.render('loginCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
+    _regCapId   = grecaptcha.render('registerCaptchaDiv', { sitekey:'6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', theme:'dark' });
   } catch(e) { console.warn('reCAPTCHA:', e); }
 }
 window.onRecaptchaLoad = onRecaptchaLoad;
@@ -569,7 +569,7 @@ async function handleRegister() {
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   if (!name || !email || !password) return showAuthError('กรุณากรอกข้อมูลให้ครบถ้วน');
-  if (password.length < 6) return showAuthError('รหัสผ่างน้อย 6 ตัวอักษร');
+  if (password.length < 6) return showAuthError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
   const captchaToken = getCapToken(_regCapId);
   if (!captchaToken) return showAuthError('กรุณายืนยัน CAPTCHA ก่อนสมัครสมาชิก');
   setLoading(btn, true);
@@ -707,7 +707,7 @@ async function scanGmail() {
 }
 
 function showScanResults(found) {
-  scanSelected = new Set(found.map(i=>f.platform_id||f));
+  scanSelected = new Set(found.map(f=>f.platform_id||f));
   const list = document.getElementById('scanResultList');
   if (!found.length) {
     list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">📭</div>ไม่พบ Subscription ใน Gmail<br><small style="color:var(--muted)">อาจยังไม่มีอีเมลที่เกี่ยวข้องในกล่องจดหมาย</small></div>`;
@@ -753,7 +753,7 @@ function checkGmailStatus() {
     document.getElementById('gmailConnectBtn').style.display = 'none';
     document.getElementById('gmailScanBtn').style.display    = 'flex';
     document.getElementById('gmailBadge').style.display      = 'inline-flex';
-    showToast('เชื่อมต่อ Gmail สำเร็จ! กด \"สแกน Subscription\" เพื่อเริ่มต้น <span class='emoji'>🎉!</span>','#00d4aa');
+    showToast('เชื่อมต่อ Gmail สำเร็จ! กด "สแกน Subscription" เพื่อเริ่มต้น 🎉','#00d4aa');
     window.history.replaceState({},'',window.location.pathname);
   } else if (params.get('gmail')==='error') {
     showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่','#ff4d6d');
