@@ -50,7 +50,7 @@ router.get('/gmail', auth, (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/gmail.readonly'],
-    state: req.user.id.toString(),
+    state: req.user.userId.toString(),
     prompt: 'consent'
   });
   res.json({ url });
@@ -80,7 +80,7 @@ router.get('/gmail/callback', async (req, res) => {
 // ── GET /api/auth/gmail/scan — สแกนอีเมล (ไม่ auto-subscribe แล้ว) ──
 router.get('/gmail/scan', auth, async (req, res) => {
   try {
-    const result = await db.query('SELECT gmail_token FROM users WHERE id=$1', [req.user.id]);
+    const result = await db.query('SELECT gmail_token FROM users WHERE id=$1', [req.user.userId]);
     if (!result.rows[0]?.gmail_token) {
       return res.status(400).json({ error: 'ยังไม่ได้เชื่อม Gmail' });
     }
@@ -94,7 +94,7 @@ router.get('/gmail/scan', auth, async (req, res) => {
       try {
         const { credentials } = await oauth2Client.refreshAccessToken();
         const newEncrypted = Buffer.from(JSON.stringify(credentials)).toString('base64');
-        await db.query('UPDATE users SET gmail_token=$1 WHERE id=$2', [newEncrypted, req.user.id]);
+        await db.query('UPDATE users SET gmail_token=$1 WHERE id=$2', [newEncrypted, req.user.userId]);
         oauth2Client.setCredentials(credentials);
       } catch (refreshErr) {
         console.error('Token refresh failed:', refreshErr.message);
@@ -139,7 +139,7 @@ router.post('/gmail/confirm', auth, async (req, res) => {
     for (const pid of platform_ids) {
       await db.query(
         `INSERT INTO subscriptions (user_id, platform_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
-        [req.user.id, pid]
+        [req.user.userId, pid]
       );
       added++;
     }
