@@ -1,4 +1,4 @@
-// src/routes/gmail.js — Gmail OAuth Scanner (with real date extraction)
+// src/routes/gmail.js — Gmail OAuth Scanner (billing emails only)
 const router = require('express').Router();
 const { google } = require('googleapis');
 const auth = require('../middleware/auth');
@@ -10,12 +10,15 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.RAILWAY_URL + '/api/auth/gmail/callback'
 );
 
-// ── keyword list ──
+// ── billing keywords filter — only match actual payment/subscription emails ──
+const BILLING_FILTER = '(receipt OR payment OR invoice OR billing OR renewed OR charged OR "ต่ออายุ" OR "ยืนยัน" OR "ชำระเงิน")';
+
+// ── keyword list: domain or subject term + platform ──
 const SUBSCRIPTION_KEYWORDS = [
   { keyword: 'netflix.com',           platform: 'netflix' },
   { keyword: 'spotify.com',           platform: 'spotify' },
-  { keyword: 'youtube premium',       platform: 'youtube' },
-  { keyword: 'youtubepremium',        platform: 'youtube' },
+  { keyword: 'youtube premium',       platform: youtube' },
+  { keyword: 'youtubepremium',        platform: youtube' },
   { keyword: 'disneyplus.com',        platform: 'disney' },
   { keyword: 'disney+',               platform: 'disney' },
   { keyword: 'hbomax.com',            platform: 'hbo' },
@@ -32,7 +35,7 @@ const SUBSCRIPTION_KEYWORDS = [
   { keyword: 'notion.so',             platform: 'notion' },
   { keyword: 'notion plus',           platform: 'notion' },
   { keyword: 'xbox.com',              platform: 'xbox' },
-  { keyword: 'xbox game pass',        platform: 'xbox' },
+  { keyword: 'xbox game pass',        platform: xbox' },
   { keyword: 'playstation.com',       platform: 'playstation' },
   { keyword: 'playstation plus',      platform: 'playstation' },
   { keyword: 'dropbox.com',           platform: 'dropbox' },
@@ -76,17 +79,18 @@ router.get('/gmail/callback', async (req, res) => {
   }
 });
 
-// ── helper: ดึงวันที่จริงของ email ล่าสุดสำหรับ platform ──
+// ── helper: ดึงวันที่จริงจาก billing email ล่าสุด ──
 async function getLatestEmailDate(gmail, keyword) {
   try {
+    // ค้นหาเฉพาะ billing email จริงๆ ไม่ใช่ promotional
+    const q = `(from:${keyword} OR subject:"${keyword}") ${BILLING_FILTER}`;
     const messages = await gmail.users.messages.list({
       userId: 'me',
-      q: `from:${keyword} OR subject:"${keyword}"`,
+      q,
       maxResults: 5
     });
     if (!messages.data.messages || messages.data.messages.length === 0) return null;
 
-    // ดึง metadata ของ email ล่าสุด (รวม Date header)
     const msgId = messages.data.messages[0].id;
     const detail = await gmail.users.messages.get({
       userId: 'me',
@@ -95,7 +99,6 @@ async function getLatestEmailDate(gmail, keyword) {
       metadataHeaders: ['Date', 'Subject']
     });
 
-    // ใช้ internalDate (ms since epoch) ซึ่งแม่นยำกว่า Date header
     const internalDate = detail.data.internalDate
       ? parseInt(detail.data.internalDate)
       : Date.now();
@@ -106,7 +109,7 @@ async function getLatestEmailDate(gmail, keyword) {
   }
 }
 
-// ── GET /api/auth/gmail/scan — สแกนอีเมลและดึงวันที่จริง ──
+// ── GET /api/auth/gmail/scan — สแกนเฉพาะ billing email ──
 router.get('/gmail/scan', auth, async (req, res) => {
   try {
     const result = await db.query('SELECT gmail_token FROM users WHERE id=$1', [req.user.userId]);
@@ -130,18 +133,19 @@ router.get('/gmail/scan', auth, async (req, res) => {
     }
 
     const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
-    const foundMap = {}; // platform_id → { platform_id, subscribed_at }
+    const foundMap = {};
 
     for (const item of SUBSCRIPTION_KEYWORDS) {
-      if (foundMap[item.platform]) continue; // dedup — ถ้าพบแล้วข้ามไป
+      if (foundMap[item.platform]) continue;
       try {
+        // ค้นหาเฉพาะ billing email จริงๆ เพื่อป้องกัน false positive
+        const q = `(from:${item.keyword} OR subject:"${item.keyword}") ${BILLING_FILTER}`;
         const messages = await gmail.users.messages.list({
           userId: 'me',
-          q: `from:${item.keyword} OR subject:"${item.keyword}"`,
+          q,
           maxResults: 1
         });
         if (messages.data.messages && messages.data.messages.length > 0) {
-          // ดึงวันที่จริงของ email
           const emailDate = await getLatestEmailDate(gmail, item.keyword);
           foundMap[item.platform] = {
             platform_id: item.platform,
@@ -169,7 +173,6 @@ router.post('/gmail/confirm', auth, async (req, res) => {
   try {
     let added = 0;
     for (const item of platform_ids) {
-      // รองรับทั้ง string เดิมและ object ใหม่ { platform_id, subscribed_at }
       const pid = typeof item === 'string' ? item : (item.platform_id || item.id || item);
       const subDate = (typeof item === 'object' && item.subscribed_at)
         ? new Date(item.subscribed_at)
