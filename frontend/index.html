@@ -777,7 +777,8 @@ async function confirmScanSubscribe() {
   const btn = document.getElementById('confirmScanBtn');
   setLoading(btn, true, '⏳ กำลังเพิ่ม...');
   try {
-    await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: Array.from(scanSelected) });
+    const items = Array.from(scanSelected).map(pid => scanFoundList.find(f => (f.platform_id||f) === pid) || pid);
+    await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: items });
     closeScanModal(); await initDashboard();
     showToast(`เพิ่ม ${scanSelected.size} Subscription สำเร็จ! ✓`,'#00d4aa');
   } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'#ff4d6d');
@@ -798,8 +799,7 @@ async function checkGmailStatus() {
       const res = await apiFetch('/auth/gmail/scan');
       const found = res.found || [];
       if (found.length > 0) {
-        const ids = found.map(f => f.platform_id || f);
-        await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: ids });
+        await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: found });
         await initDashboard();
         showToast('พบและเพิ่ม ' + found.length + ' Subscription จาก Gmail สำเร็จ! ✓','#00d4aa');
       } else {
