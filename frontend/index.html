@@ -794,14 +794,14 @@ async function checkGmailStatus() {
     document.getElementById('gmailScanBtn').style.display    = 'flex';
     document.getElementById('gmailBadge').style.display      = 'inline-flex';
     window.history.replaceState({},'',window.location.pathname);
-    showToast('เชื่อมต่อ Gmail สำเร็จ! กำลังสแกน Subscription อัตโนมัติ... 🔍','#00d4aa');
+    // Auto-scan after connect — show results modal so user can review before confirming
+    showToast('เชื่อมต่อ Gmail สำเร็จ! กำลังสแกน Subscription... 🔍','#00d4aa');
     try {
       const res = await apiFetch('/auth/gmail/scan');
       const found = res.found || [];
+      scanFoundList = found;
       if (found.length > 0) {
-        await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: found });
-        await initDashboard();
-        showToast('พบและเพิ่ม ' + found.length + ' Subscription จาก Gmail สำเร็จ! ✓','#00d4aa');
+        showScanResults(found); // Let user review and confirm manually
       } else {
         showToast('สแกน Gmail แล้ว — ไม่พบ Subscription ใหม่','#7c6fff');
       }
