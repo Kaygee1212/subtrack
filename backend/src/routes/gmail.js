@@ -17,8 +17,8 @@ const BILLING_FILTER = '(receipt OR payment OR invoice OR billing OR renewed OR 
 const SUBSCRIPTION_KEYWORDS = [
   { keyword: 'netflix.com',           platform: 'netflix' },
   { keyword: 'spotify.com',           platform: 'spotify' },
-  { keyword: 'youtube premium',       platform: youtube' },
-  { keyword: 'youtubepremium',        platform: youtube' },
+  { keyword: 'youtube premium',       platform: 'youtube' },
+  { keyword: 'youtubepremium',        platform: 'youtube' },
   { keyword: 'disneyplus.com',        platform: 'disney' },
   { keyword: 'disney+',               platform: 'disney' },
   { keyword: 'hbomax.com',            platform: 'hbo' },
