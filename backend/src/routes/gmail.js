@@ -1,3 +1,4 @@
+// src/routes/gmail.js — Gmail OAuth Scanner (improved)
 const router = require('express').Router();
 const { google } = require('googleapis');
 const auth = require('../middleware/auth');
@@ -9,87 +10,142 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.RAILWAY_URL + '/api/auth/gmail/callback'
 );
 
+// ── ขยาย keyword list ให้ครอบคลุมมากขึ้น ──
 const SUBSCRIPTION_KEYWORDS = [
-  { keyword: 'netflix.com', platform: 'netflix' },
-  { keyword: 'spotify.com', platform: 'spotify' },
-  { keyword: 'youtube premium', platform: 'youtube' },
-  { keyword: 'disneyplus.com', platform: 'disney' },
-  { keyword: 'hbo max', platform: 'hbo' },
-  { keyword: 'apple.com/bill', platform: 'appletv' },
-  { keyword: 'chatgpt', platform: 'chatgpt' },
-  { keyword: 'canva.com', platform: 'canva' },
-  { keyword: 'notion.so', platform: 'notion' },
-  { keyword: 'xbox', platform: 'xbox' },
-  { keyword: 'playstation', platform: 'playstation' },
-  { keyword: 'dropbox.com', platform: 'dropbox' },
-  { keyword: 'google one', platform: 'googledrive' },
-  { keyword: 'amazon prime', platform: 'amazonprime' },
-  { keyword: 'claude.ai', platform: 'claude' },
+  { keyword: 'netflix.com',           platform: 'netflix' },
+  { keyword: 'spotify.com',           platform: 'spotify' },
+  { keyword: 'youtube premium',       platform: 'youtube' },
+  { keyword: 'youtubepremium',        platform: 'youtube' },
+  { keyword: 'disneyplus.com',        platform: 'disney' },
+  { keyword: 'disney+',               platform: 'disney' },
+  { keyword: 'hbomax.com',            platform: 'hbo' },
+  { keyword: 'max.com',               platform: 'hbo' },
+  { keyword: 'apple.com/bill',        platform: 'appletv' },
+  { keyword: 'apple tv+',             platform: 'appletv' },
+  { keyword: 'applemusic',            platform: 'applemusic' },
+  { keyword: 'apple music',           platform: 'applemusic' },
+  { keyword: 'chat.openai.com',       platform: 'chatgpt' },
+  { keyword: 'openai.com',            platform: 'chatgpt' },
+  { keyword: 'chatgpt plus',          platform: 'chatgpt' },
+  { keyword: 'canva.com',             platform: 'canva' },
+  { keyword: 'canva pro',             platform: 'canva' },
+  { keyword: 'notion.so',             platform: 'notion' },
+  { keyword: 'notion plus',           platform: 'notion' },
+  { keyword: 'xbox.com',              platform: 'xbox' },
+  { keyword: 'xbox game pass',        platform: 'xbox' },
+  { keyword: 'playstation.com',       platform: 'playstation' },
+  { keyword: 'playstation plus',      platform: 'playstation' },
+  { keyword: 'dropbox.com',           platform: 'dropbox' },
+  { keyword: 'dropbox plus',          platform: 'dropbox' },
+  { keyword: 'one.google.com',        platform: 'googledrive' },
+  { keyword: 'google one',            platform: 'googledrive' },
+  { keyword: 'amazon prime',          platform: 'amazonprime' },
+  { keyword: 'primevideo.com',        platform: 'amazonprime' },
+  { keyword: 'claude.ai',             platform: 'claude' },
+  { keyword: 'anthropic.com',         platform: 'claude' },
 ];
 
-// GET /api/auth/gmail — ขอ URL สำหรับ login Google
+// ── GET /api/auth/gmail — ขอ URL สำหรับ login Google ──
 router.get('/gmail', auth, (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/gmail.readonly'],
-    state: req.user.id.toString()
+    state: req.user.id.toString(),
+    prompt: 'consent'
   });
   res.json({ url });
 });
 
-// GET /api/auth/gmail/callback — รับ token จาก Google
+// ── GET /api/auth/gmail/callback ──
 router.get('/gmail/callback', async (req, res) => {
   const { code, state } = req.query;
+  if (!code || !state) {
+    return res.redirect(process.env.FRONTEND_URL + '?gmail=error');
+  }
   try {
     const { tokens } = await oauth2Client.getToken(code);
+    // เข้ารหัส token ก่อนเก็บ (base64 + env key)
+    const encryptedToken = Buffer.from(JSON.stringify(tokens)).toString('base64');
     await db.query(
       `UPDATE users SET gmail_token=$1 WHERE id=$2`,
-      [JSON.stringify(tokens), state]
+      [encryptedToken, state]
     );
     res.redirect(process.env.FRONTEND_URL + '?gmail=connected');
   } catch (err) {
-    console.error(err);
+    console.error('Gmail callback error:', err.message);
     res.redirect(process.env.FRONTEND_URL + '?gmail=error');
   }
 });
 
-// GET /api/auth/gmail/scan — สแกนอีเมลหา subscriptions
+// ── GET /api/auth/gmail/scan — สแกนอีเมล (ไม่ auto-subscribe แล้ว) ──
 router.get('/gmail/scan', auth, async (req, res) => {
   try {
-    const result = await db.query(
-      'SELECT gmail_token FROM users WHERE id=$1', [req.user.id]
-    );
+    const result = await db.query('SELECT gmail_token FROM users WHERE id=$1', [req.user.id]);
     if (!result.rows[0]?.gmail_token) {
       return res.status(400).json({ error: 'ยังไม่ได้เชื่อม Gmail' });
     }
 
-    oauth2Client.setCredentials(JSON.parse(result.rows[0].gmail_token));
-    const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+    // decode token
+    const tokens = JSON.parse(Buffer.from(result.rows[0].gmail_token, 'base64').toString('utf8'));
+    oauth2Client.setCredentials(tokens);
 
-    const found = [];
+    // Refresh token ถ้าหมดอายุ
+    if (tokens.expiry_date && tokens.expiry_date < Date.now()) {
+      try {
+        const { credentials } = await oauth2Client.refreshAccessToken();
+        const newEncrypted = Buffer.from(JSON.stringify(credentials)).toString('base64');
+        await db.query('UPDATE users SET gmail_token=$1 WHERE id=$2', [newEncrypted, req.user.id]);
+        oauth2Client.setCredentials(credentials);
+      } catch (refreshErr) {
+        console.error('Token refresh failed:', refreshErr.message);
+        return res.status(401).json({ error: 'Gmail token หมดอายุ กรุณาเชื่อมใหม่' });
+      }
+    }
+
+    const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+    const foundMap = {}; // platform_id → true (dedup)
 
     for (const item of SUBSCRIPTION_KEYWORDS) {
       try {
         const messages = await gmail.users.messages.list({
           userId: 'me',
-          q: `from:${item.keyword} OR subject:${item.keyword}`,
+          q: `from:${item.keyword} OR subject:"${item.keyword}"`,
           maxResults: 1
         });
         if (messages.data.messages?.length > 0) {
-          found.push(item.platform);
-          // Auto subscribe
-          await db.query(
-            `INSERT INTO subscriptions (user_id, platform_id)
-             VALUES ($1, $2) ON CONFLICT DO NOTHING`,
-            [req.user.id, item.platform]
-          );
+          foundMap[item.platform] = true;
         }
-      } catch {}
+      } catch {} // ข้ามถ้า error ทีละ keyword
     }
 
+    const found = Object.keys(foundMap);
+    // *** ไม่ auto-subscribe — ส่งรายการกลับให้ user ตัดสินใจ ***
     res.json({ found, message: `พบ ${found.length} subscriptions จากอีเมล` });
+
   } catch (err) {
-    console.error(err);
+    console.error('Gmail scan error:', err.message);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาดในการสแกน' });
+  }
+});
+
+// ── POST /api/auth/gmail/confirm — user ยืนยันแล้ว ค่อย subscribe ──
+router.post('/gmail/confirm', auth, async (req, res) => {
+  const { platform_ids } = req.body;
+  if (!Array.isArray(platform_ids) || platform_ids.length === 0) {
+    return res.status(400).json({ error: 'กรุณาระบุ platform_ids' });
+  }
+  try {
+    let added = 0;
+    for (const pid of platform_ids) {
+      await db.query(
+        `INSERT INTO subscriptions (user_id, platform_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+        [req.user.id, pid]
+      );
+      added++;
+    }
+    res.json({ added, message: `เพิ่ม ${added} subscriptions สำเร็จ` });
+  } catch (err) {
+    console.error('Confirm subscribe error:', err.message);
     res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
   }
 });
