@@ -528,7 +528,7 @@ const PLATFORM_LOGOS = {
   claude:      'https://cdn.simpleicons.org/anthropic/C96442',
 };
 
-let token = sessionStorage.getItem('subtrack_token') || null;
+let token = localStorage.getItem('subtrack_token') || null;
 let currentUser = null, platforms = [], userSubs = {};
 let currentFilter = 'all', scanFoundList = [], scanSelected = new Set();
 let _loginCapId, _regCapId;
@@ -565,7 +565,7 @@ async function handleLogin() {
   try {
     const res = await apiFetch('/auth/login','POST',{ email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
-    sessionStorage.setItem('subtrack_token', token);
+    localStorage.setItem('subtrack_token', token);
     await initDashboard();
   } catch (err) { showAuthError(err.message || 'ไม่สามารถเข้าสู่ระบบได้'); resetCap(_loginCapId);
   } finally { setLoading(btn, false, '🔑 เข้าสู่ระบบ'); }
@@ -584,7 +584,7 @@ async function handleRegister() {
   try {
     const res = await apiFetch('/auth/register','POST',{ name, email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
-    sessionStorage.setItem('subtrack_token', token);
+    localStorage.setItem('subtrack_token', token);
     await initDashboard();
   } catch (err) { showAuthError(err.message || 'ไม่สามารถสมัครสมาชิกได้'); resetCap(_regCapId);
   } finally { setLoading(btn, false, '✨ สมัครสมาชิก'); }
@@ -592,7 +592,7 @@ async function handleRegister() {
 
 function handleLogout() {
   token = null; currentUser = null; userSubs = {};
-  sessionStorage.removeItem('subtrack_token');
+  localStorage.removeItem('subtrack_token');
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('checkoutBar').classList.remove('show');
@@ -657,6 +657,17 @@ function filterPlatforms(type,btn) {
   btn.classList.add('active'); renderGrid();
 }
 
+function getNextBillingInfo(subscribedAt) {
+  const d = new Date(subscribedAt);
+  const now = new Date();
+  let next = new Date(d);
+  while (next <= now) { next.setMonth(next.getMonth() + 1); }
+  const days = Math.ceil((next - now) / (1000 * 60 * 60 * 24));
+  const dateStr = next.toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
+  const urgency = days <= 3 ? 'var(--red)' : days <= 7 ? '#ffd060' : 'var(--green)';
+  return { days, dateStr, urgency };
+}
+
 function getPlatformLogo(p) {
   const u = PLATFORM_LOGOS[p.id];
   if (u) return `<img src="${u}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="logo-fallback" style="display:none">${p.icon}</span>`;
@@ -670,7 +681,9 @@ function renderGrid() {
   if (currentFilter==='unsubscribed') filtered = platforms.filter(p=>!userSubs[p.id]);
   grid.innerHTML = filtered.map((p,i)=>{
     const isSub = !!userSubs[p.id];
-    const date = isSub ? new Date(userSubs[p.id].subscribed_at).toLocaleDateString('th-TH') : '';
+    const subData = isSub ? userSubs[p.id] : null;
+    const subDate = isSub ? new Date(subData.subscribed_at).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'}) : '';
+    const billing = isSub ? getNextBillingInfo(subData.subscribed_at) : null;
     return `<div class="platform-card ${isSub?'subscribed':''}" style="--card-color:${p.color};animation-delay:${i*.04}s" onclick="toggleSub('${p.id}',event)">
       <div class="card-top">
         <div class="platform-logo-wrap">${getPlatformLogo(p)}</div>
@@ -682,7 +695,11 @@ function renderGrid() {
         <span class="price-tag">฿${p.price_thb}/เดือน</span>
         <span class="sub-status">${isSub?'Active':'ยังไม่ได้สมัคร'}</span>
       </div>
-      ${isSub?`<div class="sub-date">📅 Subscribe เมื่อ ${date}<br><a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">🔗 ยกเลิก ${p.name} →</a></div>`:''}
+      ${isSub?`<div class="sub-date">
+        📅 Subscribe เมื่อ ${subDate}<br>
+        <span style="color:${billing.urgency};font-weight:600">⏰ Due ${billing.dateStr} (อีก ${billing.days} วัน)</span><br>
+        <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">🔗 ยกเลิก ${p.name} →</a>
+      </div>`:''}
     </div>`;
   }).join('');
 }
@@ -755,14 +772,28 @@ async function confirmScanSubscribe() {
 
 function closeScanModal() { document.getElementById('scanModal').classList.remove('open'); }
 
-function checkGmailStatus() {
+async async function checkGmailStatus() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('gmail')==='connected') {
     document.getElementById('gmailConnectBtn').style.display = 'none';
     document.getElementById('gmailScanBtn').style.display    = 'flex';
     document.getElementById('gmailBadge').style.display      = 'inline-flex';
-    showToast('เชื่อมต่อ Gmail สำเร็จ! กด "สแกน Subscription" เพื่อเริ่มต้น 🎉','#00d4aa');
     window.history.replaceState({},'',window.location.pathname);
+    showToast('เชื่อมต่อ Gmail สำเร็จ! กำลังสแกน Subscription อัตโนมัติ... 🔍','#00d4aa');
+    try {
+      const res = await apiFetch('/auth/gmail/scan');
+      const found = res.found || [];
+      if (found.length > 0) {
+        const ids = found.map(f => f.platform_id || f);
+        await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: ids });
+        await initDashboard();
+        showToast('พบและเพิ่ม ' + found.length + ' Subscription จาก Gmail สำเร็จ! ✓','#00d4aa');
+      } else {
+        showToast('สแกน Gmail แล้ว — ไม่พบ Subscription ใหม่','#7c6fff');
+      }
+    } catch(e) {
+      showToast('สแกน Gmail ไม่สำเร็จ กรุณาลองกด สแกน Subscription เอง','#ff4d6d');
+    }
   } else if (params.get('gmail')==='error') {
     showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่','#ff4d6d');
     window.history.replaceState({},'',window.location.pathname);
@@ -883,7 +914,14 @@ document.getElementById('paymentModal').addEventListener('click',function(e){ if
 document.getElementById('consentModal').addEventListener('click',function(e){ if(e.target===this)closeConsentModal(); });
 document.getElementById('scanModal').addEventListener('click',function(e){ if(e.target===this)closeScanModal(); });
 
-(async()=>{ if(token){ try{ currentUser=await apiFetch('/auth/me'); await initDashboard(); }catch{ handleLogout(); } } })();
+(async()=>{
+  const params = new URLSearchParams(window.location.search);
+  if(token){ try{ currentUser=await apiFetch('/auth/me'); await initDashboard(); }catch{ handleLogout(); } }
+  else if(params.get('gmail')==='connected'||params.get('gmail')==='error'){
+    window.history.replaceState({},'',window.location.pathname);
+    showAuthError('กรุณาเข้าสู่ระบบก่อนเชื่อมต่อ Gmail');
+  }
+})();
 </script>
 <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 </body>
