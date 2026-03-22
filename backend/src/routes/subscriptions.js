@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
       JOIN platforms p ON s.platform_id = p.id
       WHERE s.user_id = $1
       ORDER BY s.subscribed_at DESC
-    `, [req.user.id]);
+    `, [req.user.userId]);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -22,20 +22,22 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// POST /api/subscriptions/:platformId — subscribe
+// POST /api/subscriptions/:platformId — subscribe (optionally with subscribed_at)
 router.post('/:platformId', auth, async (req, res) => {
   const { platformId } = req.params;
-  const { reminder_days = 3 } = req.body;
+  const { reminder_days = 3, subscribed_at } = req.body;
   try {
     const platform = await db.query('SELECT * FROM platforms WHERE id=$1', [platformId]);
     if (platform.rows.length === 0) return res.status(404).json({ error: 'ไม่พบแพลตฟอร์มนี้' });
 
+    const subDate = subscribed_at ? new Date(subscribed_at) : new Date();
     const result = await db.query(
-      `INSERT INTO subscriptions (user_id, platform_id, reminder_days)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (user_id, platform_id) DO UPDATE SET reminder_days=$3
+      `INSERT INTO subscriptions (user_id, platform_id, reminder_days, subscribed_at)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (user_id, platform_id)
+       DO UPDATE SET reminder_days=$3, subscribed_at=EXCLUDED.subscribed_at
        RETURNING *`,
-      [req.user.id, platformId, reminder_days]
+      [req.user.userId, platformId, reminder_days, subDate]
     );
     res.status(201).json({ message: 'Subscribe สำเร็จ', subscription: result.rows[0] });
   } catch (err) {
@@ -50,16 +52,11 @@ router.delete('/:platformId', auth, async (req, res) => {
   try {
     const result = await db.query(
       'DELETE FROM subscriptions WHERE user_id=$1 AND platform_id=$2 RETURNING *',
-      [req.user.id, platformId]
+      [req.user.userId, platformId]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'ไม่พบ subscription นี้' });
-
-    // ดึง unsubscribe_url เพื่อส่งกลับ
     const platform = await db.query('SELECT unsubscribe_url FROM platforms WHERE id=$1', [platformId]);
-    res.json({
-      message: 'Unsubscribe สำเร็จ',
-      unsubscribe_url: platform.rows[0]?.unsubscribe_url
-    });
+    res.json({ message: 'Unsubscribe สำเร็จ', unsubscribe_url: platform.rows[0]?.unsubscribe_url });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -73,7 +70,7 @@ router.patch('/:platformId/reminder', auth, async (req, res) => {
   try {
     await db.query(
       'UPDATE subscriptions SET reminder_days=$1 WHERE user_id=$2 AND platform_id=$3',
-      [reminder_days, req.user.id, platformId]
+      [reminder_days, req.user.userId, platformId]
     );
     res.json({ message: 'อัปเดต reminder แล้ว' });
   } catch (err) {
@@ -81,7 +78,7 @@ router.patch('/:platformId/reminder', auth, async (req, res) => {
   }
 });
 
-// GET /api/subscriptions/platforms — รายการแพลตฟอร์มทั้งหมด
+// GET /api/subscriptions/platforms/all — รายการแพลตฟอร์มทั้งหมด
 router.get('/platforms/all', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM platforms ORDER BY category, name');
