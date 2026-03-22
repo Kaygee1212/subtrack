@@ -4,8 +4,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const https = require('https');
-const { pool } = require('../models/db');
-const authenticateToken = require('../middleware/auth');
+const pool = require('../models/db');
+const { authenticateToken } = require('../middleware/auth');
 
 // ── reCAPTCHA v2 verification ──
 function verifyCaptcha(token) {
@@ -37,6 +37,7 @@ function verifyCaptcha(token) {
 
 async function checkCaptcha(req, res, next) {
   const token = req.body.captchaToken;
+  // Skip verification in development or if using test key
   const isDev = process.env.NODE_ENV === 'development';
   if (isDev) return next();
   if (!token) return res.status(400).json({ error: 'กรุณายืนยัน CAPTCHA ก่อน' });
@@ -48,7 +49,8 @@ async function checkCaptcha(req, res, next) {
     next();
   } catch (e) {
     console.error('reCAPTCHA error:', e.message);
-    next(); // Fail open — graceful degradation
+    // Fail open in case Google is unreachable (graceful degradation)
+    next();
   }
 }
 
