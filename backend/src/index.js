@@ -10,30 +10,49 @@ const app = express();
 
 // ── Security middleware ──
 app.use(helmet());
+
+// Multi-origin CORS (supports Vercel, custom domain, localhost)
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://subtrack-tau.vercel.app',
+  'https://www.subtrack.com',
+  'https://subtrack.com',
+  'http://localhost:3000',
+  'http://localhost:5500',
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
-app.use(express.json());app.set('trust proxy', 1);
+
+app.use(express.json());
+app.set('trust proxy', 1);
 
 // Rate limiting
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100, trustProxy: true });
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, trustProxy: true });
-app.use('/api', limiter);
-app.use('/api/auth', authLimiter);
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, trustProxy: true });
+app.use('/api/', limiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 
-// ── Routes ──
-app.use('/api/auth',          require('./routes/auth'));
-app.use('/api/auth',          require('./routes/gmail'));
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/auth', require('./routes/gmail'));
 app.use('/api/subscriptions', require('./routes/subscriptions'));
-app.use('/api/payment',       require('./routes/payment'));
+app.use('/api/payment', require('./routes/payment'));
 
 // Health check
-app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
+app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
-// ── Start ──
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 SubTrack API running on port ${PORT}`);
-  startReminderCron();
-});
+// Start cron jobs
+startReminderCron();
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Subtrack API running on port ${PORT}`));
