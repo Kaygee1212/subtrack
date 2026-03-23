@@ -11,7 +11,6 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 // ── BILLING_FILTER: เฉพาะอีเมลยืนยันการชำระเงิน/สมัครสมาชิกจริงๆ ──
-// ตัดคำกว้างๆ เช่น "billing", "payment", "ยืนยัน" ออก เพราะตรงกับ marketing email ด้วย
 const BILLING_FILTER = [
   'receipt',
   'invoice',
@@ -46,38 +45,61 @@ const BILLING_FILTER = [
   '"การสมัครสมาชิกของคุณ"',
 ].join(' OR ');
 
+// ── SUBSCRIPTION_KEYWORDS ──
+// หลายแพลตฟอร์มใช้ Stripe billing → อีเมลมาจาก stripe.com แต่มีชื่อแบรนด์ใน subject
+// ดังนั้นต้องค้นทั้ง domain และ brand name
 const SUBSCRIPTION_KEYWORDS = [
+  // Netflix
   { keyword: 'netflix.com',           platform: 'netflix' },
+  // Spotify
   { keyword: 'spotify.com',           platform: 'spotify' },
+  // YouTube Premium
   { keyword: 'youtube premium',       platform: 'youtube' },
   { keyword: 'youtubepremium',        platform: 'youtube' },
+  // Disney+
   { keyword: 'disneyplus.com',        platform: 'disney' },
-  { keyword: 'disney+',              platform: 'disney' },
-  { keyword: 'hbomax.com',           platform: 'hbo' },
-  { keyword: 'max.com',              platform: 'hbo' },
-  { keyword: 'apple.com/bill',       platform: 'appletv' },
-  { keyword: 'apple tv+',            platform: 'appletv' },
-  { keyword: 'applemusic',           platform: 'applemusic' },
-  { keyword: 'apple music',          platform: 'applemusic' },
-  { keyword: 'chat.openai.com',      platform: 'chatgpt' },
-  { keyword: 'openai.com',           platform: 'chatgpt' },
-  { keyword: 'chatgpt plus',         platform: 'chatgpt' },
-  { keyword: 'canva.com',            platform: 'canva' },
-  { keyword: 'canva pro',            platform: 'canva' },
-  { keyword: 'notion.so',            platform: 'notion' },
-  { keyword: 'notion plus',          platform: 'notion' },
-  { keyword: 'xbox.com',             platform: 'xbox' },
-  { keyword: 'xbox game pass',       platform: 'xbox' },
-  { keyword: 'playstation.com',      platform: 'playstation' },
-  { keyword: 'playstation plus',     platform: 'playstation' },
-  { keyword: 'dropbox.com',          platform: 'dropbox' },
-  { keyword: 'dropbox plus',         platform: 'dropbox' },
-  { keyword: 'one.google.com',       platform: 'googledrive' },
-  { keyword: 'google one',           platform: 'googledrive' },
-  { keyword: 'amazon prime',         platform: 'amazonprime' },
-  { keyword: 'primevideo.com',       platform: 'amazonprime' },
-  { keyword: 'claude.ai',            platform: 'claude' },
-  { keyword: 'anthropic.com',        platform: 'claude' },
+  { keyword: 'disney+',               platform: 'disney' },
+  // HBO/Max
+  { keyword: 'hbomax.com',            platform: 'hbo' },
+  { keyword: 'max.com',               platform: 'hbo' },
+  // Apple — bills from apple.com
+  { keyword: 'apple.com/bill',        platform: 'appletv' },
+  { keyword: 'apple tv+',             platform: 'appletv' },
+  { keyword: 'apple music',           platform: 'applemusic' },
+  { keyword: 'applemusic',            platform: 'applemusic' },
+  // Xbox/Microsoft
+  { keyword: 'xbox.com',              platform: 'xbox' },
+  { keyword: 'xbox game pass',        platform: 'xbox' },
+  { keyword: 'microsoft.com',         platform: 'xbox' },
+  // PlayStation
+  { keyword: 'playstation.com',       platform: 'playstation' },
+  { keyword: 'playstation plus',      platform: 'playstation' },
+  // Dropbox
+  { keyword: 'dropbox.com',           platform: 'dropbox' },
+  // Google One
+  { keyword: 'one.google.com',        platform: 'googledrive' },
+  { keyword: 'google one',            platform: 'googledrive' },
+  // Amazon Prime
+  { keyword: 'amazon prime',          platform: 'amazonprime' },
+  { keyword: 'primevideo.com',        platform: 'amazonprime' },
+  // OpenAI/ChatGPT — Stripe billing: receipts มาจาก stripe.com มี "OpenAI" ใน subject
+  { keyword: 'openai.com',            platform: 'chatgpt' },
+  { keyword: 'chatgpt plus',          platform: 'chatgpt' },
+  { keyword: 'OpenAI',                platform: 'chatgpt' },
+  // Canva — Stripe billing
+  { keyword: 'canva.com',             platform: 'canva' },
+  { keyword: 'canva pro',             platform: 'canva' },
+  { keyword: 'Canva',                 platform: 'canva' },
+  // Notion — Stripe billing
+  { keyword: 'notion.so',             platform: 'notion' },
+  { keyword: 'notion plus',           platform: 'notion' },
+  { keyword: 'Notion',                platform: 'notion' },
+  // Claude/Anthropic — Stripe billing: receipts มาจาก stripe.com มี "Anthropic" ใน subject
+  // เช่น subject: "Your receipt from Anthropic" หรือ "Receipt from Anthropic, Inc."
+  { keyword: 'anthropic.com',         platform: 'claude' },
+  { keyword: 'claude.ai',             platform: 'claude' },
+  { keyword: 'Claude Pro',            platform: 'claude' },
+  { keyword: 'Anthropic',             platform: 'claude' }, // KEY: จับ Stripe receipt ของ Claude Pro
 ];
 
 // ── GET /api/auth/gmail ──
@@ -109,20 +131,16 @@ router.get('/gmail/callback', async (req, res) => {
 // ── helper: หา billing email จริงๆ (วันแรก, วันล่าสุด, จำนวนครั้ง) ──
 async function getEmailInfo(gmail, keyword) {
   try {
-    // ต้องมีทั้ง keyword + คำยืนยันการชำระเงินจริง
     const q = '(from:' + keyword + ' OR subject:"' + keyword + '") (' + BILLING_FILTER + ')';
     const messages = await gmail.users.messages.list({ userId: 'me', q, maxResults: 50 });
     if (!messages.data.messages || messages.data.messages.length === 0) return null;
-
     const count = messages.data.messages.length;
     const newestId = messages.data.messages[0].id;
     const oldestId = messages.data.messages[count - 1].id;
-
     const [newest, oldest] = await Promise.all([
       gmail.users.messages.get({ userId: 'me', id: newestId, format: 'metadata', metadataHeaders: ['Date'] }),
       gmail.users.messages.get({ userId: 'me', id: oldestId, format: 'metadata', metadataHeaders: ['Date'] }),
     ]);
-
     return {
       subscribed_at: new Date(parseInt(oldest.data.internalDate)).toISOString(),
       latest_at: new Date(parseInt(newest.data.internalDate)).toISOString(),
@@ -140,10 +158,8 @@ router.get('/gmail/scan', auth, async (req, res) => {
     if (!result.rows[0]?.gmail_token) {
       return res.status(400).json({ error: 'ยังไม่ได้เชื่อม Gmail' });
     }
-
     const tokens = JSON.parse(Buffer.from(result.rows[0].gmail_token, 'base64').toString('utf8'));
     oauth2Client.setCredentials(tokens);
-
     if (tokens.expiry_date && tokens.expiry_date < Date.now()) {
       try {
         const { credentials } = await oauth2Client.refreshAccessToken();
@@ -155,14 +171,11 @@ router.get('/gmail/scan', auth, async (req, res) => {
         return res.status(401).json({ error: 'Gmail token หมดอายุ กรุณาเชื่อมใหม่' });
       }
     }
-
     const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
     const foundMap = {};
-
     for (const item of SUBSCRIPTION_KEYWORDS) {
-      if (foundMap[item.platform]) continue;
+      if (foundMap[item.platform]) continue; // แพลตฟอร์มนี้เจอแล้ว ข้ามได้
       try {
-        // ใช้ BILLING_FILTER เข้มงวด: ต้องมีคำยืนยันการชำระเงินจริงๆ
         const check = await gmail.users.messages.list({
           userId: 'me',
           q: '(from:' + item.keyword + ' OR subject:"' + item.keyword + '") (' + BILLING_FILTER + ')',
@@ -179,12 +192,10 @@ router.get('/gmail/scan', auth, async (req, res) => {
             };
           }
         }
-      } catch {} // ข้าม keyword ที่ error
+      } catch {}
     }
-
     const found = Object.values(foundMap);
     res.json({ found, message: 'พบ ' + found.length + ' subscriptions จากอีเมล' });
-
   } catch (err) {
     console.error('Gmail scan error:', err.message);
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการสแกน' });
