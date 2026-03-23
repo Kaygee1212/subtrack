@@ -3,13 +3,12 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const db = require('../models/db');
 
-// GET /api/subscriptions — ดึงรายการ sub ทั้งหมดของ user
+// GET /api/subscriptions — ดึงรายการ sub ทั้งหมดของ user (กรองด้วย user_id จาก JWT เสมอ)
 router.get('/', auth, async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT s.id, s.subscribed_at, s.reminder_days,
-             p.id as platform_id, p.name, p.icon, p.category,
-             p.price_thb, p.color, p.unsubscribe_url
+      SELECT s.id, s.subscribed_at, s.reminder_days, s.latest_billing_at, s.months_paid,
+             p.id as platform_id, p.name, p.icon, p.category, p.price_thb, p.color, p.unsubscribe_url
       FROM subscriptions s
       JOIN platforms p ON s.platform_id = p.id
       WHERE s.user_id = $1
@@ -22,20 +21,19 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// POST /api/subscriptions/:platformId — subscribe (optionally with subscribed_at)
+// POST /api/subscriptions/:platformId — subscribe
 router.post('/:platformId', auth, async (req, res) => {
   const { platformId } = req.params;
   const { reminder_days = 3, subscribed_at } = req.body;
   try {
     const platform = await db.query('SELECT * FROM platforms WHERE id=$1', [platformId]);
     if (platform.rows.length === 0) return res.status(404).json({ error: 'ไม่พบแพลตฟอร์มนี้' });
-
     const subDate = subscribed_at ? new Date(subscribed_at) : new Date();
     const result = await db.query(
       `INSERT INTO subscriptions (user_id, platform_id, reminder_days, subscribed_at)
        VALUES ($1, $2, $3, $4)
-       ON CONFLICT (user_id, platform_id)
-       DO UPDATE SET reminder_days=$3, subscribed_at=EXCLUDED.subscribed_at
+       ON CONFLICT (user_id, platform_id) DO UPDATE SET
+         reminder_days=$3, subscribed_at=EXCLUDED.subscribed_at
        RETURNING *`,
       [req.user.userId, platformId, reminder_days, subDate]
     );
@@ -63,7 +61,7 @@ router.delete('/:platformId', auth, async (req, res) => {
   }
 });
 
-// PATCH /api/subscriptions/:platformId/reminder — ตั้งวันแจ้งเตือน
+// PATCH /api/subscriptions/:platformId/reminder
 router.patch('/:platformId/reminder', auth, async (req, res) => {
   const { platformId } = req.params;
   const { reminder_days } = req.body;
@@ -78,7 +76,7 @@ router.patch('/:platformId/reminder', auth, async (req, res) => {
   }
 });
 
-// GET /api/subscriptions/platforms/all — รายการแพลตฟอร์มทั้งหมด
+// GET /api/subscriptions/platforms/all — รายการแพลตฟอร์มทั้งหมด (ไม่ต้อง auth)
 router.get('/platforms/all', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM platforms ORDER BY category, name');
