@@ -47,6 +47,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/auth', require('./routes/gmail'));
 app.use('/api/subscriptions', require('./routes/subscriptions'));
 app.use('/api/payment', require('./routes/payment'));
+app.use('/api/statement', require('./routes/statement'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
