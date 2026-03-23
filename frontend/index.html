@@ -609,7 +609,7 @@ async function handleRegister() {
 }
 
 function handleLogout() {
-  token = null; currentUser = null; userSubs = {};
+  token = null; currentUser = null; userSubs = {}; platforms = []; scanFoundList = []; scanSelected = new Set();
   localStorage.removeItem('subtrack_token');
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('authScreen').style.display = 'flex';
@@ -950,8 +950,8 @@ async function handleStatementUpload(input, event) {
   try {
     const formData = new FormData();
     formData.append('statement', input.files[0]);
-    const token = localStorage.getItem('token');
-    const res = await fetch('/api/statement/parse', {
+    // token is the global variable set at login
+    const res = await fetch(API_URL + '/statement/parse', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token },
       body: formData
