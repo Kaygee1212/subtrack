@@ -141,10 +141,16 @@ async function getEmailInfo(gmail, keyword) {
       gmail.users.messages.get({ userId: 'me', id: newestId, format: 'metadata', metadataHeaders: ['Date'] }),
       gmail.users.messages.get({ userId: 'me', id: oldestId, format: 'metadata', metadataHeaders: ['Date'] }),
     ]);
+    const oldestTs = parseInt(oldest.data.internalDate);
+    const newestTs = parseInt(newest.data.internalDate);
+    const MS_PER_MONTH = 30.44 * 24 * 60 * 60 * 1000;
+    // คำนวณจากช่วงเวลาระหว่าง email เก่าสุด → ใหม่สุด ไม่ใช่นับจำนวน email
+    // ป้องกัน: ถ้า Stripe ส่งหลาย email พร้อมกันตอน signup จะได้ = 1 ไม่ใช่ 3
+    const months_count = Math.max(1, Math.round((newestTs - oldestTs) / MS_PER_MONTH) + 1);
     return {
-      subscribed_at: new Date(parseInt(oldest.data.internalDate)).toISOString(),
-      latest_at: new Date(parseInt(newest.data.internalDate)).toISOString(),
-      months_count: count
+      subscribed_at: new Date(oldestTs).toISOString(),
+      latest_at: new Date(newestTs).toISOString(),
+      months_count
     };
   } catch {
     return null;
