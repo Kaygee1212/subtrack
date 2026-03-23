@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SubTrack â à¸à¸±à¸à¸à¸²à¸£ Subscription à¸à¸­à¸à¸à¸¸à¸</title>
+<title>SubTrack Ã¢ÂÂ Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£ Subscription Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸Â</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -103,7 +103,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 .logo-fallback{font-size:1.5rem}
 .sub-toggle{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--muted)}
 .subscribed .sub-toggle{background:var(--accent);border-color:var(--accent);color:#fff}
-.sub-toggle::after{content:'+'}.subscribed .sub-toggle::after{content:'â'}
+.sub-toggle::after{content:'+'}.subscribed .sub-toggle::after{content:'Ã¢ÂÂ'}
 .platform-name{font-weight:600;font-size:.95rem;margin-bottom:2px}
 .platform-category{font-size:.75rem;color:var(--muted);margin-bottom:10px}
 .platform-price{display:flex;align-items:center;justify-content:space-between}
@@ -217,6 +217,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 @keyframes spin{to{transform:rotate(360deg)}}
 
 @media(max-width:600px){.stats-row{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.pay-method-tabs{grid-template-columns:1fr}.platform-grid{grid-template-columns:1fr 1fr}.auth-card{padding:20px}}
+.btn-link-subtle{background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;padding:0;font-family:'Sarabun',sans-serif;text-decoration:underline;}.btn-link-subtle:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -225,52 +226,55 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div id="authScreen">
   <div class="auth-box">
     <div class="auth-logo">
-      <div class="auth-logo-mark">ð³</div>
+      <div class="auth-logo-mark">Ã°ÂÂÂ³</div>
       <h1>SubTrack</h1>
-      <p>à¸à¸±à¸à¸à¸²à¸£ Subscription à¸à¸¸à¸à¸­à¸¢à¹à¸²à¸à¹à¸à¸à¸µà¹à¹à¸à¸µà¸¢à¸§</p>
+      <p>Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£ Subscription Ã Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¸Â¢Ã Â¸Â§</p>
     </div>
     <div class="auth-card">
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="showAuthTab('login',this)">à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸</button>
-        <button class="auth-tab" onclick="showAuthTab('register',this)">à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸</button>
+        <button class="auth-tab active" onclick="showAuthTab('login',this)">Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â</button>
+        <button class="auth-tab" onclick="showAuthTab('register',this)">Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸Â</button>
       </div>
       <div id="authError" class="auth-error"></div>
 
       <!-- Login -->
       <div id="loginForm">
         <div class="form-group">
-          <label class="form-label">à¸­à¸µà¹à¸¡à¸¥</label>
+          <label class="form-label">Ã Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥</label>
           <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')handleLogin()">
         </div>
         <div class="form-group">
-          <label class="form-label">à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸</label>
-          <input class="form-input" id="loginPassword" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" onkeydown="if(event.key==='Enter')handleLogin()">
+          <label class="form-label">Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸ÂªÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â</label>
+          <input class="form-input" id="loginPassword" type="password" placeholder="Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢" onkeydown="if(event.key==='Enter')handleLogin()">
         </div>
         <div class="captcha-wrap" id="loginCaptchaWrap">
           <div id="loginCaptchaDiv"></div>
         </div>
-        <button class="btn-auth" id="loginBtn" onclick="handleLogin()">ð à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸</button>
+        <button class="btn-auth" id="loginBtn" onclick="handleLogin()">Ã°ÂÂÂ Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â</button>
+      </div>
+      <div style="text-align:right;margin-top:6px">
+        <button class="btn-link-subtle" onclick="openForgotPassword()" type="button">ลืมรหัสผ่าน?</button>
       </div>
 
       <!-- Register -->
       <div id="registerForm" style="display:none">
         <div class="form-group">
-          <label class="form-label">à¸à¸·à¹à¸­-à¸à¸²à¸¡à¸ªà¸à¸¸à¸¥</label>
-          <input class="form-input" id="regName" type="text" placeholder="à¸à¸·à¹à¸­à¸à¸­à¸à¸à¸¸à¸">
+          <label class="form-label">Ã Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­-Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¡Ã Â¸ÂªÃ Â¸ÂÃ Â¸Â¸Ã Â¸Â¥</label>
+          <input class="form-input" id="regName" type="text" placeholder="Ã Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸Â">
         </div>
         <div class="form-group">
-          <label class="form-label">à¸­à¸µà¹à¸¡à¸¥</label>
+          <label class="form-label">Ã Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥</label>
           <input class="form-input" id="regEmail" type="email" placeholder="your@email.com">
         </div>
         <div class="form-group">
-          <label class="form-label">à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸ (à¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 6 à¸à¸±à¸§)</label>
-          <input class="form-input" id="regPassword" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" onkeydown="if(event.key==='Enter')handleRegister()">
+          <label class="form-label">Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸ÂªÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â (Ã Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¢ 6 Ã Â¸ÂÃ Â¸Â±Ã Â¸Â§)</label>
+          <input class="form-input" id="regPassword" type="password" placeholder="Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢" onkeydown="if(event.key==='Enter')handleRegister()">
         </div>
         <div class="captcha-wrap">
           <div id="registerCaptchaDiv"></div>
         </div>
-        <button class="btn-auth" id="registerBtn" onclick="handleRegister()">â¨ à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸</button>
-        <p class="auth-tos">à¸à¸²à¸£à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸ à¹à¸ªà¸à¸à¸§à¹à¸²à¸à¸¸à¸à¸¢à¸­à¸¡à¸£à¸±à¸ <a href="#">Terms of Service</a> à¹à¸¥à¸° <a href="#">Privacy Policy</a></p>
+        <button class="btn-auth" id="registerBtn" onclick="handleRegister()">Ã¢ÂÂ¨ Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸Â</button>
+        <p class="auth-tos">Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸Â Ã Â¹ÂÃ Â¸ÂªÃ Â¸ÂÃ Â¸ÂÃ Â¸Â§Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â­Ã Â¸Â¡Ã Â¸Â£Ã Â¸Â±Ã Â¸Â <a href="#">Terms of Service</a> Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â° <a href="#">Privacy Policy</a></p>
       </div>
     </div>
   </div>
@@ -280,7 +284,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-logo">
-      <div class="topbar-logo-mark">ð³</div>
+      <div class="topbar-logo-mark">Ã°ÂÂÂ³</div>
       <span>SubTrack</span>
     </div>
     <div class="topbar-right">
@@ -288,26 +292,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
         <div class="user-avatar" id="userAvatarInitial">U</div>
         <span id="userNameDisplay"></span>
       </div>
-      <button class="btn-logout" onclick="handleLogout()">à¸­à¸­à¸à¸à¸²à¸à¸£à¸°à¸à¸</button>
+      <button class="btn-logout" onclick="handleLogout()">Ã Â¸Â­Ã Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â</button>
     </div>
   </div>
 
   <div class="main">
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-label">à¹à¸à¹à¸à¸²à¸à¸­à¸¢à¸¹à¹</div>
+        <div class="stat-label">Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸Â¢Ã Â¸Â¹Ã Â¹Â</div>
         <div class="stat-value" id="statActive">0</div>
         <div class="stat-sub">Subscriptions</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">à¹à¸à¸¥à¸à¸à¸­à¸£à¹à¸¡à¸à¸±à¹à¸à¸«à¸¡à¸</div>
+        <div class="stat-label">Ã Â¹ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸ÂÃ Â¸ÂÃ Â¸Â­Ã Â¸Â£Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â¡Ã Â¸Â</div>
         <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-sub">à¸à¸£à¸´à¸à¸²à¸£</div>
+        <div class="stat-sub">Ã Â¸ÂÃ Â¸Â£Ã Â¸Â´Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">à¸à¹à¸²à¹à¸à¹à¸à¹à¸²à¸¢ / à¹à¸à¸·à¸­à¸</div>
-        <div class="stat-value" id="statCost" style="font-size:1.5rem">à¸¿0</div>
-        <div class="stat-sub">à¸à¸²à¸</div>
+        <div class="stat-label">Ã Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â¢ / Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</div>
+        <div class="stat-value" id="statCost" style="font-size:1.5rem">Ã Â¸Â¿0</div>
+        <div class="stat-sub">Ã Â¸ÂÃ Â¸Â²Ã Â¸Â</div>
       </div>
     </div>
 
@@ -317,30 +321,30 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
         <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
       </div>
       <div class="gmail-info">
-        <h3>ð§ à¸ªà¹à¸à¸ Gmail à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´</h3>
-        <p>à¸à¹à¸à¸«à¸² Subscription à¸à¸µà¹à¸à¸¸à¸à¸ªà¸¡à¸±à¸à¸£à¹à¸§à¹à¹à¸ Gmail à¹à¸à¸¢à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´ Â· à¸à¸¥à¸­à¸à¸ à¸±à¸¢à¸à¸²à¸¡ PDPA</p>
+        <h3>Ã°ÂÂÂ§ Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â Gmail Ã Â¸Â­Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â´</h3>
+        <p>Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â² Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â§Ã Â¹ÂÃ Â¹ÂÃ Â¸Â Gmail Ã Â¹ÂÃ Â¸ÂÃ Â¸Â¢Ã Â¸Â­Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â´ ÃÂ· Ã Â¸ÂÃ Â¸Â¥Ã Â¸Â­Ã Â¸ÂÃ Â¸Â Ã Â¸Â±Ã Â¸Â¢Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¡ PDPA</p>
       </div>
       <div class="gmail-actions">
-        <div class="badge-connected" id="gmailBadge">â à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­à¹à¸¥à¹à¸§</div>
+        <div class="badge-connected" id="gmailBadge">Ã¢ÂÂ Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â§</div>
         <button class="btn-gmail btn-gmail-connect" id="gmailConnectBtn" onclick="openConsentModal()">
-          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;object-fit:contain" alt="G"> à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail
+          <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;object-fit:contain" alt="G"> Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­ Gmail
         </button>
         <button class="btn-gmail btn-gmail-scan" id="gmailScanBtn" onclick="scanGmail()">
-          ð® à¸ªà¹à¸à¸ Subscription
+          Ã°ÂÂÂ® Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â Subscription
         
         <input type="file" id="statementFileInput" accept=".pdf" style="display:none" onchange="handleStatementUpload(this,event)">
         <button class="btn-gmail btn-gmail-scan" style="background:linear-gradient(135deg,#059669,#10b981)" onclick="document.getElementById('statementFileInput').click()">
-          ð Statement PDF
+          Ã°ÂÂÂ Statement PDF
         </button></button>
       </div>
     </div>
 
     <div class="section-header">
-      <div class="section-title">à¹à¸à¸¥à¸à¸à¸­à¸£à¹à¸¡à¸à¸±à¹à¸à¸«à¸¡à¸</div>
+      <div class="section-title">Ã Â¹ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸ÂÃ Â¸ÂÃ Â¸Â­Ã Â¸Â£Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â¡Ã Â¸Â</div>
       <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterPlatforms('all',this)">à¸à¸±à¹à¸à¸«à¸¡à¸</button>
-        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">à¸ªà¸¡à¸±à¸à¸£à¹à¸¥à¹à¸§</button>
-        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">à¸¢à¸±à¸à¹à¸¡à¹à¸ªà¸¡à¸±à¸à¸£</button>
+        <button class="filter-tab active" onclick="filterPlatforms('all',this)">Ã Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â¡Ã Â¸Â</button>
+        <button class="filter-tab" onclick="filterPlatforms('subscribed',this)">Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â§</button>
+        <button class="filter-tab" onclick="filterPlatforms('unsubscribed',this)">Ã Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£</button>
       </div>
     </div>
     <div class="platform-grid" id="platformGrid"></div>
@@ -350,18 +354,18 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div class="checkout-bar" id="checkoutBar">
   <div class="checkout-info">
     <span class="checkout-count" id="checkoutCount">0</span>
-    <span style="font-size:.88rem;font-weight:600">Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸</span>
-    <span class="checkout-amount" id="checkoutAmount">à¸¿0/à¹à¸à¸·à¸­à¸</span>
+    <span style="font-size:.88rem;font-weight:600">Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸Â</span>
+    <span class="checkout-amount" id="checkoutAmount">Ã Â¸Â¿0/Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</span>
   </div>
-  <button class="btn-checkout" onclick="openCheckout()">ð³ à¸à¸³à¸£à¸°à¹à¸à¸´à¸ â</button>
+  <button class="btn-checkout" onclick="openCheckout()">Ã°ÂÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â Ã¢ÂÂ</button>
 </div>
 
 <!-- GMAIL PERMISSION MODAL -->
 <div class="modal-overlay" id="consentModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">ð à¸à¸­à¸ªà¸´à¸à¸à¸´à¹à¹à¸à¹à¸²à¸à¸¶à¸ Gmail</div>
-      <button class="modal-close" onclick="closeConsentModal()">â</button>
+      <div class="modal-title">Ã°ÂÂÂ Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂªÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â¶Ã Â¸Â Gmail</div>
+      <button class="modal-close" onclick="closeConsentModal()">Ã¢ÂÂ</button>
     </div>
     <div class="modal-body">
       <div class="gmail-perm-header">
@@ -369,52 +373,52 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
           <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" alt="Gmail">
         </div>
         <div>
-          <div class="gmail-perm-title">SubTrack à¸à¸­à¹à¸à¹à¸²à¸à¸¶à¸ Gmail à¸à¸­à¸à¸à¸¸à¸</div>
-          <div class="gmail-perm-sub">à¹à¸à¸·à¹à¸­à¸à¹à¸à¸«à¸² Subscription à¸­à¸±à¸à¹à¸à¸¡à¸±à¸à¸´ â à¸­à¹à¸²à¸à¸­à¸¢à¹à¸²à¸à¹à¸à¸µà¸¢à¸§</div>
+          <div class="gmail-perm-title">SubTrack Ã Â¸ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â¶Ã Â¸Â Gmail Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸Â</div>
+          <div class="gmail-perm-sub">Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â² Subscription Ã Â¸Â­Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â´ Ã¢ÂÂ Ã Â¸Â­Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¸Â¢Ã Â¸Â§</div>
         </div>
       </div>
 
-      <div class="perm-section-title">à¸ªà¸´à¸à¸à¸´à¹à¸à¸µà¹ SubTrack à¸à¹à¸­à¸à¸à¸²à¸£</div>
+      <div class="perm-section-title">Ã Â¸ÂªÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹Â SubTrack Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£</div>
       <div class="consent-list">
         <div class="consent-item">
-          <div class="consent-icon">ð</div>
+          <div class="consent-icon">Ã°ÂÂÂ</div>
           <div class="consent-text">
-            <strong>à¸­à¹à¸²à¸à¸­à¸µà¹à¸¡à¸¥ (Read-only)</strong>
-            <span>SubTrack à¸­à¹à¸²à¸à¸­à¸µà¹à¸¡à¸¥à¹à¸à¸·à¹à¸­à¸à¹à¸à¸«à¸²à¸à¸·à¹à¸­à¸à¸£à¸´à¸à¸²à¸£ Subscription à¹à¸à¹à¸²à¸à¸±à¹à¸ à¹à¸¡à¹à¸¡à¸µà¸à¸²à¸£à¹à¸à¹à¹à¸ à¸¥à¸ à¸«à¸£à¸·à¸­à¸ªà¹à¸à¸­à¸µà¹à¸¡à¸¥à¹à¸à¸à¸±à¹à¸à¸ªà¸´à¹à¸</span>
+            <strong>Ã Â¸Â­Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥ (Read-only)</strong>
+            <span>SubTrack Ã Â¸Â­Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â²Ã Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â£Ã Â¸Â´Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£ Subscription Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸Â Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂµÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¹ÂÃ Â¸Â Ã Â¸Â¥Ã Â¸Â Ã Â¸Â«Ã Â¸Â£Ã Â¸Â·Ã Â¸Â­Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂªÃ Â¸Â´Ã Â¹ÂÃ Â¸Â</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">ð</div>
+          <div class="consent-icon">Ã°ÂÂÂ</div>
           <div class="consent-text">
-            <strong>à¸à¹à¸à¸«à¸²à¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸à¸µà¹à¸¢à¸§à¸à¹à¸­à¸</strong>
-            <span>à¸à¹à¸à¸à¹à¸§à¸¢ keyword à¹à¸à¹à¸ "subscription", "invoice", "receipt", "renewal", "billing" à¹à¸à¸·à¹à¸­à¸£à¸°à¸à¸¸à¸à¸£à¸´à¸à¸²à¸£à¸à¸µà¹à¸à¸¸à¸à¸ªà¸¡à¸±à¸à¸£à¹à¸§à¹</span>
+            <strong>Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â²Ã Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸Â¢Ã Â¸Â§Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â</strong>
+            <span>Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â§Ã Â¸Â¢ keyword Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â "subscription", "invoice", "receipt", "renewal", "billing" Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸Â£Ã Â¸Â´Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â§Ã Â¹Â</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">ð¡ï¸</div>
+          <div class="consent-icon">Ã°ÂÂÂ¡Ã¯Â¸Â</div>
           <div class="consent-text">
-            <strong>à¸à¸§à¸²à¸¡à¹à¸à¹à¸à¸ªà¹à¸§à¸à¸à¸±à¸§ (PDPA)</strong>
-            <span>SubTrack à¹à¸à¹à¸à¹à¸à¸à¸²à¸° Access Token à¸£à¸¹à¸à¹à¸à¸à¹à¸à¹à¸²à¸£à¸«à¸±à¸ª à¹à¸¥à¸°à¸à¸à¸´à¸à¸±à¸à¸´à¸à¸²à¸¡ à¸.à¸£.à¸. à¸à¸¸à¹à¸¡à¸à¸£à¸­à¸à¸à¹à¸­à¸¡à¸¹à¸¥à¸ªà¹à¸§à¸à¸à¸¸à¸à¸à¸¥ à¸.à¸¨. 2562</span>
+            <strong>Ã Â¸ÂÃ Â¸Â§Ã Â¸Â²Ã Â¸Â¡Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂªÃ Â¹ÂÃ Â¸Â§Ã Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¸Â§ (PDPA)</strong>
+            <span>SubTrack Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â° Access Token Ã Â¸Â£Ã Â¸Â¹Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸Âª Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â°Ã Â¸ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¡ Ã Â¸Â.Ã Â¸Â£.Ã Â¸Â. Ã Â¸ÂÃ Â¸Â¸Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂÃ Â¸Â£Ã Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸Â¹Ã Â¸Â¥Ã Â¸ÂªÃ Â¹ÂÃ Â¸Â§Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥ Ã Â¸Â.Ã Â¸Â¨. 2562</span>
           </div>
         </div>
         <div class="consent-item">
-          <div class="consent-icon">ð«</div>
+          <div class="consent-icon">Ã°ÂÂÂ«</div>
           <div class="consent-text">
-            <strong>à¸ªà¸´à¹à¸à¸à¸µà¹ SubTrack à¹à¸¡à¹à¸à¸³</strong>
-            <span>à¹à¸¡à¹à¸ªà¹à¸/à¸¥à¸/à¹à¸à¹à¹à¸à¸­à¸µà¹à¸¡à¸¥ Â· à¹à¸¡à¹à¹à¸à¸£à¹à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸±à¸à¸à¸¸à¸à¸à¸¥à¸à¸µà¹à¸ªà¸²à¸¡ Â· à¹à¸¡à¹à¹à¸à¹à¸²à¸à¸¶à¸à¹à¸à¸·à¹à¸­à¸«à¸²à¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸¡à¹à¹à¸à¸µà¹à¸¢à¸§à¸à¸±à¸ Subscription</span>
+            <strong>Ã Â¸ÂªÃ Â¸Â´Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹Â SubTrack Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂÃ Â¸Â³</strong>
+            <span>Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂªÃ Â¹ÂÃ Â¸Â/Ã Â¸Â¥Ã Â¸Â/Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥ ÃÂ· Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸Â¹Ã Â¸Â¥Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸ÂªÃ Â¸Â²Ã Â¸Â¡ ÃÂ· Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â¶Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â«Ã Â¸Â²Ã Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸Â¢Ã Â¸Â§Ã Â¸ÂÃ Â¸Â±Ã Â¸Â Subscription</span>
           </div>
         </div>
       </div>
 
       <div class="consent-warning">
-        â ï¸ à¸«à¸²à¸à¸à¹à¸­à¸à¸à¸²à¸£à¸¢à¸à¹à¸¥à¸´à¸à¸ªà¸´à¸à¸à¸´à¹à¹à¸à¸ à¸²à¸¢à¸«à¸¥à¸±à¸ à¹à¸à¸à¸µà¹ <strong>myaccount.google.com/permissions</strong> à¹à¸¥à¹à¸§à¸¥à¸ SubTrack à¸­à¸­à¸ â à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸°à¸à¸¹à¸à¸¥à¸à¸à¸²à¸à¸£à¸°à¸à¸à¸à¸­à¸à¹à¸£à¸²à¸à¸±à¸à¸à¸µ
+        Ã¢ÂÂ Ã¯Â¸Â Ã Â¸Â«Ã Â¸Â²Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â Ã Â¸Â²Ã Â¸Â¢Ã Â¸Â«Ã Â¸Â¥Ã Â¸Â±Ã Â¸Â Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹Â <strong>myaccount.google.com/permissions</strong> Ã Â¹ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â§Ã Â¸Â¥Ã Â¸Â SubTrack Ã Â¸Â­Ã Â¸Â­Ã Â¸Â Ã¢ÂÂ Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸Â¹Ã Â¸Â¥Ã Â¸ÂÃ Â¸Â°Ã Â¸ÂÃ Â¸Â¹Ã Â¸ÂÃ Â¸Â¥Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸Â£Ã Â¸Â²Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Âµ
       </div>
 
       <div class="consent-btns">
-        <button class="btn-consent-cancel" onclick="closeConsentModal()">à¸¢à¸à¹à¸¥à¸´à¸</button>
+        <button class="btn-consent-cancel" onclick="closeConsentModal()">Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â</button>
         <button class="btn-consent-ok" id="connectGmailBtn" onclick="connectGmail()">
           <img src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png" style="width:18px;height:18px;filter:brightness(0) invert(1)" alt="G">
-          à¸¢à¸·à¸à¸¢à¸±à¸à¹à¸¥à¸°à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail
+          Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­ Gmail
         </button>
       </div>
     </div>
@@ -425,15 +429,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
 <div class="modal-overlay" id="scanModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">ð® Subscription à¸à¸µà¹à¸à¸à¹à¸ Gmail</div>
-      <button class="modal-close" onclick="closeScanModal()">â</button>
+      <div class="modal-title">Ã°ÂÂÂ® Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â Gmail</div>
+      <button class="modal-close" onclick="closeScanModal()">Ã¢ÂÂ</button>
     </div>
     <div class="modal-body">
-      <div style="font-size:.83rem;color:var(--muted);margin-bottom:16px">à¹à¸¥à¸·à¸­à¸ Subscription à¸à¸µà¹à¸à¹à¸­à¸à¸à¸²à¸£à¹à¸à¸´à¹à¸¡à¹à¸à¹à¸² SubTrack (à¸à¸¥à¸´à¸à¹à¸à¸·à¹à¸­à¹à¸¥à¸·à¸­à¸/à¸¢à¸à¹à¸¥à¸´à¸)</div>
+      <div style="font-size:.83rem;color:var(--muted);margin-bottom:16px">Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸Â Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â² SubTrack (Ã Â¸ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸Â/Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â)</div>
       <div id="scanResultList"></div>
       <div style="display:flex;gap:10px;margin-top:18px">
-        <button onclick="closeScanModal()" style="flex:1;background:none;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--muted);font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">à¸¢à¸à¹à¸¥à¸´à¸</button>
-        <button onclick="confirmScanSubscribe()" id="confirmScanBtn" style="flex:2;background:linear-gradient(135deg,var(--accent),#9b8aff);border:none;border-radius:10px;padding:12px;color:white;font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">â à¹à¸à¸´à¹à¸¡ Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸</button>
+        <button onclick="closeScanModal()" style="flex:1;background:none;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--muted);font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â</button>
+        <button onclick="confirmScanSubscribe()" id="confirmScanBtn" style="flex:2;background:linear-gradient(135deg,var(--accent),#9b8aff);border:none;border-radius:10px;padding:12px;color:white;font-family:'Sarabun',sans-serif;font-weight:700;cursor:pointer">Ã¢ÂÂ Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â¡ Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸Â</button>
       </div>
     </div>
   </div>
@@ -444,73 +448,111 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
   <div class="modal">
     <div id="paymentContent">
       <div class="modal-header">
-        <div class="modal-title">à¸à¸³à¸£à¸°à¹à¸à¸´à¸ Subscription</div>
-        <button class="modal-close" onclick="closeCheckout()">â</button>
+        <div class="modal-title">Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â Subscription</div>
+        <button class="modal-close" onclick="closeCheckout()">Ã¢ÂÂ</button>
       </div>
       <div class="modal-body">
-        <div class="section-label" style="margin-bottom:8px">à¸£à¸²à¸¢à¸à¸²à¸£ Subscription</div>
+        <div class="section-label" style="margin-bottom:8px">Ã Â¸Â£Ã Â¸Â²Ã Â¸Â¢Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£ Subscription</div>
         <div class="order-list" id="orderList"></div>
         <div class="order-total">
-          <span class="order-total-label">à¸£à¸§à¸¡à¸à¸±à¹à¸à¸ªà¸´à¹à¸ / à¹à¸à¸·à¸­à¸</span>
-          <span class="order-total-price" id="orderTotalPrice">à¸¿0</span>
+          <span class="order-total-label">Ã Â¸Â£Ã Â¸Â§Ã Â¸Â¡Ã Â¸ÂÃ Â¸Â±Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂªÃ Â¸Â´Ã Â¹ÂÃ Â¸Â / Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</span>
+          <span class="order-total-price" id="orderTotalPrice">Ã Â¸Â¿0</span>
         </div>
-        <div class="section-label" style="margin:20px 0 10px">à¸§à¸´à¸à¸µà¸à¸³à¸£à¸°à¹à¸à¸´à¸</div>
+        <div class="section-label" style="margin:20px 0 10px">Ã Â¸Â§Ã Â¸Â´Ã Â¸ÂÃ Â¸ÂµÃ Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â</div>
         <div class="pay-method-tabs">
           <div class="pay-tab active" onclick="switchPayMethod('card',this)">
-            <span class="pt-icon">ð³</span><span class="pt-label">à¸à¸±à¸à¸£à¹à¸à¸£à¸à¸´à¸/à¹à¸à¸à¸´à¸</span><span class="pt-sub">Visa, Mastercard</span>
+            <span class="pt-icon">Ã°ÂÂÂ³</span><span class="pt-label">Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¸Â£Ã Â¸ÂÃ Â¸Â´Ã Â¸Â/Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â</span><span class="pt-sub">Visa, Mastercard</span>
           </div>
           <div class="pay-tab" onclick="switchPayMethod('qr',this)">
-            <span class="pt-icon">ð²</span><span class="pt-label">QR Code</span><span class="pt-sub">PromptPay / à¹à¸¡à¸à¸²à¸¢à¹à¸à¸à¸à¹à¸à¸´à¹à¸</span>
+            <span class="pt-icon">Ã°ÂÂÂ²</span><span class="pt-label">QR Code</span><span class="pt-sub">PromptPay / Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¢Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â</span>
           </div>
         </div>
         <div class="pay-panel active" id="cardPanel">
           <div class="card-preview">
-            <div class="card-chip">ð³</div>
-            <div class="card-number-display" id="cardNumDisplay">â¢â¢â¢â¢ â¢â¢â¢â¢ â¢â¢â¢â¢ â¢â¢â¢â¢</div>
+            <div class="card-chip">Ã°ÂÂÂ³</div>
+            <div class="card-number-display" id="cardNumDisplay">Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢ Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢ Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢ Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢</div>
             <div class="card-bottom">
-              <div><div class="card-holder-label">à¸à¸·à¹à¸­à¹à¸à¹à¸²à¸à¸­à¸à¸à¸±à¸à¸£</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
-              <div><div class="card-holder-label">à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
+              <div><div class="card-holder-label">Ã Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â£</div><div class="card-holder-name" id="cardNameDisplay">YOUR NAME</div></div>
+              <div><div class="card-holder-label">Ã Â¸Â«Ã Â¸Â¡Ã Â¸ÂÃ Â¸Â­Ã Â¸Â²Ã Â¸Â¢Ã Â¸Â¸</div><div class="card-holder-name" id="cardExpDisplay">MM/YY</div></div>
             </div>
           </div>
-          <div class="form-group"><label class="form-label">à¸«à¸¡à¸²à¸¢à¹à¸¥à¸à¸à¸±à¸à¸£à¹à¸à¸£à¸à¸´à¸</label><input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)"></div>
-          <div class="form-group"><label class="form-label">à¸à¸·à¹à¸­à¸à¸à¸à¸±à¸à¸£</label><input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME" oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
+          <div class="form-group"><label class="form-label">Ã Â¸Â«Ã Â¸Â¡Ã Â¸Â²Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â¥Ã Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¸Â£Ã Â¸ÂÃ Â¸Â´Ã Â¸Â</label><input class="form-input" type="text" maxlength="19" placeholder="0000 0000 0000 0000" oninput="formatCardNum(this)"></div>
+          <div class="form-group"><label class="form-label">Ã Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â£</label><input class="form-input" type="text" placeholder="FIRSTNAME LASTNAME" oninput="document.getElementById('cardNameDisplay').textContent=this.value.toUpperCase()||'YOUR NAME'"></div>
           <div class="form-row">
-            <div class="form-group"><label class="form-label">à¸§à¸±à¸à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸</label><input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
-            <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="text" maxlength="3" placeholder="â¢â¢â¢"></div>
+            <div class="form-group"><label class="form-label">Ã Â¸Â§Ã Â¸Â±Ã Â¸ÂÃ Â¸Â«Ã Â¸Â¡Ã Â¸ÂÃ Â¸Â­Ã Â¸Â²Ã Â¸Â¢Ã Â¸Â¸</label><input class="form-input" type="text" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)"></div>
+            <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="text" maxlength="3" placeholder="Ã¢ÂÂ¢Ã¢ÂÂ¢Ã¢ÂÂ¢"></div>
           </div>
-          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">ð³ à¸à¸³à¸£à¸° <span id="cardPayAmount"></span></button>
+          <button class="btn-pay" onclick="processPayment('card')" id="cardPayBtn">Ã°ÂÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â° <span id="cardPayAmount"></span></button>
         </div>
         <div class="pay-panel" id="qrPanel">
           <div class="qr-wrapper">
             <div class="qr-box">
               <svg width="170" height="170" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg" id="qrSvg"></svg>
-              <div class="qr-amount-badge" id="qrAmountBadge">à¸¿0</div>
+              <div class="qr-amount-badge" id="qrAmountBadge">Ã Â¸Â¿0</div>
             </div>
-            <div class="qr-instruction"><strong>à¸ªà¹à¸à¸ QR Code à¸à¹à¸§à¸¢à¹à¸­à¸à¸à¸à¸²à¸à¸²à¸£</strong><br>PromptPay / à¹à¸¡à¸à¸²à¸¢à¹à¸à¸à¸à¹à¸à¸´à¹à¸</div>
+            <div class="qr-instruction"><strong>Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â QR Code Ã Â¸ÂÃ Â¹ÂÃ Â¸Â§Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£</strong><br>PromptPay / Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¢Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â</div>
             <div class="qr-apps">
-              <div class="qr-app-badge">ð¦ SCB Easy</div><div class="qr-app-badge">ð KBank</div>
-              <div class="qr-app-badge">ð§ KTB</div><div class="qr-app-badge">ð¦ BBL</div>
+              <div class="qr-app-badge">Ã°ÂÂÂ¦ SCB Easy</div><div class="qr-app-badge">Ã°ÂÂÂ KBank</div>
+              <div class="qr-app-badge">Ã°ÂÂÂ§ KTB</div><div class="qr-app-badge">Ã°ÂÂÂ¦ BBL</div>
             </div>
-            <div class="qr-timer">QR à¸«à¸¡à¸à¸­à¸²à¸¢à¸¸à¹à¸ <span id="qrCountdown">05:00</span></div>
+            <div class="qr-timer">QR Ã Â¸Â«Ã Â¸Â¡Ã Â¸ÂÃ Â¸Â­Ã Â¸Â²Ã Â¸Â¢Ã Â¸Â¸Ã Â¹ÂÃ Â¸Â <span id="qrCountdown">05:00</span></div>
           </div>
-          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">â à¸¢à¸·à¸à¸¢à¸±à¸à¸à¸²à¸£à¸à¸³à¸£à¸°à¹à¸à¸´à¸</button>
+          <button class="btn-pay" onclick="processPayment('promptpay')" id="qrPayBtn">Ã¢ÂÂ Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â</button>
         </div>
-        <div class="security-note">ð à¸à¸¥à¸­à¸à¸ à¸±à¸¢ SSL 256-bit Â· à¸à¹à¸­à¸¡à¸¹à¸¥à¸à¸±à¸à¸£à¹à¸¡à¹à¸à¸¹à¸à¸à¸±à¸à¸à¸¶à¸</div>
+        <div class="security-note">Ã°ÂÂÂ Ã Â¸ÂÃ Â¸Â¥Ã Â¸Â­Ã Â¸ÂÃ Â¸Â Ã Â¸Â±Ã Â¸Â¢ SSL 256-bit ÃÂ· Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸Â¹Ã Â¸Â¥Ã Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂÃ Â¸Â¹Ã Â¸ÂÃ Â¸ÂÃ Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¶Ã Â¸Â</div>
       </div>
     </div>
     <div class="success-screen" id="successScreen">
-      <div class="success-icon">â</div>
-      <div class="success-title">à¸à¸³à¸£à¸°à¹à¸à¸´à¸à¸ªà¸³à¹à¸£à¹à¸! ð</div>
-      <div class="success-sub" id="successSub">Subscribe à¹à¸£à¸µà¸¢à¸à¸£à¹à¸­à¸¢à¹à¸¥à¹à¸§</div>
-      <div class="success-ref">à¸£à¸«à¸±à¸ªà¸­à¹à¸²à¸à¸­à¸´à¸: <strong id="successRef">-</strong></div>
-      <button class="btn-done" onclick="closeDone()">à¸à¸¥à¸±à¸à¸«à¸à¹à¸²à¸«à¸¥à¸±à¸ â</button>
+      <div class="success-icon">Ã¢ÂÂ</div>
+      <div class="success-title">Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â³Ã Â¹ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â! Ã°ÂÂÂ</div>
+      <div class="success-sub" id="successSub">Subscribe Ã Â¹ÂÃ Â¸Â£Ã Â¸ÂµÃ Â¸Â¢Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â§</div>
+      <div class="success-ref">Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸ÂªÃ Â¸Â­Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â­Ã Â¸Â´Ã Â¸Â: <strong id="successRef">-</strong></div>
+      <button class="btn-done" onclick="closeDone()">Ã Â¸ÂÃ Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¸Â«Ã Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â«Ã Â¸Â¥Ã Â¸Â±Ã Â¸Â Ã¢ÂÂ</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"><div class="toast-dot" id="toastDot"></div><span id="toastMsg"></span></div>
 
+
+<!-- Forgot Password Modal -->
+<div class="modal-overlay" id="forgotModal" onclick="if(event.target===this)closeForgotModal()" style="display:none">
+  <div class="modal-box" style="max-width:420px">
+    <button class="modal-close" onclick="closeForgotModal()">✕</button>
+    <div class="modal-title">🔑 ลืมรหัสผ่าน</div>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:16px">กรอก Email ที่ใช้สมัคร เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปให้</p>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="forgotEmail" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')handleForgotPassword()">
+    </div>
+    <div id="forgotMsg" style="display:none;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:12px"></div>
+    <button class="btn-primary" id="forgotBtn" onclick="handleForgotPassword()" style="width:100%">📨 ส่งลิงก์รีเซ็ต</button>
+  </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal-overlay" id="resetModal" style="display:none">
+  <div class="modal-box" style="max-width:420px">
+    <div class="modal-title">🔐 ตั้งรหัสผ่านใหม่</div>
+    <div id="resetTokenStatus" style="padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:12px"></div>
+    <div id="resetForm" style="display:none">
+      <div class="form-group">
+        <label class="form-label">รหัสผ่านใหม่</label>
+        <input class="form-input" id="resetPassword" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" onkeydown="if(event.key==='Enter')handleResetPassword()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ยืนยันรหัสผ่านใหม่</label>
+        <input class="form-input" id="resetPasswordConfirm" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" onkeydown="if(event.key==='Enter')handleResetPassword()">
+      </div>
+      <button class="btn-primary" id="resetBtn" onclick="handleResetPassword()" style="width:100%">✅ บันทึกรหัสผ่านใหม่</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// Check for reset_token in URL on every page load
+(function(){ const p = new URLSearchParams(window.location.search); if(p.get('reset_token')) checkResetToken(); })();
+
 const API_URL = 'https://subtrack-production-3167.up.railway.app/api';
 
 const PLATFORM_LOGOS = {
@@ -576,17 +618,17 @@ async function handleLogin() {
   const btn = document.getElementById('loginBtn');
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
-  if (!email || !password) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸à¸£à¸­à¸ Email à¹à¸¥à¸°à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸');
+  if (!email || !password) return showAuthError('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â£Ã Â¸Â­Ã Â¸Â Email Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â°Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸ÂªÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸Â');
   const captchaToken = getCapToken(_loginCapId);
-  if (!captchaToken) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸¢à¸·à¸à¸¢à¸±à¸ CAPTCHA à¸à¹à¸­à¸à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸');
+  if (!captchaToken) return showAuthError('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸Â CAPTCHA Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â');
   setLoading(btn, true);
   try {
     const res = await apiFetch('/auth/login','POST',{ email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
     localStorage.setItem('subtrack_token', token);
     await initDashboard();
-  } catch (err) { showAuthError(err.message || 'à¹à¸¡à¹à¸ªà¸²à¸¡à¸²à¸£à¸à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸à¹à¸à¹'); resetCap(_loginCapId);
-  } finally { setLoading(btn, false, 'ð à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸'); }
+  } catch (err) { showAuthError(err.message || 'Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂªÃ Â¸Â²Ã Â¸Â¡Ã Â¸Â²Ã Â¸Â£Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹Â'); resetCap(_loginCapId);
+  } finally { setLoading(btn, false, 'Ã°ÂÂÂ Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸Â'); }
 }
 
 async function handleRegister() {
@@ -594,18 +636,18 @@ async function handleRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
-  if (!name || !email || !password) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸à¸£à¸­à¸à¸à¹à¸­à¸¡à¸¹à¸¥à¹à¸«à¹à¸à¸£à¸à¸à¹à¸§à¸');
-  if (password.length < 6) return showAuthError('à¸£à¸«à¸±à¸ªà¸à¹à¸²à¸à¸à¹à¸­à¸à¸¡à¸µà¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 6 à¸à¸±à¸§à¸­à¸±à¸à¸©à¸£');
+  if (!name || !email || !password) return showAuthError('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸Â£Ã Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸Â¹Ã Â¸Â¥Ã Â¹ÂÃ Â¸Â«Ã Â¹ÂÃ Â¸ÂÃ Â¸Â£Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â§Ã Â¸Â');
+  if (password.length < 6) return showAuthError('Ã Â¸Â£Ã Â¸Â«Ã Â¸Â±Ã Â¸ÂªÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â¡Ã Â¸ÂµÃ Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¢ 6 Ã Â¸ÂÃ Â¸Â±Ã Â¸Â§Ã Â¸Â­Ã Â¸Â±Ã Â¸ÂÃ Â¸Â©Ã Â¸Â£');
   const captchaToken = getCapToken(_regCapId);
-  if (!captchaToken) return showAuthError('à¸à¸£à¸¸à¸à¸²à¸¢à¸·à¸à¸¢à¸±à¸ CAPTCHA à¸à¹à¸­à¸à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸');
+  if (!captchaToken) return showAuthError('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸Â CAPTCHA Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸Â');
   setLoading(btn, true);
   try {
     const res = await apiFetch('/auth/register','POST',{ name, email, password, captchaToken },false);
     token = res.token; currentUser = res.user;
     localStorage.setItem('subtrack_token', token);
     await initDashboard();
-  } catch (err) { showAuthError(err.message || 'à¹à¸¡à¹à¸ªà¸²à¸¡à¸²à¸£à¸à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸à¹à¸à¹'); resetCap(_regCapId);
-  } finally { setLoading(btn, false, 'â¨ à¸ªà¸¡à¸±à¸à¸£à¸ªà¸¡à¸²à¸à¸´à¸'); }
+  } catch (err) { showAuthError(err.message || 'Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂªÃ Â¸Â²Ã Â¸Â¡Ã Â¸Â²Ã Â¸Â£Ã Â¸ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹Â'); resetCap(_regCapId);
+  } finally { setLoading(btn, false, 'Ã¢ÂÂ¨ Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£Ã Â¸ÂªÃ Â¸Â¡Ã Â¸Â²Ã Â¸ÂÃ Â¸Â´Ã Â¸Â'); }
 }
 
 function handleLogout() {
@@ -647,17 +689,17 @@ async function toggleSub(id, event) {
       const res = await apiFetch(`/subscriptions/${id}`,'DELETE');
       delete userSubs[id];
       const name = platforms.find(p=>p.id===id)?.name;
-      showToast(`à¸¢à¸à¹à¸¥à¸´à¸ ${name} à¹à¸£à¸µà¸¢à¸à¸£à¹à¸­à¸¢`, '#ff4d6d');
+      showToast(`Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â ${name} Ã Â¹ÂÃ Â¸Â£Ã Â¸ÂµÃ Â¸Â¢Ã Â¸ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¢`, '#ff4d6d');
       if (res.unsubscribe_url) {
-        setTimeout(()=>{ if(confirm(`à¸à¹à¸­à¸à¸à¸²à¸£à¸¢à¸à¹à¸¥à¸´à¸ ${name} à¹à¸à¸¢à¸à¸£à¸?\nà¸à¸ OK à¹à¸à¸·à¹à¸­à¹à¸à¸´à¸à¸«à¸à¹à¸² Unsubscribe`)) window.open(res.unsubscribe_url,'_blank'); },300);
+        setTimeout(()=>{ if(confirm(`Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â ${name} Ã Â¹ÂÃ Â¸ÂÃ Â¸Â¢Ã Â¸ÂÃ Â¸Â£Ã Â¸Â?\nÃ Â¸ÂÃ Â¸Â OK Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸Â«Ã Â¸ÂÃ Â¹ÂÃ Â¸Â² Unsubscribe`)) window.open(res.unsubscribe_url,'_blank'); },300);
       }
     } else {
       await apiFetch(`/subscriptions/${id}`,'POST',{ reminder_days:3 });
       const sub = await apiFetch('/subscriptions').catch(()=>[]);
       sub.forEach(s=>{ userSubs[s.platform_id]=s; });
-      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} à¹à¸¥à¹à¸§ â`,'#00d4aa');
+      showToast(`Subscribe ${platforms.find(p=>p.id===id)?.name} Ã Â¹ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â§ Ã¢ÂÂ`,'#00d4aa');
     }
-  } catch(err){ showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+err.message,'#ff4d6d'); }
+  } catch(err){ showToast('Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â: '+err.message,'#ff4d6d'); }
   updateStats(); renderGrid(); updateCheckoutBar();
 }
 
@@ -666,7 +708,7 @@ function updateStats() {
   const cost = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
   document.getElementById('statActive').textContent = subs.length;
   document.getElementById('statTotal').textContent  = platforms.length;
-  document.getElementById('statCost').textContent   = 'à¸¿'+cost.toLocaleString();
+  document.getElementById('statCost').textContent   = 'Ã Â¸Â¿'+cost.toLocaleString();
 }
 
 function filterPlatforms(type,btn) {
@@ -710,14 +752,14 @@ function renderGrid() {
       <div class="platform-name">${p.name}</div>
       <div class="platform-category">${p.category}</div>
       <div class="platform-price">
-        <span class="price-tag">à¸¿${p.price_thb}/à¹à¸à¸·à¸­à¸</span>
-        <span class="sub-status">${isSub?'Active':'à¸¢à¸±à¸à¹à¸¡à¹à¹à¸à¹à¸ªà¸¡à¸±à¸à¸£'}</span>
+        <span class="price-tag">Ã Â¸Â¿${p.price_thb}/Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</span>
+        <span class="sub-status">${isSub?'Active':'Ã Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂªÃ Â¸Â¡Ã Â¸Â±Ã Â¸ÂÃ Â¸Â£'}</span>
       </div>
       ${isSub?`<div class="sub-date">
-        ð Subscribe à¹à¸¡à¸·à¹à¸­ ${subDate}<br>
-        ${subData.months_paid ? `<span style="color:#a78bfa;font-size:11px;font-weight:600;display:inline-block;margin:2px 0">ð ${subData.months_paid} à¹à¸à¸·à¸­à¸</span><br>` : ''}
-        <span style="color:${billing.urgency};font-weight:600">â° Due ${billing.dateStr} (à¸­à¸µà¸ ${billing.days} à¸§à¸±à¸)</span><br>
-        <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">ð à¸¢à¸à¹à¸¥à¸´à¸ ${p.name} â</a>
+        Ã°ÂÂÂ Subscribe Ã Â¹ÂÃ Â¸Â¡Ã Â¸Â·Ã Â¹ÂÃ Â¸Â­ ${subDate}<br>
+        ${subData.months_paid ? `<span style="color:#a78bfa;font-size:11px;font-weight:600;display:inline-block;margin:2px 0">Ã°ÂÂÂ ${subData.months_paid} Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</span><br>` : ''}
+        <span style="color:${billing.urgency};font-weight:600">Ã¢ÂÂ° Due ${billing.dateStr} (Ã Â¸Â­Ã Â¸ÂµÃ Â¸Â ${billing.days} Ã Â¸Â§Ã Â¸Â±Ã Â¸Â)</span><br>
+        <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">Ã°ÂÂÂ Ã Â¸Â¢Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â´Ã Â¸Â ${p.name} Ã¢ÂÂ</a>
       </div>`:''}
     </div>`;
   }).join('');
@@ -729,42 +771,42 @@ function closeConsentModal() { document.getElementById('consentModal').classList
 
 async function connectGmail() {
   const btn = document.getElementById('connectGmailBtn');
-  setLoading(btn, true, 'à¸à¸³à¸¥à¸±à¸à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­...');
+  setLoading(btn, true, 'Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­...');
   try {
     const res = await apiFetch('/auth/gmail');
     window.location.href = res.url;
   } catch(e) {
-    showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
-    setLoading(btn, false, 'à¸¢à¸·à¸à¸¢à¸±à¸à¹à¸¥à¸°à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail');
+    showToast('Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â: '+e.message,'#ff4d6d');
+    setLoading(btn, false, 'Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­ Gmail');
   }
 }
 
 async function scanGmail() {
   const btn = document.getElementById('gmailScanBtn');
-  setLoading(btn, true, 'â³ à¸à¸³à¸¥à¸±à¸à¸ªà¹à¸à¸ Gmail...');
+  setLoading(btn, true, 'Ã¢ÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â Gmail...');
   try {
     const res = await apiFetch('/auth/gmail/scan');
     scanFoundList = res.found || [];
     showScanResults(scanFoundList);
-  } catch(e) { showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
-  } finally { setLoading(btn, false, 'ð® à¸ªà¹à¸à¸ Subscription'); }
+  } catch(e) { showToast('Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, 'Ã°ÂÂÂ® Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¸Â Subscription'); }
 }
 
 function showScanResults(found) {
   scanSelected = new Set(found.map(f=>f.platform_id||f));
   const list = document.getElementById('scanResultList');
   if (!found.length) {
-    list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">ð­</div>à¹à¸¡à¹à¸à¸ Subscription à¹à¸ Gmail<br><small style="color:var(--muted)">à¸­à¸²à¸à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸­à¸µà¹à¸¡à¸¥à¸à¸µà¹à¹à¸à¸µà¹à¸¢à¸§à¸à¹à¸­à¸à¹à¸à¸à¸¥à¹à¸­à¸à¸à¸à¸«à¸¡à¸²à¸¢</small></div>`;
+    list.innerHTML = `<div class="scan-empty"><div class="scan-empty-icon">Ã°ÂÂÂ­</div>Ã Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂÃ Â¸Â Subscription Ã Â¹ÂÃ Â¸Â Gmail<br><small style="color:var(--muted)">Ã Â¸Â­Ã Â¸Â²Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸Â¡Ã Â¸ÂµÃ Â¸Â­Ã Â¸ÂµÃ Â¹ÂÃ Â¸Â¡Ã Â¸Â¥Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¸Â¢Ã Â¸Â§Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â«Ã Â¸Â¡Ã Â¸Â²Ã Â¸Â¢</small></div>`;
   } else {
     list.innerHTML = found.map(item=>{
       const pId = item.platform_id||item;
       const p = platforms.find(pl=>pl.id===pId);
       const u = PLATFORM_LOGOS[pId];
-      const logo = u ? `<img src="${u}" style="width:38px;height:38px;object-fit:cover;border-radius:8px">` : `<span style="font-size:1.4rem">${p?.icon||'ð¦'}</span>`;
+      const logo = u ? `<img src="${u}" style="width:38px;height:38px;object-fit:cover;border-radius:8px">` : `<span style="font-size:1.4rem">${p?.icon||'Ã°ÂÂÂ¦'}</span>`;
       return `<div class="scan-result-item selected" id="scan-${pId}" onclick="toggleScanSelect('${pId}')">
-        <div class="scan-check">â</div>
+        <div class="scan-check">Ã¢ÂÂ</div>
         <div class="scan-logo">${logo}</div>
-        <div class="scan-info"><div class="scan-name">${p?.name||pId}</div><div class="scan-price">à¸¿${p?.price_thb||'?'}/à¹à¸à¸·à¸­à¸</div></div>
+        <div class="scan-info"><div class="scan-name">${p?.name||pId}</div><div class="scan-price">Ã Â¸Â¿${p?.price_thb||'?'}/Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â</div></div>
       </div>`;
     }).join('');
   }
@@ -774,20 +816,20 @@ function showScanResults(found) {
 function toggleScanSelect(pId) {
   const el = document.getElementById(`scan-${pId}`);
   if (scanSelected.has(pId)) { scanSelected.delete(pId); el.classList.remove('selected'); el.querySelector('.scan-check').textContent=''; }
-  else { scanSelected.add(pId); el.classList.add('selected'); el.querySelector('.scan-check').textContent='â'; }
+  else { scanSelected.add(pId); el.classList.add('selected'); el.querySelector('.scan-check').textContent='Ã¢ÂÂ'; }
 }
 
 async function confirmScanSubscribe() {
-  if (!scanSelected.size) { showToast('à¸à¸£à¸¸à¸à¸²à¹à¸¥à¸·à¸­à¸à¸­à¸¢à¹à¸²à¸à¸à¹à¸­à¸¢ 1 à¸£à¸²à¸¢à¸à¸²à¸£','#ff4d6d'); return; }
+  if (!scanSelected.size) { showToast('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸ÂÃ Â¸Â­Ã Â¸Â¢Ã Â¹ÂÃ Â¸Â²Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸Â¢ 1 Ã Â¸Â£Ã Â¸Â²Ã Â¸Â¢Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£','#ff4d6d'); return; }
   const btn = document.getElementById('confirmScanBtn');
-  setLoading(btn, true, 'â³ à¸à¸³à¸¥à¸±à¸à¹à¸à¸´à¹à¸¡...');
+  setLoading(btn, true, 'Ã¢ÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â¡...');
   try {
     const items = Array.from(scanSelected).map(pid => scanFoundList.find(f => (f.platform_id||f) === pid) || pid);
     await apiFetch('/auth/gmail/confirm','POST',{ platform_ids: items });
     closeScanModal(); await initDashboard();
-    showToast(`à¹à¸à¸´à¹à¸¡ ${scanSelected.size} Subscription à¸ªà¸³à¹à¸£à¹à¸! â`,'#00d4aa');
-  } catch(e) { showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: '+e.message,'#ff4d6d');
-  } finally { setLoading(btn, false, 'â à¹à¸à¸´à¹à¸¡ Subscription à¸à¸µà¹à¹à¸¥à¸·à¸­à¸'); }
+    showToast(`Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â¡ ${scanSelected.size} Subscription Ã Â¸ÂªÃ Â¸Â³Ã Â¹ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â! Ã¢ÂÂ`,'#00d4aa');
+  } catch(e) { showToast('Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â: '+e.message,'#ff4d6d');
+  } finally { setLoading(btn, false, 'Ã¢ÂÂ Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¹ÂÃ Â¸Â¡ Subscription Ã Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸Â¥Ã Â¸Â·Ã Â¸Â­Ã Â¸Â'); }
 }
 
 function closeScanModal() { document.getElementById('scanModal').classList.remove('open'); }
@@ -802,11 +844,11 @@ async function checkGmailStatus() {
   }
 
   if (hasError) {
-    showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่ (ตรวจสอบ Google account ที่ถูกต้อง)','#ff4d6d');
+    showToast('à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸ à¸à¸£à¸¸à¸à¸²à¸¥à¸­à¸à¹à¸«à¸¡à¹ (à¸à¸£à¸§à¸à¸ªà¸­à¸ Google account à¸à¸µà¹à¸à¸¹à¸à¸à¹à¸­à¸)','#ff4d6d');
     return;
   }
 
-  // Always check real DB status — not just URL params
+  // Always check real DB status â not just URL params
   // This ensures the correct button state is shown after page reload too
   try {
     const status = await apiFetch('/auth/gmail/status');
@@ -821,8 +863,8 @@ async function checkGmailStatus() {
     }
 
     if (justConnected && status.connected) {
-      // Auto-scan after successful connect — show results modal for user to confirm
-      showToast('เชื่อมต่อ Gmail สำเร็จ! กำลังสแกน Subscription... 🔍','#00d4aa');
+      // Auto-scan after successful connect â show results modal for user to confirm
+      showToast('à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail à¸ªà¸³à¹à¸£à¹à¸! à¸à¸³à¸¥à¸±à¸à¸ªà¹à¸à¸ Subscription... ð','#00d4aa');
       try {
         const res = await apiFetch('/auth/gmail/scan');
         const found = res.found || [];
@@ -830,14 +872,14 @@ async function checkGmailStatus() {
         if (found.length > 0) {
           showScanResults(found);
         } else {
-          showToast('สแกน Gmail แล้ว — ไม่พบ Subscription ใหม่','#7c6fff');
+          showToast('à¸ªà¹à¸à¸ Gmail à¹à¸¥à¹à¸§ â à¹à¸¡à¹à¸à¸ Subscription à¹à¸«à¸¡à¹','#7c6fff');
         }
       } catch(e) {
-        showToast('สแกน Gmail ไม่สำเร็จ กรุณาลองกด "สแกน Subscription" เอง','#ff4d6d');
+        showToast('à¸ªà¹à¸à¸ Gmail à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸ à¸à¸£à¸¸à¸à¸²à¸¥à¸­à¸à¸à¸ "à¸ªà¹à¸à¸ Subscription" à¹à¸­à¸','#ff4d6d');
       }
     } else if (justConnected && !status.connected) {
-      // OAuth redirect said connected but DB has no token — something went wrong
-      showToast('เชื่อมต่อ Gmail ไม่สำเร็จ กรุณาลองใหม่','#ff4d6d');
+      // OAuth redirect said connected but DB has no token â something went wrong
+      showToast('à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸ à¸à¸£à¸¸à¸à¸²à¸¥à¸­à¸à¹à¸«à¸¡à¹','#ff4d6d');
     }
   } catch(e) {
     // If status check fails, silently ignore (user can still try connecting)
@@ -849,7 +891,7 @@ function updateCheckoutBar() {
   const subs = Object.keys(userSubs);
   const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
   document.getElementById('checkoutCount').textContent  = subs.length;
-  document.getElementById('checkoutAmount').textContent = 'à¸¿'+total.toLocaleString()+'/à¹à¸à¸·à¸­à¸';
+  document.getElementById('checkoutAmount').textContent = 'Ã Â¸Â¿'+total.toLocaleString()+'/Ã Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¸Â­Ã Â¸Â';
   const bar = document.getElementById('checkoutBar');
   if (subs.length>0 && currentUser) bar.classList.add('show'); else bar.classList.remove('show');
 }
@@ -860,12 +902,12 @@ function openCheckout() {
   document.getElementById('orderList').innerHTML = subs.map(id=>{
     const p=userSubs[id]; const u=PLATFORM_LOGOS[id];
     const logo = u?`<img src="${u}" style="width:20px;height:20px;object-fit:cover;border-radius:4px;margin-right:6px">`:`${p?.icon||''} `;
-    return `<div class="order-item"><span style="display:flex;align-items:center">${logo}${p?.name||id}</span><span class="order-item-price">à¸¿${p?.price_thb}</span></div>`;
+    return `<div class="order-item"><span style="display:flex;align-items:center">${logo}${p?.name||id}</span><span class="order-item-price">Ã Â¸Â¿${p?.price_thb}</span></div>`;
   }).join('');
-  document.getElementById('orderTotalPrice').textContent = 'à¸¿'+total.toLocaleString();
-  document.getElementById('cardPayAmount').textContent   = 'à¸¿'+total.toLocaleString();
+  document.getElementById('orderTotalPrice').textContent = 'Ã Â¸Â¿'+total.toLocaleString();
+  document.getElementById('cardPayAmount').textContent   = 'Ã Â¸Â¿'+total.toLocaleString();
   drawQR(document.getElementById('qrSvg'),'PROMPTPAY:'+total);
-  document.getElementById('qrAmountBadge').textContent   = 'à¸¿'+total.toLocaleString();
+  document.getElementById('qrAmountBadge').textContent   = 'Ã Â¸Â¿'+total.toLocaleString();
   document.getElementById('paymentContent').style.display='block';
   document.getElementById('successScreen').classList.remove('show');
   document.getElementById('paymentModal').classList.add('open');
@@ -884,28 +926,28 @@ async function processPayment(method) {
   const btn = document.getElementById(method==='card'?'cardPayBtn':'qrPayBtn');
   const subs = Object.keys(userSubs);
   const total = subs.reduce((s,id)=>s+(userSubs[id]?.price_thb||0),0);
-  setLoading(btn,true,'â³ à¸à¸³à¸¥à¸±à¸à¸à¸³à¹à¸à¸´à¸à¸à¸²à¸£...');
+  setLoading(btn,true,'Ã¢ÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â³Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£...');
   try {
     const endpoint = method==='card'?'/payment/charge':'/payment/promptpay';
     const res = await apiFetch(endpoint,'POST',{ amount:total*100, platform_ids:subs, payment_method:method, token:'tok_test_mock' });
     clearInterval(qrInterval);
     document.getElementById('successRef').textContent = res.transaction_id||res.charge_id;
-    document.getElementById('successSub').innerHTML = `à¸à¸³à¸£à¸°à¹à¸à¸´à¸ <strong>à¸¿${total.toLocaleString()}</strong> à¸ªà¸³à¹à¸£à¹à¸!<br>à¹à¸à¹à¸ªà¸£à¹à¸à¸à¸°à¸ªà¹à¸à¹à¸à¸à¸µà¹ <strong>${currentUser.email}</strong>`;
+    document.getElementById('successSub').innerHTML = `Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â <strong>Ã Â¸Â¿${total.toLocaleString()}</strong> Ã Â¸ÂªÃ Â¸Â³Ã Â¹ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â!<br>Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂªÃ Â¸Â£Ã Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸Â°Ã Â¸ÂªÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹Â <strong>${currentUser.email}</strong>`;
     document.getElementById('paymentContent').style.display='none';
     document.getElementById('successScreen').classList.add('show');
-  } catch(err){ showToast('à¸à¸³à¸£à¸°à¹à¸à¸´à¸à¹à¸¡à¹à¸ªà¸³à¹à¸£à¹à¸: '+err.message,'#ff4d6d');
-  } finally { setLoading(btn,false,method==='card'?'ð³ à¸à¸³à¸£à¸°à¹à¸à¸´à¸':'â à¸¢à¸·à¸à¸¢à¸±à¸à¸à¸²à¸£à¸à¸³à¸£à¸°à¹à¸à¸´à¸'); }
+  } catch(err){ showToast('Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¹ÂÃ Â¸Â¡Ã Â¹ÂÃ Â¸ÂªÃ Â¸Â³Ã Â¹ÂÃ Â¸Â£Ã Â¹ÂÃ Â¸Â: '+err.message,'#ff4d6d');
+  } finally { setLoading(btn,false,method==='card'?'Ã°ÂÂÂ³ Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â':'Ã¢ÂÂ Ã Â¸Â¢Ã Â¸Â·Ã Â¸ÂÃ Â¸Â¢Ã Â¸Â±Ã Â¸ÂÃ Â¸ÂÃ Â¸Â²Ã Â¸Â£Ã Â¸ÂÃ Â¸Â³Ã Â¸Â£Ã Â¸Â°Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸Â'); }
 }
 
 let qrInterval, qrSeconds=300;
 function startQrTimer(){ clearInterval(qrInterval); qrSeconds=300; updateQrTimer(); qrInterval=setInterval(()=>{ qrSeconds--; updateQrTimer(); if(qrSeconds<=0)clearInterval(qrInterval); },1000); }
 function updateQrTimer(){ const el=document.getElementById('qrCountdown'); if(el) el.textContent=String(Math.floor(qrSeconds/60)).padStart(2,'0')+':'+String(qrSeconds%60).padStart(2,'0'); }
-function closeDone(){ closeCheckout(); showToast('â à¸à¸­à¸à¸à¸¸à¸à¸à¸µà¹à¹à¸à¹à¸à¸£à¸´à¸à¸²à¸£ SubTrack!','#00d4aa'); }
+function closeDone(){ closeCheckout(); showToast('Ã¢ÂÂ Ã Â¸ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¸Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂµÃ Â¹ÂÃ Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â£Ã Â¸Â´Ã Â¸ÂÃ Â¸Â²Ã Â¸Â£ SubTrack!','#00d4aa'); }
 
 function formatCardNum(input){
   let v=input.value.replace(/\D/g,'').slice(0,16);
   input.value=v.replace(/(.{4})/g,'$1 ').trim();
-  document.getElementById('cardNumDisplay').textContent=v.padEnd(16,'â¢').replace(/(.{4})/g,'$1 ').trim();
+  document.getElementById('cardNumDisplay').textContent=v.padEnd(16,'Ã¢ÂÂ¢').replace(/(.{4})/g,'$1 ').trim();
 }
 function formatExpiry(input){
   let v=input.value.replace(/\D/g,'').slice(0,4);
@@ -934,7 +976,7 @@ async function apiFetch(path,method='GET',body=null,withAuth=true){
   if(withAuth && token) headers['Authorization']='Bearer '+token;
   const res=await fetch(API_URL+path,{method,headers,body:body?JSON.stringify(body):undefined});
   const data=await res.json();
-  if(!res.ok) throw new Error(data.error||'à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸');
+  if(!res.ok) throw new Error(data.error||'Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â');
   return data;
 }
 
@@ -950,7 +992,7 @@ function showToast(msg,color='#7c6fff'){
 
 function setLoading(btn,loading,text=''){
   btn.disabled=loading;
-  if(loading) btn.innerHTML=`<span class="loading-spinner"></span>${text||'à¸à¸³à¸¥à¸±à¸à¹à¸«à¸¥à¸...'}`;
+  if(loading) btn.innerHTML=`<span class="loading-spinner"></span>${text||'Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¹ÂÃ Â¸Â«Ã Â¸Â¥Ã Â¸Â...'}`;
   else if(text) btn.textContent=text;
 }
 
@@ -963,7 +1005,7 @@ document.getElementById('scanModal').addEventListener('click',function(e){ if(e.
   if(token){ try{ currentUser=await apiFetch('/auth/me'); await initDashboard(); }catch{ handleLogout(); } }
   else if(params.get('gmail')==='connected'||params.get('gmail')==='error'){
     window.history.replaceState({},'',window.location.pathname);
-    showAuthError('à¸à¸£à¸¸à¸à¸²à¹à¸à¹à¸²à¸ªà¸¹à¹à¸£à¸°à¸à¸à¸à¹à¸­à¸à¹à¸à¸·à¹à¸­à¸¡à¸à¹à¸­ Gmail');
+    showAuthError('Ã Â¸ÂÃ Â¸Â£Ã Â¸Â¸Ã Â¸ÂÃ Â¸Â²Ã Â¹ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â²Ã Â¸ÂªÃ Â¸Â¹Ã Â¹ÂÃ Â¸Â£Ã Â¸Â°Ã Â¸ÂÃ Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¹ÂÃ Â¸ÂÃ Â¸Â·Ã Â¹ÂÃ Â¸Â­Ã Â¸Â¡Ã Â¸ÂÃ Â¹ÂÃ Â¸Â­ Gmail');
   }
 })();
 </script>
@@ -971,7 +1013,7 @@ document.getElementById('scanModal').addEventListener('click',function(e){ if(e.
 // STATEMENT UPLOAD
 async function handleStatementUpload(input, event) {
   if (!input.files[0]) return;
-  showToast('à¸à¸³à¸¥à¸±à¸à¸­à¹à¸²à¸ Statement...', '#6c63ff');
+  showToast('Ã Â¸ÂÃ Â¸Â³Ã Â¸Â¥Ã Â¸Â±Ã Â¸ÂÃ Â¸Â­Ã Â¹ÂÃ Â¸Â²Ã Â¸Â Statement...', '#6c63ff');
   try {
     const formData = new FormData();
     formData.append('statement', input.files[0]);
@@ -987,9 +1029,94 @@ async function handleStatementUpload(input, event) {
     showScanResults(scanFoundList);
     input.value = '';
   } catch(e) {
-    showToast('à¹à¸à¸´à¸à¸à¹à¸­à¸à¸´à¸à¸à¸¥à¸²à¸: ' + e.message, '#ff4d6d');
+    showToast('Ã Â¹ÂÃ Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¹ÂÃ Â¸Â­Ã Â¸ÂÃ Â¸Â´Ã Â¸ÂÃ Â¸ÂÃ Â¸Â¥Ã Â¸Â²Ã Â¸Â: ' + e.message, '#ff4d6d');
   }
 }
+
+// ── Forgot Password ──
+function openForgotModal() { /* alias */ openForgotPassword(); }
+function openForgotPassword() {
+  document.getElementById('forgotModal').style.display = 'flex';
+  document.getElementById('forgotEmail').value = document.getElementById('loginEmail')?.value || '';
+  document.getElementById('forgotMsg').style.display = 'none';
+  setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
+}
+function closeForgotModal() {
+  document.getElementById('forgotModal').style.display = 'none';
+}
+async function handleForgotPassword() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn   = document.getElementById('forgotBtn');
+  const msg   = document.getElementById('forgotMsg');
+  if (!email) { showForgotMsg('กรุณากรอก Email', false); return; }
+  setLoading(btn, true, 'กำลังส่ง...');
+  try {
+    await apiFetch('/auth/forgot-password', 'POST', { email }, false);
+    showForgotMsg('✅ ส่งลิงก์รีเซ็ตไปยัง Email แล้ว กรุณาตรวจกล่องจดหมาย (อาจอยู่ใน Spam)', true);
+    setLoading(btn, false, '📨 ส่งลิงก์รีเซ็ต');
+  } catch(e) {
+    showForgotMsg('เกิดข้อผิดพลาด: ' + e.message, false);
+    setLoading(btn, false, '📨 ส่งลิงก์รีเซ็ต');
+  }
+}
+function showForgotMsg(text, success) {
+  const el = document.getElementById('forgotMsg');
+  el.style.display = 'block';
+  el.style.background = success ? 'rgba(0,212,170,.12)' : 'rgba(255,77,109,.12)';
+  el.style.color = success ? '#00d4aa' : '#ff4d6d';
+  el.style.border = `1px solid ${success ? '#00d4aa44' : '#ff4d6d44'}`;
+  el.textContent = text;
+}
+
+// ── Reset Password (handle ?reset_token= in URL) ──
+async function checkResetToken() {
+  const params = new URLSearchParams(window.location.search);
+  const resetToken = params.get('reset_token');
+  if (!resetToken) return;
+  window.history.replaceState({}, '', window.location.pathname);
+  window._pendingResetToken = resetToken;
+  const modal = document.getElementById('resetModal');
+  const status = document.getElementById('resetTokenStatus');
+  const form   = document.getElementById('resetForm');
+  modal.style.display = 'flex';
+  status.textContent = '⏳ กำลังตรวจสอบลิงก์...';
+  status.style.cssText = 'padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:12px;background:rgba(124,111,255,.1);color:#7c6fff;border:1px solid #7c6fff44';
+  try {
+    const res = await apiFetch(`/auth/verify-reset-token?token=${resetToken}`, 'GET', null, false);
+    if (res.valid) {
+      status.textContent = '✅ ลิงก์ถูกต้อง กรุณาตั้งรหัสผ่านใหม่';
+      status.style.background = 'rgba(0,212,170,.1)';
+      status.style.color = '#00d4aa';
+      status.style.border = '1px solid #00d4aa44';
+      form.style.display = 'block';
+    } else {
+      const reason = res.reason === 'expired' ? 'ลิงก์หมดอายุแล้ว กรุณาขอใหม่อีกครั้ง' : 'ลิงก์ไม่ถูกต้องหรือใช้งานไปแล้ว';
+      status.textContent = '❌ ' + reason;
+      status.style.background = 'rgba(255,77,109,.1)';
+      status.style.color = '#ff4d6d';
+      status.style.border = '1px solid #ff4d6d44';
+    }
+  } catch(e) {
+    status.textContent = '❌ ไม่สามารถตรวจสอบลิงก์ได้';
+  }
+}
+async function handleResetPassword() {
+  const pw  = document.getElementById('resetPassword').value;
+  const pw2 = document.getElementById('resetPasswordConfirm').value;
+  const btn = document.getElementById('resetBtn');
+  if (pw.length < 6) { showToast('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร','#ff4d6d'); return; }
+  if (pw !== pw2)     { showToast('รหัสผ่านไม่ตรงกัน กรุณาลองใหม่','#ff4d6d'); return; }
+  setLoading(btn, true, 'กำลังบันทึก...');
+  try {
+    await apiFetch('/auth/reset-password', 'POST', { token: window._pendingResetToken, password: pw }, false);
+    document.getElementById('resetModal').style.display = 'none';
+    showToast('✅ เปลี่ยนรหัสผ่านสำเร็จ! กรุณาเข้าสู่ระบบใหม่', '#00d4aa');
+  } catch(e) {
+    showToast('เกิดข้อผิดพลาด: ' + e.message, '#ff4d6d');
+  }
+  setLoading(btn, false, '✅ บันทึกรหัสผ่านใหม่');
+}
+
 </script>
 </body>
 </html>
