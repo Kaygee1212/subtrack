@@ -35,7 +35,7 @@ const SUBSCRIPTION_KEYWORDS = [
   { keyword: 'notion.so',             platform: 'notion' },
   { keyword: 'notion plus',           platform: 'notion' },
   { keyword: 'xbox.com',              platform: 'xbox' },
-  { keyword: 'xbox game pass',        platform: xbox' },
+  { keyword: 'xbox game pass',        platform: 'xbox' },
   { keyword: 'playstation.com',       platform: 'playstation' },
   { keyword: 'playstation plus',      platform: 'playstation' },
   { keyword: 'dropbox.com',           platform: 'dropbox' },
