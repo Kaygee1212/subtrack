@@ -1,4 +1,4 @@
-// routes/auth.js — Authentication + reCAPTCHA + Forgot/Reset Password
+// routes/auth.js — Authentication + reCAPTCHA + Forgot/Reset/Change Password + Delete Account
 const express = require('express');
 const router  = express.Router();
 const bcrypt  = require('bcryptjs');
@@ -23,6 +23,23 @@ function normalizeEmail(raw) {
     return `${clean}@${domain}`;
   }
   return lower;
+}
+
+// ── Input validation helper ────────────────────────────────────────────────
+function validateRegisterInput(name, email, password) {
+  if (!name || !email || !password) return 'กรุณากรอกข้อมูลให้ครบถ้วน';
+  if (name.trim().length > 100)    return 'ชื่อต้องไม่เกิน 100 ตัวอักษร';
+  if (email.length > 254)          return 'Email ยาวเกินไป';
+  if (password.length < 6)         return 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร';
+  if (password.length > 128)       return 'รหัสผ่านต้องไม่เกิน 128 ตัวอักษร';
+  return null;
+}
+
+// ── Issue JWT (includes tokenVersion for invalidation support) ────────────
+async function issueToken(userId, email) {
+  const tv = await pool.query('SELECT token_version FROM users WHERE id = $1', [userId]);
+  const tokenVersion = tv.rows[0]?.token_version ?? 1;
+  return jwt.sign({ userId, email, tokenVersion }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
 // ── Nodemailer transporter ─────────────────────────────────────────────────
@@ -109,14 +126,10 @@ async function checkCaptcha(req, res, next) {
 // ── Register ───────────────────────────────────────────────────────────────
 router.post('/register', checkCaptcha, async (req, res) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
-  }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
-  }
+  const validErr = validateRegisterInput(name, email, password);
+  if (validErr) return res.status(400).json({ error: validErr });
+
   try {
-    // Normalize email to catch Gmail dot-variants (a.b@gmail.com == ab@gmail.com)
     const normalized = normalizeEmail(email);
     const existing = await pool.query(
       'SELECT id FROM users WHERE normalized_email = $1',
@@ -133,7 +146,7 @@ router.post('/register', checkCaptcha, async (req, res) => {
       [name.trim(), email.toLowerCase().trim(), normalized, hashed]
     );
     const user = result.rows[0];
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = await issueToken(user.id, user.email);
     res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
     console.error('Register error:', err);
@@ -147,8 +160,10 @@ router.post('/login', checkCaptcha, async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ error: 'กรุณากรอก Email และรหัสผ่าน' });
   }
+  if (email.length > 254 || password.length > 128) {
+    return res.status(400).json({ error: 'Email หรือรหัสผ่านไม่ถูกต้อง' });
+  }
   try {
-    // Try exact match first, then normalized match (for Gmail dot variants)
     const normalized = normalizeEmail(email);
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1 OR normalized_email = $2 LIMIT 1',
@@ -162,7 +177,7 @@ router.post('/login', checkCaptcha, async (req, res) => {
     if (!valid) {
       return res.status(401).json({ error: 'Email หรือรหัสผ่านไม่ถูกต้อง' });
     }
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = await issueToken(user.id, user.email);
     res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (err) {
     console.error('Login error:', err);
@@ -182,6 +197,53 @@ router.get('/me', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error('Me error:', err);
     res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
+  }
+});
+
+// ── POST /change-password — เปลี่ยนรหัสผ่าน (ต้อง login) ────────────────
+router.post('/change-password', authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'กรุณากรอกรหัสผ่านปัจจุบันและรหัสผ่านใหม่' });
+  }
+  if (newPassword.length < 6)   return res.status(400).json({ error: 'รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร' });
+  if (newPassword.length > 128) return res.status(400).json({ error: 'รหัสผ่านต้องไม่เกิน 128 ตัวอักษร' });
+  try {
+    const result = await pool.query('SELECT password FROM users WHERE id = $1', [req.user.userId]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'ไม่พบผู้ใช้' });
+    const valid = await bcrypt.compare(currentPassword, result.rows[0].password);
+    if (!valid) return res.status(401).json({ error: 'รหัสผ่านปัจจุบันไม่ถูกต้อง' });
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+    // Increment token_version to invalidate all existing sessions
+    await pool.query(
+      'UPDATE users SET password = $1, token_version = token_version + 1 WHERE id = $2',
+      [hashed, req.user.userId]
+    );
+    // Issue a fresh token for the current session
+    const newToken = await issueToken(req.user.userId, req.user.email);
+    res.json({ message: 'เปลี่ยนรหัสผ่านสำเร็จ', token: newToken });
+  } catch (err) {
+    console.error('Change password error:', err);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
+  }
+});
+
+// ── DELETE /account — ลบบัญชี (ต้องยืนยันด้วย password) ─────────────────
+router.delete('/account', authenticateToken, async (req, res) => {
+  const { password } = req.body;
+  if (!password) return res.status(400).json({ error: 'กรุณากรอกรหัสผ่านเพื่อยืนยัน' });
+  try {
+    const result = await pool.query('SELECT password FROM users WHERE id = $1', [req.user.userId]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'ไม่พบผู้ใช้' });
+    const valid = await bcrypt.compare(password, result.rows[0].password);
+    if (!valid) return res.status(401).json({ error: 'รหัสผ่านไม่ถูกต้อง' });
+    // CASCADE delete: subscriptions, password_reset_tokens, gmail_token all removed with user
+    await pool.query('DELETE FROM users WHERE id = $1', [req.user.userId]);
+    res.json({ message: 'ลบบัญชีสำเร็จ' });
+  } catch (err) {
+    console.error('Delete account error:', err);
+    res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
   }
 });
 
@@ -242,9 +304,8 @@ router.post('/reset-password', async (req, res) => {
   if (!token || !password) {
     return res.status(400).json({ error: 'ข้อมูลไม่ครบถ้วน' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
-  }
+  if (password.length < 6)   return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
+  if (password.length > 128) return res.status(400).json({ error: 'รหัสผ่านต้องไม่เกิน 128 ตัวอักษร' });
   try {
     const result = await pool.query(
       `SELECT prt.id, prt.user_id, prt.expires_at
@@ -261,7 +322,11 @@ router.post('/reset-password', async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(password, 12);
-    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, row.user_id]);
+    // Update password AND increment token_version to kill all existing sessions
+    await pool.query(
+      'UPDATE users SET password = $1, token_version = token_version + 1 WHERE id = $2',
+      [hashed, row.user_id]
+    );
     await pool.query('UPDATE password_reset_tokens SET used = TRUE WHERE id = $1', [row.id]);
 
     res.json({ message: 'เปลี่ยนรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบใหม่' });
