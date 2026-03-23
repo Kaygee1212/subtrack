@@ -327,7 +327,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sarabu
         </button>
         <button class="btn-gmail btn-gmail-scan" id="gmailScanBtn" onclick="scanGmail()">
           📮 สแกน Subscription
-        </button>
+        
+        <input type="file" id="statementFileInput" accept=".pdf" style="display:none" onchange="handleStatementUpload(this,event)">
+        <button class="btn-gmail btn-gmail-scan" style="background:linear-gradient(135deg,#059669,#10b981)" onclick="document.getElementById('statementFileInput').click()">
+          📄 Statement PDF
+        </button></button>
       </div>
     </div>
 
@@ -711,6 +715,7 @@ function renderGrid() {
       </div>
       ${isSub?`<div class="sub-date">
         📅 Subscribe เมื่อ ${subDate}<br>
+        ${subData.months_paid ? `<span style="color:#a78bfa;font-size:11px;font-weight:600;display:inline-block;margin:2px 0">📊 ${subData.months_paid} เดือน</span><br>` : ''}
         <span style="color:${billing.urgency};font-weight:600">⏰ Due ${billing.dateStr} (อีก ${billing.days} วัน)</span><br>
         <a class="unsub-link" href="${p.unsubscribe_url}" target="_blank" onclick="event.stopPropagation()">🔗 ยกเลิก ${p.name} →</a>
       </div>`:''}
@@ -937,6 +942,29 @@ document.getElementById('scanModal').addEventListener('click',function(e){ if(e.
   }
 })();
 </script>
-<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer>
+// STATEMENT UPLOAD
+async function handleStatementUpload(input, event) {
+  if (!input.files[0]) return;
+  showToast('กำลังอ่าน Statement...', '#6c63ff');
+  try {
+    const formData = new FormData();
+    formData.append('statement', input.files[0]);
+    const token = localStorage.getItem('token');
+    const res = await fetch('/api/statement/parse', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Parse failed');
+    scanFoundList = data.found || [];
+    showScanResults(scanFoundList);
+    input.value = '';
+  } catch(e) {
+    showToast('เกิดข้อผิดพลาด: ' + e.message, '#ff4d6d');
+  }
+}
+</script>
 </body>
 </html>
